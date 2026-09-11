@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Protein Folding Prediction</title>
+    <style>
+        :root {
+            --primary-color: #2a5298;
+            --primary-dark: #1e3c72;
+            --accent-color: #00bcd4;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+            box-sizing: border-box;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .models-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        .model-card {
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+            border-left: 4px solid var(--accent-color);
+            transition: transform 0.2s;
+        }
+        .model-card:hover {
+            transform: translateY(-5px);
+        }
+        .model-card h2 {
+            color: var(--primary-color);
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 22px;
+        }
+        .model-card p {
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+        .btn {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(42, 82, 152, 0.3);
+        }
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        .back-link:hover {
+            color: var(--accent-color);
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Protein Folding Prediction System</h1>
+
+    <div class="models-grid">
+        <div class="model-card">
+            <h2>Aβ Protein</h2>
+            <p>A key biomarker of Alzheimer's disease.</p>
+            <a href="hello2?type=ad" class="btn">Start Prediction</a>
+        </div>
+
+        <div class="model-card">
+            <h2>Huntingtin</h2>
+            <p>Associated with Huntington's disease.</p>
+            <a href="hello2?type=huntingtin" class="btn">Start Prediction</a>
+        </div>
+
+        <div class="model-card">
+            <h2>α-Synuclein</h2>
+            <p>Plays a key role in Parkinson's disease.</p>
+            <a href="hello2?type=TUHe" class="btn">Start Prediction</a>
+        </div>
+
+        <div class="model-card">
+            <h2>Tau Protein</h2>
+            <p>Associated with several neurodegenerative diseases.</p>
+            <a href="hello2?type=tau" class="btn">Start Prediction</a>
+        </div>
+    </div>
+
+    <a href="model.html" class="back-link">Back to main page</a>
+</div>
+</body>
+</html>

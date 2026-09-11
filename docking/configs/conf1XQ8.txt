@@ -1,0 +1,11 @@
+receptor = 1xq8.pdbqt
+
+center_x = 234.25
+center_y = 9.75
+center_z = -16.25
+
+size_x = 11.5
+size_y = 15.5
+size_z = 9.5
+
+num_modes = 100

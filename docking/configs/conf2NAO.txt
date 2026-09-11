@@ -1,0 +1,13 @@
+receptor = 2NAO.pdbqt
+
+center_x = 5.223
+center_y = 40.644
+center_z = -13.768
+size_x = 15.75
+size_y = 24.0
+size_z = 21.75
+num_modes = 100
+
+
+
+

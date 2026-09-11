@@ -1,0 +1,806 @@
+<!-- Version 3b, "Select All" feature removed -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Target Protein - Online Molecular Docking System</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2a5298;
+            --secondary-color: #1e3c72;
+            --accent-color: #00bcd4;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --light-bg: #f8f9fa;
+            --dark-text: #333;
+            --light-text: #fff;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px 0;
+        }
+
+        .selection-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .header-section {
+            text-align: center;
+            color: var(--light-text);
+            margin-bottom: 40px;
+        }
+
+        .header-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .header-subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        /* Batch control area */
+        .batch-controls {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+            box-shadow: var(--box-shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            position: sticky;
+            top: 10px;
+            z-index: 100;
+        }
+
+        .batch-selection {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .selected-count {
+            background: var(--accent-color);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .batch-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .batch-button {
+            background: linear-gradient(135deg, var(--success-color), #218838);
+            color: var(--light-text);
+            border: none;
+            padding: 10px 20px;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 3px 10px rgba(40, 167, 69, 0.3);
+            text-decoration: none;
+        }
+
+        .batch-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(40, 167, 69, 0.4);
+            color: var(--light-text);
+            text-decoration: none;
+        }
+
+        .batch-button:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .clear-button {
+            background: linear-gradient(135deg, var(--warning-color), #e0a800);
+            color: var(--dark-text);
+            box-shadow: 0 3px 10px rgba(255, 193, 7, 0.3);
+        }
+
+        .clear-button:hover {
+            box-shadow: 0 5px 15px rgba(255, 193, 7, 0.4);
+            color: var(--dark-text);
+        }
+
+        .protein-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .protein-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: var(--border-radius);
+            padding: 28px;
+            text-align: center;
+            box-shadow: var(--box-shadow);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .protein-card.selected {
+            border: 2px solid var(--accent-color);
+            box-shadow: 0 8px 25px rgba(0, 188, 212, 0.2);
+        }
+
+        .protein-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .protein-card:hover::before {
+            left: 100%;
+        }
+
+        .protein-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .protein-checkbox {
+            position: absolute;
+            top: 18px;
+            left: 18px;
+            z-index: 10;
+        }
+
+        .protein-checkbox input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: var(--accent-color);
+        }
+
+        .protein-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            margin-top: 10px;
+            position: relative;
+            z-index: 1;
+            color: var(--primary-color);
+        }
+
+        .protein-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 6px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .protein-subtitle {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--accent-color);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+        }
+
+        .protein-description {
+            color: #666;
+            font-size: 0.92rem;
+            line-height: 1.55;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+            text-align: left;
+            min-height: 90px;
+        }
+
+        .protein-specs {
+            background: var(--light-bg);
+            border-radius: 6px;
+            padding: 12px 15px;
+            text-align: left;
+            position: relative;
+            z-index: 1;
+        }
+
+        .spec-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 6px;
+            font-size: 0.85rem;
+        }
+
+        .spec-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .spec-label {
+            font-weight: 500;
+            color: #555;
+        }
+
+        .spec-value {
+            color: var(--primary-color);
+            font-weight: 600;
+            text-align: right;
+        }
+
+        .back-section {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .back-button {
+            background: rgba(255, 255, 255, 0.9);
+            color: var(--accent-color);
+            border: 2px solid var(--accent-color);
+            padding: 12px 30px;
+            border-radius: var(--border-radius);
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: var(--transition);
+        }
+
+        .back-button:hover {
+            background: var(--accent-color);
+            color: var(--light-text);
+            transform: translateY(-1px);
+            text-decoration: none;
+        }
+
+        .status-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #28a745;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .header-title {
+                font-size: 2rem;
+            }
+            .batch-controls {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+                position: static;
+            }
+            .batch-selection {
+                justify-content: center;
+            }
+            .batch-actions {
+                justify-content: center;
+            }
+            .protein-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            .protein-card {
+                padding: 25px 20px;
+            }
+        }
+
+        /* Animation effects */
+        .protein-card {
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Selection pulse animation */
+        @keyframes selectPulse {
+            0% { box-shadow: 0 0 0 0 rgba(0, 188, 212, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(0, 188, 212, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 188, 212, 0); }
+        }
+
+        .protein-card.selected {
+            animation: selectPulse 0.6s;
+        }
+    </style>
+</head>
+<body>
+<div class="selection-container">
+    <!-- Header -->
+    <div class="header-section">
+        <h1 class="header-title">
+            <i class="fas fa-dna"></i>
+            Select Target Protein
+        </h1>
+        <p class="header-subtitle">Choose the target protein(s) for molecular docking</p>
+    </div>
+
+    <!-- Batch control area -->
+    <div class="batch-controls">
+        <div class="batch-selection">
+            <div class="selected-count" id="selectedCount">Selected: 0</div>
+        </div>
+        <div class="batch-actions">
+            <button type="button" id="batchStartBtn" class="batch-button" disabled>
+                <i class="fas fa-rocket"></i>
+                Batch Start
+            </button>
+            <button type="button" id="clearSelectionBtn" class="clear-button">
+                <i class="fas fa-times"></i>
+                Clear Selection
+            </button>
+        </div>
+    </div>
+
+    <!-- Protein selection grid -->
+    <form id="proteinSelectionForm">
+        <div class="protein-grid">
+
+            <!-- 1AML -->
+            <div class="protein-card" data-protein="1AML">
+                <div class="status-badge">Available</div>
+                <div class="protein-checkbox">
+                    <input type="checkbox" id="1AML" name="selectedProteins" value="1AML">
+                </div>
+                <div class="protein-icon"><i class="fas fa-dna"></i></div>
+                <h3 class="protein-title">1AML</h3>
+                <div class="protein-subtitle">Amyloid-beta (1-40)</div>
+                <p class="protein-description">
+                    Alzheimer's disease amyloid A4 peptide, residues 1-40. NMR solution structure showing two helical segments in an otherwise disordered peptide.
+                </p>
+                <div class="protein-specs">
+                    <div class="spec-item"><span class="spec-label">Method:</span><span class="spec-value">Solution NMR</span></div>
+                    <div class="spec-item"><span class="spec-label">Disease:</span><span class="spec-value">Alzheimer's</span></div>
+                </div>
+            </div>
+
+            <!-- 1BA4 -->
+            <div class="protein-card" data-protein="1BA4">
+                <div class="status-badge">Available</div>
+                <div class="protein-checkbox">
+                    <input type="checkbox" id="1BA4" name="selectedProteins" value="1BA4">
+                </div>
+                <div class="protein-icon"><i class="fas fa-dna"></i></div>
+                <h3 class="protein-title">1BA4</h3>
+                <div class="protein-subtitle">Amyloid-beta (1-40)</div>
+                <p class="protein-description">
+                    Solution structure of amyloid beta-peptide (1-40) in a water-micelle environment, used to probe the membrane-spanning domain of APP.
+                </p>
+                <div class="protein-specs">
+                    <div class="spec-item"><span class="spec-label">Method:</span><span class="spec-value">Solution NMR</span></div>
+                    <div class="spec-item"><span class="spec-label">Disease:</span><span class="spec-value">Alzheimer's</span></div>
+                </div>
+            </div>
+
+            <!-- 1IYT -->
+            <div class="protein-card" data-protein="1IYT">
+                <div class="status-badge">Available</div>
+                <div class="protein-checkbox">
+                    <input type="checkbox" id="1IYT" name="selectedProteins" value="1IYT">
+                </div>
+                <div class="protein-icon"><i class="fas fa-dna"></i></div>
+                <h3 class="protein-title">1IYT</h3>
+                <div class="protein-subtitle">Amyloid-beta (1-42)</div>
+                <p class="protein-description">
+                    Solution structure of Abeta(1-42) in fluorinated-alcohol/water solvent, showing two helical regions connected by a beta-turn.
+                </p>
+                <div class="protein-specs">
+                    <div class="spec-item"><span class="spec-label">Method:</span><span class="spec-value">Solution NMR</span></div>
+                    <div class="spec-item"><span class="spec-label">Disease:</span><span class="spec-value">Alzheimer's</span></div>
+                </div>
+            </div>
+
+            <!-- 1Z0Q -->
+            <div class="protein-card" data-protein="1Z0Q">
+                <div class="status-badge">Available</div>
+                <div class="protein-checkbox">
+                    <input type="checkbox" id="1Z0Q" name="selectedProteins" value="1Z0Q">
+                </div>
+                <div class="protein-icon"><i class="fas fa-dna"></i></div>
+                <h3 class="protein-title">1Z0Q</h3>
+                <div class="protein-subtitle">Amyloid-beta (1-42)</div>
+                <p class="protein-description">
+                    Aqueous solution structure of Abeta(1-42), capturing the reversible alpha-to-beta conformational transition that precedes fibril formation.
+                </p>
+                <div class="protein-specs">
+                    <div class="spec-item"><span class="spec-label">Method:</span><span class="spec-value">Solution NMR</span></div>
+                    <div class="spec-item"><span class="spec-label">Disease:</span><span class="spec-value">Alzheimer's</span></div>
+                </div>
+            </div>
+
+            <!-- 2BEG -->
+            <div class="protein-card" data-protein="2BEG">
+                <div class="status-badge">Available</div>
+                <div class="protein-checkbox">
+                    <input type="checkbox" id="2BEG" name="selectedProteins" value="2BEG">
+                </div>
+                <div class="protein-icon"><i class="fas fa-shapes"></i></div>
+                <h3 class="protein-title">2BEG</h3>
+                <div class="protein-subtitle">Amyloid-beta (1-42) fibril</div>
+                <p class="protein-description">
+                    3D structure of Alzheimer's Abeta(1-42) fibrils; residues 18-42 form a beta-strand-turn-beta-strand motif that builds the protofilament.
+                </p>
+                <div class="protein-specs">
+                    <div class="spec-item"><span class="spec-label">Method:</span><span class="spec-value">ssNMR-based model</span></div>
+                    <div class="spec-item"><span class="spec-label">Disease:</span><span class="spec-value">Alzheimer's</span></div>
+                </div>
+            </div>
+
+            <!-- 2M9R -->
+            <div class="protein-card" data-protein="2M9R">
+                <div class="status-badge">Available</div>
+                <div class="protein-checkbox">
+                    <input type="checkbox" id="2M9R" name="selectedProteins" value="2M9R">
+                </div>
+                <div class="protein-icon"><i class="fas fa-dna"></i></div>
+                <h3 class="protein-title">2M9R</h3>
+                <div class="protein-subtitle">Amyloid-beta (1-40) complex</div>
+                <p class="protein-description">
+                    NMR structure of a complex between amyloid-beta peptide (1-40) and the polyphenol epsilon-viniferin glucoside, an anti-amyloid compound.
+                </p>
+                <div class="protein-specs">
+                    <div class="spec-item"><span class="spec-label">Method:</span><span class="spec-value">Solution NMR</span></div>
+                    <div class="spec-item"><span class="spec-label">Disease:</span><span class="spec-value">Alzheimer's</span></div>
+                </div>
+            </div>
+
+            <!-- 2NAO -->
+            <div class="protein-card" data-protein="2NAO">
+                <div class="status-badge">Available</div>
+                <div class="protein-checkbox">
+                    <input type="checkbox" id="2NAO" name="selectedProteins" value="2NAO">
+                </div>
+                <div class="protein-icon"><i class="fas fa-shapes"></i></div>
+                <h3 class="protein-title">2NAO</h3>
+                <div class="protein-subtitle">Amyloid-beta (1-42) fibril</div>
+                <p class="protein-description">
+                    Atomic-resolution structure of a disease-relevant Abeta(1-42) fibril polymorph, combining solid-state NMR and EM mass-per-length data.
+                </p>
+                <div class="protein-specs">
+                    <div class="spec-item"><span class="spec-label">Method:</span><span class="spec-value">ssNMR / EM</span></div>
+                    <div class="spec-item"><span class="spec-label">Disease:</span><span class="spec-value">Alzheimer's</span></div>
+                </div>
+            </div>
+
+            <!-- 5OQV -->
+            <div class="protein-card" data-protein="5OQV">
+                <div class="status-badge">Available</div>
+                <div class="protein-checkbox">
+                    <input type="checkbox" id="5OQV" name="selectedProteins" value="5OQV">
+                </div>
+                <div class="protein-icon"><i class="fas fa-shapes"></i></div>
+                <h3 class="protein-title">5OQV</h3>
+                <div class="protein-subtitle">Amyloid-beta (1-42) fibril</div>
+                <p class="protein-description">
+                    Near-atomic resolution fibril structure of complete Abeta(1-42) by cryo-EM, resolving two intertwined protofilaments with an "LS"-shaped topology.
+                </p>
+                <div class="protein-specs">
+                    <div class="spec-item"><span class="spec-label">Method:</span><span class="spec-value">Cryo-EM</span></div>
+                    <div class="spec-item"><span class="spec-label">Disease:</span><span class="spec-value">Alzheimer's</span></div>
+                </div>
+            </div>
+
+            <!-- 6OC9 -->
+            <div class="protein-card" data-protein="6OC9">
+                <div class="status-badge">Available</div>
+                <div class="protein-checkbox">
+                    <input type="checkbox" id="6OC9" name="selectedProteins" value="6OC9">
+                </div>
+                <div class="protein-icon"><i class="fas fa-dna"></i></div>
+                <h3 class="protein-title">6OC9</h3>
+                <div class="protein-subtitle">Amyloid-beta (1-40) fibril</div>
+                <p class="protein-description">
+                    NMR structure of Ser-8-phosphorylated amyloid-beta (1-40) fibrils, a post-translationally modified variant with distinct polymorphism.
+                </p>
+                <div class="protein-specs">
+                    <div class="spec-item"><span class="spec-label">Method:</span><span class="spec-value">Solid-state NMR</span></div>
+                    <div class="spec-item"><span class="spec-label">Disease:</span><span class="spec-value">Alzheimer's</span></div>
+                </div>
+            </div>
+
+            <!-- 6RHY -->
+            <div class="protein-card" data-protein="6RHY">
+                <div class="status-badge">Available</div>
+                <div class="protein-checkbox">
+                    <input type="checkbox" id="6RHY" name="selectedProteins" value="6RHY">
+                </div>
+                <div class="protein-icon"><i class="fas fa-dna"></i></div>
+                <h3 class="protein-title">6RHY</h3>
+                <div class="protein-subtitle">Amyloid-beta oligomer</div>
+                <p class="protein-description">
+                    Structure of pore-forming amyloid-beta tetramers/octamers formed in a membrane-mimicking environment, proposed mediators of AD neurotoxicity.
+                </p>
+                <div class="protein-specs">
+                    <div class="spec-item"><span class="spec-label">Method:</span><span class="spec-value">Solution NMR</span></div>
+                    <div class="spec-item"><span class="spec-label">Disease:</span><span class="spec-value">Alzheimer's</span></div>
+                </div>
+            </div>
+
+            <!-- 6SHS -->
+            <div class="protein-card" data-protein="6SHS">
+                <div class="status-badge">Available</div>
+                <div class="protein-checkbox">
+                    <input type="checkbox" id="6SHS" name="selectedProteins" value="6SHS">
+                </div>
+                <div class="protein-icon"><i class="fas fa-shapes"></i></div>
+                <h3 class="protein-title">6SHS</h3>
+                <div class="protein-subtitle">Amyloid-beta fibril (brain-derived)</div>
+                <p class="protein-description">
+                    Cryo-EM structure of an Abeta fibril polymorph purified directly from Alzheimer's brain tissue, distinct in fold from in-vitro-formed fibrils.
+                </p>
+                <div class="protein-specs">
+                    <div class="spec-item"><span class="spec-label">Method:</span><span class="spec-value">Cryo-EM</span></div>
+                    <div class="spec-item"><span class="spec-label">Disease:</span><span class="spec-value">Alzheimer's</span></div>
+                </div>
+            </div>
+
+            <!-- 6TI7 -->
+            <div class="protein-card" data-protein="6TI7">
+                <div class="status-badge">Available</div>
+                <div class="protein-checkbox">
+                    <input type="checkbox" id="6TI7" name="selectedProteins" value="6TI7">
+                </div>
+                <div class="protein-icon"><i class="fas fa-shapes"></i></div>
+                <h3 class="protein-title">6TI7</h3>
+                <div class="protein-subtitle">Mixed Abeta(1-40)/(1-42) fibril</div>
+                <p class="protein-description">
+                    A structurally uniform 1:1 mixed Abeta(1-40)/Abeta(1-42) fibril species, distinct from either pure-peptide fibril form.
+                </p>
+                <div class="protein-specs">
+                    <div class="spec-item"><span class="spec-label">Method:</span><span class="spec-value">Solid-state NMR</span></div>
+                    <div class="spec-item"><span class="spec-label">Disease:</span><span class="spec-value">Alzheimer's</span></div>
+                </div>
+            </div>
+
+            <!-- 1XQ8 -->
+            <div class="protein-card" data-protein="1XQ8">
+                <div class="status-badge">Available</div>
+                <div class="protein-checkbox">
+                    <input type="checkbox" id="1XQ8" name="selectedProteins" value="1XQ8">
+                </div>
+                <div class="protein-icon"><i class="fas fa-atom"></i></div>
+                <h3 class="protein-title">1XQ8</h3>
+                <div class="protein-subtitle">Alpha-synuclein</div>
+                <p class="protein-description">
+                    Human micelle-bound alpha-synuclein. Shows an ordered helix-helix connector consistent with binding to synaptic vesicle membranes.
+                </p>
+                <div class="protein-specs">
+                    <div class="spec-item"><span class="spec-label">Method:</span><span class="spec-value">Solution NMR</span></div>
+                    <div class="spec-item"><span class="spec-label">Disease:</span><span class="spec-value">Parkinson's</span></div>
+                </div>
+            </div>
+
+            <!-- 6A6B -->
+            <div class="protein-card" data-protein="6A6B">
+                <div class="status-badge">Available</div>
+                <div class="protein-checkbox">
+                    <input type="checkbox" id="6A6B" name="selectedProteins" value="6A6B">
+                </div>
+                <div class="protein-icon"><i class="fas fa-atom"></i></div>
+                <h3 class="protein-title">6A6B</h3>
+                <div class="protein-subtitle">Alpha-synuclein fibril</div>
+                <p class="protein-description">
+                    Cryo-EM structure of full-length alpha-synuclein (1-140) fibril, showing two protofilaments intertwined into a left-handed helix.
+                </p>
+                <div class="protein-specs">
+                    <div class="spec-item"><span class="spec-label">Method:</span><span class="spec-value">Cryo-EM</span></div>
+                    <div class="spec-item"><span class="spec-label">Disease:</span><span class="spec-value">Parkinson's</span></div>
+                </div>
+            </div>
+
+            <!-- 7SP1 -->
+            <div class="protein-card" data-protein="7SP1">
+                <div class="status-badge">Available</div>
+                <div class="protein-checkbox">
+                    <input type="checkbox" id="7SP1" name="selectedProteins" value="7SP1">
+                </div>
+                <div class="protein-icon"><i class="fas fa-shapes"></i></div>
+                <h3 class="protein-title">7SP1</h3>
+                <div class="protein-subtitle">Tau fibril</div>
+                <p class="protein-description">
+                    Structure of an RNA-induced tau amyloid fibril, illustrating how RNA cofactors may nucleate tau aggregation seen in tauopathies.
+                </p>
+                <div class="protein-specs">
+                    <div class="spec-item"><span class="spec-label">Method:</span><span class="spec-value">Cryo-EM</span></div>
+                    <div class="spec-item"><span class="spec-label">Disease:</span><span class="spec-value">Alzheimer's / Tauopathy</span></div>
+                </div>
+            </div>
+
+            <!-- 6YEJ -->
+            <div class="protein-card" data-protein="6YEJ">
+                <div class="status-badge">Available</div>
+                <div class="protein-checkbox">
+                    <input type="checkbox" id="6YEJ" name="selectedProteins" value="6YEJ">
+                </div>
+                <div class="protein-icon"><i class="fas fa-project-diagram"></i></div>
+                <h3 class="protein-title">6YEJ</h3>
+                <div class="protein-subtitle">Huntingtin (HTT)</div>
+                <p class="protein-description">
+                    Cryo-EM structure of full-length disease-type human Huntingtin with expanded polyQ, showing global structural changes relative to normal HTT.
+                </p>
+                <div class="protein-specs">
+                    <div class="spec-item"><span class="spec-label">Method:</span><span class="spec-value">Cryo-EM</span></div>
+                    <div class="spec-item"><span class="spec-label">Disease:</span><span class="spec-value">Huntington's</span></div>
+                </div>
+            </div>
+
+        </div>
+    </form>
+
+    <!-- Back button -->
+    <div class="back-section">
+        <a href="javascript:history.back()" class="back-button">
+            <i class="fas fa-arrow-left"></i>
+            Back to Main Interface
+        </a>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const proteinCheckboxes = document.querySelectorAll('input[name="selectedProteins"]');
+        const selectedCountDisplay = document.getElementById('selectedCount');
+        const batchStartBtn = document.getElementById('batchStartBtn');
+        const clearSelectionBtn = document.getElementById('clearSelectionBtn');
+        const proteinCards = document.querySelectorAll('.protein-card');
+
+        // Update selection count and button state
+        function updateSelectionStatus() {
+            const checkedBoxes = document.querySelectorAll('input[name="selectedProteins"]:checked');
+            const count = checkedBoxes.length;
+
+            selectedCountDisplay.textContent = `Selected: ${count}`;
+            batchStartBtn.disabled = count === 0;
+
+            // Update card styling
+            proteinCards.forEach(card => {
+                const checkbox = card.querySelector('input[name="selectedProteins"]');
+                if (checkbox.checked) {
+                    card.classList.add('selected');
+                } else {
+                    card.classList.remove('selected');
+                }
+            });
+        }
+
+        // Individual checkbox change
+        proteinCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', updateSelectionStatus);
+        });
+
+        // Click on card to toggle selection
+        proteinCards.forEach(card => {
+            card.addEventListener('click', function(e) {
+                // Ignore clicks on the checkbox itself (it already toggles)
+                if (e.target.type === 'checkbox') {
+                    return;
+                }
+
+                const checkbox = this.querySelector('input[name="selectedProteins"]');
+                checkbox.checked = !checkbox.checked;
+                updateSelectionStatus();
+            });
+
+            // Hover effect
+            card.addEventListener('mouseenter', function() {
+                if (!this.classList.contains('selected')) {
+                    this.style.transform = 'translateY(-8px) scale(1.02)';
+                }
+            });
+
+            card.addEventListener('mouseleave', function() {
+                if (!this.classList.contains('selected')) {
+                    this.style.transform = 'translateY(0) scale(1)';
+                }
+            });
+        });
+
+        // Clear selection
+        clearSelectionBtn.addEventListener('click', function() {
+            proteinCheckboxes.forEach(checkbox => {
+                checkbox.checked = false;
+            });
+            updateSelectionStatus();
+        });
+
+        // Batch start
+        batchStartBtn.addEventListener('click', function() {
+            const selectedProteins = [];
+            document.querySelectorAll('input[name="selectedProteins"]:checked').forEach(checkbox => {
+                selectedProteins.push(checkbox.value);
+            });
+
+            if (selectedProteins.length === 0) {
+                alert('Please select at least one target protein first!');
+                return;
+            }
+
+            // Confirmation dialog
+            const confirmMessage = `Start molecular docking for the following ${selectedProteins.length} target protein(s)?\n${selectedProteins.join(', ')}`;
+            if (confirm(confirmMessage)) {
+                // Submit to the batch-start endpoint
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = 'batch-start';
+
+                selectedProteins.forEach(protein => {
+                    const input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = 'proteins';
+                    input.value = protein;
+                    form.appendChild(input);
+                });
+
+                document.body.appendChild(form);
+                form.submit();
+            }
+        });
+
+        // Button click feedback
+        document.querySelectorAll('.batch-button, .clear-button').forEach(button => {
+            button.addEventListener('click', function(e) {
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 100);
+            });
+        });
+
+        // Initialize state
+        updateSelectionStatus();
+    });
+</script>
+</body>
+</html>

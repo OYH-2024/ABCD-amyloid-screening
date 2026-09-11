@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script src="https://3Dmol.csb.pitt.edu/build/3Dmol-min.js"></script>
+
+<div id="container-04" class="mol-container">
+<style>
+    .mol-container {
+        /*width:    75%;*/
+        /*height:   400px;*/
+        width:    75%;
+        height:   1200px;
+        position: relative;
+        margin: 0 auto;
+    }
+</style>
+
+<script>
+    $(function() {
+        let element = $('#container-04');
+        let config = { backgroundColor : 'black' };
+        let viewer = $3Dmol.createViewer( element, config );
+        //let pdbUri = 'https://files-cdn.cnblogs.com/files/dechinphy/protein.sh?t=1669043795';
+        // https://3Dmol.org/viewer.html?url=https://3dmol.org/tests/test_structs/benzene.sdf&type=sdf
+       let pdbUri = '1z0q.pdb';
+
+
+        // pv.io.fetchPdb('3.pdb', function(structure)
+        jQuery.ajax( pdbUri,{
+            success: function(data) {
+                let v = viewer;
+                v.addModel( data, "pdb" );                       /* load data */
+
+               // v.setStyle({}, {cartoon: {color: 'spectrum'}});  /* style all atoms */
+               // v.setStyle({}, {stick: {color: 'spectrum'}});
+                v.setStyle({}, {cartoon: {color: 'spectrum'}});
+                v.zoomTo();                                      /* set camera */
+                v.render();                                      /* render scene */
+                v.zoom(1.2, 1000);                               /* slight zoom */
+            },
+            error: function(hdr, status, err) {
+                console.error( "Failed to load PDB " + pdbUri + ": " + err );
+            },
+        });
+    });
+    // <input type="file" onchange="readText(this, function(data, name) { glviewer.clear(); m= glviewer.addModel(data,name); glviewer.zoomTo(); glviewer.render();} );">
+
+    // <input type="file" onchange="readText(this, function(data, name) {/*glviewer.clear();*/ m= glviewer.addModel(data,name); glviewer.zoomTo(); glviewer.render();} );">
+
+
+
+</script>
+</div>
+
+
+
+</body>
+</html>
+
+<!--$3Dmol.download("pdb:3ucr",viewer,{},function(){-->
+<!--viewer.setStyle({},{stick:{}});-->
+<!--viewer.getModel().hide();-->
+<!--viewer.render(  )-->
+<!--viewer.getModel().show()-->
+<!--viewer.render();-->
+<!--});-->
+
+
+<!--input type="button" value="Stick"-->
+<!--onclick="glviewer.setStyle({},{stick:{}}); glviewer.render();"></input>-->
+
+<!--input type="button" value="Cartoon"-->
+<!--onclick="glviewer.setStyle({hetflag:false},{cartoon:{}}); glviewer.render();"></input>-->

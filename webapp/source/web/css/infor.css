@@ -1,0 +1,75 @@
+*{
+	color: threeddarkshadow;
+}
+body{
+	margin:0;
+	padding:0;
+	background-color:#808080;
+
+}
+div{
+
+	position:relative;
+	float:left;
+
+}
+
+#div_container{
+	/*如下width和margin-left相互配合，可以实现表格的撑满*/
+	width:99.99%;
+
+	/*border:0px solid blue;*/
+	border:0px #c4ebd2;
+	margin-left:0.01%;
+	float:left;
+	/*很重要下面的颜色就是内容之背景颜色，接下来就全用honey即可，#F0FFF0*/
+	background-color: honeydew;
+
+
+	border-radius:8px;
+}
+#div_fruit_list{
+	width:100%;
+	border:0px solid red;
+}
+
+/*#tbl_fruit th:nth-child(2),*/
+/*#tbl_fruit td:nth-child(2) {*/
+/*	width: 40%; !* 信息1列宽度为其他列宽度的两倍 *!*/
+/*}*/
+
+#tbl_fruit{
+	width:60%;
+	line-height:28px;
+	margin-top:16px;
+	margin-left:20%;
+
+}
+#tbl_fruit , #tbl_fruit tr , #tbl_fruit th , #tbl_fruit td{
+	border:1px solid gray;
+	border-collapse:collapse;
+	text-align:center;
+	font-size:16px;
+	font-family:"黑体";
+	font-weight:lighter;
+
+}
+.w20{
+	width:20%;
+}
+.delImg{
+	width:24px;
+	height:24px;
+}
+.btn{
+	border:1px solid lightgray;
+	width:80px;
+	height:24px;
+}
+
+.center{
+	text-align:center;
+}
+.f30{
+	font-size: 30px;
+}

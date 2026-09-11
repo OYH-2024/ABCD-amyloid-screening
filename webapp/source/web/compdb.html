@@ -1,0 +1,143 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        #molecule-name {
+            font-size: 24px; /* 调整字体大小为24像素 */
+            color: darkblue; /* 设置颜色为深蓝色 */
+        }
+        .mol-container {
+            width:    75%;
+            height:   500px;
+            position: relative;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<!--<body style="background-color:#F0FFF0;">-->
+<body style="background-color:white;">
+<!--<a th:href="@{'compdb.html?pdb_path=' + ${fruit.pdb} + '&protein=' + ${fruit.protein}}">查看PDB三维文件</a>-->
+<!--<th class="w20"><a href="downloadPDBFILE" th:text="${'pdb文件：' + fruit.protein}">pdb结构文件下载</a></th><br/>-->
+<!--<th class="w20"><a th:href="'downloadplot?filename=' + ${fruit.pdb}" th:text="${'pdb文件：' + fruit.pdb}">pdb二维信息</a></th>-->
+
+
+
+<script src="https://3Dmol.csb.pitt.edu/build/3Dmol-min.js"></script>
+<script src="js/3Dmol.js"></script>
+
+<div id="container-04" class="mol-container"></div>
+
+<span id="molecule-name"></span> <!-- 添加一个用于显示小分子名称的元素 ------------------------------------------------------------------------------->
+
+<style>
+    .mol-container {
+        width:    95%;
+        height:   800px;
+        position: relative;
+        margin: 0 auto;
+    }
+</style>
+
+<script>
+    $(function() {
+        let element = $('#container-04');
+        // #let config = { backgroundColor : '#F0FFF0' };
+        let config = { backgroundColor : 'white' };
+        let viewer = $3Dmol.createViewer( element, config );
+        // let pdbUri = 'https://files-cdn.cnblogs.com/files/dechinphy/protein.sh?t=1669043795';
+       // let pdbUri = 'pichuli.pdb';
+/*代码块附加进行复合物的展示，目前这是单个结构的展示*/
+        //
+        // let pdbUri = '1r6a.pdb';
+        // jQuery.ajax( pdbUri, {
+        //     success: function(data) {
+        //         let v = viewer;
+        //         v.addModel( data, "pdb" );                       /* load data */
+        //        // v.setStyle({}, {stick: {color: 'spectrum'}});  /* style all atoms */
+        //         v.setStyle({},{cartoon:{color:'blue'}});
+        //         v.zoomTo();                                      /* set camera */
+        //         v.render();                                      /* render scene */
+        //         v.zoom(1.2, 1000);                               /* slight zoom */
+        //     },
+        //     error: function(hdr, status, err) {
+        //         console.error( "Failed to load PDB " + pdbUri + ": " + err );
+        //     },
+        // });
+//  /   /////////   /*代码块附加进行复合物的展示，目前这是单个结构的展示*/
+        var queryString = window.location.search;
+        var urlParams = new URLSearchParams(queryString);
+        var pdbPath = urlParams.get('pdb_path');
+        console.log(pdbPath); // 输出 "1z0q"
+
+        var proteinn=urlParams.get('protein');
+        console.log(proteinn);
+
+
+        // let proteinUri = './1r6a.pdb';
+        // let proteinUri = '1z0q.pdb';
+        //
+        // let proteinUri = '1r6a.pdb';
+
+        //let proteinUri = proteinn;
+        let proteinUri = '1amlpdb/' + proteinn;
+        //let ligandUri = 'new1830.pdb';
+        // let ligandUri = 'pichuli.pdb';
+        let ligandUri = '1amlpdb/' + pdbPath;
+        //let ligandUri = pdbPath;
+
+        // 设置小分子名称到显示元素中
+        $('#molecule-name').text(pdbPath);///////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+        jQuery.ajax( proteinUri, {
+            success: function(proteinData) {
+                jQuery.ajax( ligandUri, {
+                    success: function(ligandData) {
+                        let v = viewer;
+                        v.addModel( proteinData, "pdb" );    /* load protein data */
+                        v.addModel( ligandData, "pdb" );     /* load ligand data */
+                        v.setStyle({}, {cartoon: {color:'spectrum'}});/* style all atoms of protein as cartoon */
+
+                        v.setStyle({model: 1}, {stick: {color: 'spectrum'}});      /* style ligand atoms as sticks */
+                        v.zoomTo();                            /* set camera */
+                        v.render();                              /* render scene */
+                        v.zoom(1.2, 1000);                       /* slight zoom */
+                    },
+                    error: function(hdr, status, err) {
+                        console.error( "Failed to load PDB " + ligandUri + ": " + err );
+                    },
+                });
+            },
+            error: function(hdr, status, err) {
+                console.error( "Failed to load PDB " + proteinUri + ": " + err );
+            },
+        });
+
+
+
+
+    });
+</script>
+
+
+
+</body>
+</html>
+
+<!--$3Dmol.download("pdb:3ucr",viewer,{},function(){-->
+<!--viewer.setStyle({},{stick:{}});-->
+<!--viewer.getModel().hide();-->
+<!--viewer.render(  )-->
+<!--viewer.getModel().show()-->
+<!--viewer.render();-->
+<!--});-->
+
+
+<!--input type="button" value="Stick"-->
+<!--onclick="glviewer.setStyle({},{stick:{}}); glviewer.render();"></input>-->
+
+<!--input type="button" value="Cartoon"-->
+<!--onclick="glviewer.setStyle({hetflag:false},{cartoon:{}}); glviewer.render();"></input>-->

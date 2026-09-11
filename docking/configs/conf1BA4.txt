@@ -1,0 +1,11 @@
+receptor = 1BA4.pdbqt
+
+center_x =  5.5
+center_y = -8.75
+center_z = -5.0
+size_x = 18.0
+size_y = 13.5
+size_z = 10.0
+
+
+num_modes = 100

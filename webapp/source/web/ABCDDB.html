@@ -1,0 +1,1736 @@
+<!--&lt;!&ndash;8月1号再修改，3.0版本&ndash;&gt;-->
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>Amyloid Binding Compounds Database (ABCDDB)</title>-->
+<!--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">-->
+<!--    <style>-->
+<!--        :root {-->
+<!--            &#45;&#45;primary-color: #2a5298;-->
+<!--            &#45;&#45;secondary-color: #1e3c72;-->
+<!--            &#45;&#45;accent-color: #00bcd4;-->
+<!--            &#45;&#45;light-bg: #f8f9fa;-->
+<!--        }-->
+
+<!--        * {-->
+<!--            box-sizing: border-box;-->
+<!--        }-->
+
+<!--        body {-->
+<!--            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;-->
+<!--            margin: 0;-->
+<!--            padding: 0;-->
+<!--            background:-->
+<!--                    linear-gradient(rgba(30, 60, 114, 0.88), rgba(42, 82, 152, 0.88)),-->
+<!--                    url('https://upload.wikimedia.org/wikipedia/commons/3/37/Protein_Structure.png');-->
+<!--            background-size: cover;-->
+<!--            background-attachment: fixed;-->
+<!--            color: #222;-->
+<!--        }-->
+
+<!--        header {-->
+<!--            background: linear-gradient(135deg, var(&#45;&#45;secondary-color), var(&#45;&#45;primary-color));-->
+<!--            color: #fff;-->
+<!--            padding: 30px 20px;-->
+<!--            text-align: center;-->
+<!--            box-shadow: 0 2px 15px rgba(0,0,0,0.25);-->
+<!--            position: relative;-->
+<!--        }-->
+
+<!--        header h1 {-->
+<!--            margin: 0;-->
+<!--            font-size: 2.4rem;-->
+<!--            letter-spacing: 0.5px;-->
+<!--        }-->
+
+<!--        header .subtitle {-->
+<!--            margin: 8px 0 0;-->
+<!--            font-size: 1rem;-->
+<!--            opacity: 0.9;-->
+<!--        }-->
+
+<!--        .protein-select-box {-->
+<!--            position: absolute;-->
+<!--            top: 20px;-->
+<!--            right: 20px;-->
+<!--            display: flex;-->
+<!--            align-items: center;-->
+<!--            gap: 10px;-->
+<!--        }-->
+
+<!--        .protein-select-box span {-->
+<!--            color: #fff;-->
+<!--            font-size: 1rem;-->
+<!--            font-weight: 600;-->
+<!--            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);-->
+<!--        }-->
+
+<!--        .protein-select-box select {-->
+<!--            padding: 10px 14px;-->
+<!--            font-size: 0.95rem;-->
+<!--            border: 2px solid rgba(255,255,255,0.8);-->
+<!--            border-radius: 6px;-->
+<!--            background-color: rgba(255,255,255,0.12);-->
+<!--            color: #fff;-->
+<!--            cursor: pointer;-->
+<!--            outline: none;-->
+<!--        }-->
+
+<!--        .protein-select-box select option {-->
+<!--            color: #222;-->
+<!--        }-->
+
+<!--        nav {-->
+<!--            display: flex;-->
+<!--            justify-content: center;-->
+<!--            flex-wrap: wrap;-->
+<!--            gap: 5px;-->
+<!--            background-color: rgba(255,255,255,0.97);-->
+<!--            padding: 12px 15px;-->
+<!--            box-shadow: 0 2px 8px rgba(0,0,0,0.12);-->
+<!--        }-->
+
+<!--        nav a {-->
+<!--            color: var(&#45;&#45;primary-color);-->
+<!--            text-decoration: none;-->
+<!--            margin: 4px 8px;-->
+<!--            padding: 8px 14px;-->
+<!--            font-weight: 600;-->
+<!--            border-radius: 6px;-->
+<!--            transition: all 0.25s;-->
+<!--            display: inline-flex;-->
+<!--            align-items: center;-->
+<!--            gap: 6px;-->
+<!--        }-->
+
+<!--        nav a:hover {-->
+<!--            background: var(&#45;&#45;primary-color);-->
+<!--            color: #fff;-->
+<!--        }-->
+
+<!--        .intro {-->
+<!--            text-align: center;-->
+<!--            padding: 35px 40px;-->
+<!--            background: rgba(255,255,255,0.97);-->
+<!--            margin: 30px auto;-->
+<!--            width: 82%;-->
+<!--            max-width: 1000px;-->
+<!--            border-radius: 16px;-->
+<!--            box-shadow: 0 5px 20px rgba(0,0,0,0.15);-->
+<!--        }-->
+
+<!--        .intro h2 {-->
+<!--            color: var(&#45;&#45;primary-color);-->
+<!--            margin-top: 0;-->
+<!--        }-->
+
+<!--        .intro p.description {-->
+<!--            text-align: left;-->
+<!--            text-indent: 2em;-->
+<!--            line-height: 1.7;-->
+<!--            color: #444;-->
+<!--        }-->
+
+<!--        .intro p.highlights {-->
+<!--            color: var(&#45;&#45;secondary-color);-->
+<!--            font-weight: 600;-->
+<!--            margin-top: 20px;-->
+<!--        }-->
+
+<!--        /* &#45;&#45;&#45;&#45; Two grouped module sections &#45;&#45;&#45;&#45; */-->
+<!--        .module-section {-->
+<!--            width: 85%;-->
+<!--            max-width: 1100px;-->
+<!--            margin: 40px auto;-->
+<!--        }-->
+
+<!--        .module-section-header {-->
+<!--            text-align: center;-->
+<!--            margin-bottom: 25px;-->
+<!--        }-->
+
+<!--        .module-section-header h2 {-->
+<!--            color: #fff;-->
+<!--            font-size: 1.7rem;-->
+<!--            margin: 0 0 6px;-->
+<!--            text-shadow: 0 2px 6px rgba(0,0,0,0.3);-->
+<!--        }-->
+
+<!--        .module-section-header p {-->
+<!--            color: rgba(255,255,255,0.9);-->
+<!--            margin: 0;-->
+<!--            font-size: 0.95rem;-->
+<!--        }-->
+
+<!--        .module-grid {-->
+<!--            display: grid;-->
+<!--            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));-->
+<!--            gap: 22px;-->
+<!--        }-->
+
+<!--        .module-card {-->
+<!--            background: rgba(255,255,255,0.97);-->
+<!--            border-radius: 14px;-->
+<!--            padding: 28px 22px;-->
+<!--            text-align: center;-->
+<!--            box-shadow: 0 5px 18px rgba(0,0,0,0.15);-->
+<!--            border-top: 4px solid var(&#45;&#45;accent-color);-->
+<!--            transition: transform 0.25s, box-shadow 0.25s;-->
+<!--            text-decoration: none;-->
+<!--            display: block;-->
+<!--            color: inherit;-->
+<!--        }-->
+
+<!--        .module-card:hover {-->
+<!--            transform: translateY(-6px);-->
+<!--            box-shadow: 0 10px 25px rgba(0,0,0,0.2);-->
+<!--        }-->
+
+<!--        .module-card .module-icon {-->
+<!--            font-size: 2.6rem;-->
+<!--            color: var(&#45;&#45;primary-color);-->
+<!--            margin-bottom: 14px;-->
+<!--        }-->
+
+<!--        .module-card h3 {-->
+<!--            color: var(&#45;&#45;secondary-color);-->
+<!--            margin: 0 0 10px;-->
+<!--            font-size: 1.15rem;-->
+<!--        }-->
+
+<!--        .module-card p {-->
+<!--            color: #666;-->
+<!--            font-size: 0.88rem;-->
+<!--            line-height: 1.5;-->
+<!--            margin: 0;-->
+<!--        }-->
+
+<!--        /* Distinguish the two groups with a subtle badge color */-->
+<!--        .module-section.explore .module-card {-->
+<!--            border-top-color: #00bcd4;-->
+<!--        }-->
+
+<!--        .module-section.predict .module-card {-->
+<!--            border-top-color: #2a5298;-->
+<!--        }-->
+
+<!--        /* Cards nested inside the unified explore-panel don't need their own drop shadow-->
+<!--           (the panel itself already has one) — keeps it from looking like "cards inside cards" */-->
+<!--        .explore-panel .module-card {-->
+<!--            box-shadow: none;-->
+<!--            border: 1px solid #eef0f3;-->
+<!--        }-->
+
+<!--        .explore-panel .module-card:hover {-->
+<!--            box-shadow: 0 6px 16px rgba(0,0,0,0.1);-->
+<!--        }-->
+
+<!--        /* &#45;&#45;&#45;&#45; Unified "Explore the Database" panel: main cards + capability strip &#45;&#45;&#45;&#45; */-->
+<!--        .explore-panel {-->
+<!--            background: rgba(255,255,255,0.97);-->
+<!--            border-radius: 18px;-->
+<!--            padding: 32px;-->
+<!--            box-shadow: 0 8px 25px rgba(0,0,0,0.18);-->
+<!--        }-->
+
+<!--        .explore-panel .module-grid {-->
+<!--            margin-bottom: 0;-->
+<!--        }-->
+
+<!--        .capability-divider {-->
+<!--            display: flex;-->
+<!--            align-items: center;-->
+<!--            text-align: center;-->
+<!--            margin: 30px 0 22px;-->
+<!--            color: #8a97a8;-->
+<!--            font-size: 0.8rem;-->
+<!--            font-weight: 600;-->
+<!--            letter-spacing: 0.5px;-->
+<!--            text-transform: uppercase;-->
+<!--        }-->
+
+<!--        .capability-divider::before,-->
+<!--        .capability-divider::after {-->
+<!--            content: "";-->
+<!--            flex: 1;-->
+<!--            border-bottom: 1px solid #e2e6ea;-->
+<!--        }-->
+
+<!--        .capability-divider span {-->
+<!--            padding: 0 16px;-->
+<!--        }-->
+
+<!--        .capability-row {-->
+<!--            display: grid;-->
+<!--            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));-->
+<!--            gap: 16px;-->
+<!--        }-->
+
+<!--        .capability-item {-->
+<!--            display: flex;-->
+<!--            align-items: flex-start;-->
+<!--            gap: 12px;-->
+<!--            background: var(&#45;&#45;light-bg);-->
+<!--            border-radius: 10px;-->
+<!--            padding: 14px 16px;-->
+<!--        }-->
+
+<!--        .capability-item i {-->
+<!--            font-size: 1.2rem;-->
+<!--            color: var(&#45;&#45;accent-color);-->
+<!--            margin-top: 2px;-->
+<!--            flex-shrink: 0;-->
+<!--        }-->
+
+<!--        .capability-item h4 {-->
+<!--            margin: 0 0 3px;-->
+<!--            font-size: 0.92rem;-->
+<!--            color: var(&#45;&#45;secondary-color);-->
+<!--        }-->
+
+<!--        .capability-item p {-->
+<!--            margin: 0;-->
+<!--            font-size: 0.8rem;-->
+<!--            color: #777;-->
+<!--            line-height: 1.4;-->
+<!--        }-->
+
+<!--        .floating-box {-->
+<!--            position: fixed;-->
+<!--            bottom: 30px;-->
+<!--            right: 30px;-->
+<!--            background: rgba(255,255,255,0.97);-->
+<!--            padding: 20px;-->
+<!--            border-radius: 14px;-->
+<!--            box-shadow: 0 5px 20px rgba(0,0,0,0.25);-->
+<!--            width: 300px;-->
+<!--            z-index: 1000;-->
+<!--            border-left: 4px solid var(&#45;&#45;accent-color);-->
+<!--        }-->
+
+<!--        .floating-box h3 {-->
+<!--            margin-top: 0;-->
+<!--            color: var(&#45;&#45;secondary-color);-->
+<!--            font-size: 1.05rem;-->
+<!--        }-->
+
+<!--        .floating-box p {-->
+<!--            font-size: 0.88rem;-->
+<!--            color: #555;-->
+<!--            line-height: 1.5;-->
+<!--        }-->
+
+<!--        .close-btn {-->
+<!--            position: absolute;-->
+<!--            top: 10px;-->
+<!--            right: 14px;-->
+<!--            cursor: pointer;-->
+<!--            color: #999;-->
+<!--            font-size: 1.1rem;-->
+<!--        }-->
+
+<!--        footer {-->
+<!--            text-align: center;-->
+<!--            padding: 22px;-->
+<!--            background: linear-gradient(135deg, var(&#45;&#45;secondary-color), var(&#45;&#45;primary-color));-->
+<!--            color: #fff;-->
+<!--            margin-top: 50px;-->
+<!--            font-size: 0.85rem;-->
+<!--        }-->
+
+<!--        footer p {-->
+<!--            margin: 4px 0;-->
+<!--            opacity: 0.9;-->
+<!--        }-->
+
+<!--        @media (max-width: 768px) {-->
+<!--            .protein-select-box {-->
+<!--                position: static;-->
+<!--                justify-content: center;-->
+<!--                margin-top: 15px;-->
+<!--            }-->
+<!--            nav a {-->
+<!--                margin: 3px 5px;-->
+<!--                font-size: 0.85rem;-->
+<!--            }-->
+<!--        }-->
+<!--    </style>-->
+<!--</head>-->
+<!--<body>-->
+
+<!--<header>-->
+<!--    <div class="protein-select-box">-->
+<!--        <span>Target:</span>-->
+<!--        <select name="proteins" id="proteins" onchange="if(this.value) location.href=this.value;">-->
+<!--            <option value="">Select a target protein</option>-->
+<!--            <option value="index?desease=Alzheimer%E2%80%99s%20disease">Aβ</option>-->
+<!--            <option value="index?desease=Parkinson%E2%80%99s%20disease">α-Synuclein</option>-->
+<!--            <option value="index?desease=Huntington%E2%80%99s%20disease">HHuntingtin</option>-->
+<!--            <option value="index?desease=Tau%20protein">Tau</option>-->
+<!--        </select>-->
+<!--    </div>-->
+<!--    <h1>Amyloid Binding Compounds Database</h1>-->
+<!--    <p class="subtitle">A curated resource of small molecules that bind and inhibit amyloid aggregation (ABCDDB)</p>-->
+<!--</header>-->
+
+<!--<nav>-->
+<!--    <a href="index2"><i class="fas fa-database"></i> Browsing</a>-->
+<!--    <a href="Rank.html"><i class="fas fa-list-ol"></i> Rank</a>-->
+<!--    <a href="cmd.html"><i class="fas fa-flask"></i> Online Docking</a>-->
+<!--    <a href="molcule.html"><i class="fas fa-calculator"></i> Descriptors</a>-->
+<!--    <a href="model.html"><i class="fas fa-chart-line"></i> Prediction</a>-->
+<!--    <a href="#"><i class="fas fa-video"></i> Video</a>-->
+<!--    <a href="DockingDownload.html"><i class="fas fa-download"></i> Download</a>-->
+<!--</nav>-->
+
+<!--<div class="intro">-->
+<!--    <h2>Welcome to the Amyloid Binding Compounds Database</h2>-->
+<!--    <p class="description">-->
+<!--        Based on multi-target screening results, a database of small molecules that inhibit amyloid aggregation has been constructed. This database not only provides extensive information on relevant small molecules but also integrates online docking, online molecular descriptor computation, and online prediction of small molecule activity. It serves as an important reference for further analysis of the mechanisms by which small molecules inhibit amyloid aggregation and for subsequent screening efforts.-->
+<!--    </p>-->
+<!--    <p class="highlights">✔ 3D structure visualization &nbsp; ✔ Binding affinity data &nbsp; ✔ Dynamic interaction analysis &nbsp; ✔ Multi-target comparison</p>-->
+<!--</div>-->
+
+<!--&lt;!&ndash; ==== Group 1: browse/rank data already in the database ==== &ndash;&gt;-->
+<!--<div class="module-section explore">-->
+<!--    <div class="module-section-header">-->
+<!--        <h2>Explore the Database</h2>-->
+<!--        <p>Browse and rank the known compounds already curated in ABCDDB</p>-->
+<!--    </div>-->
+<!--    <div class="explore-panel">-->
+<!--        <div class="module-grid">-->
+<!--            <a class="module-card" href="index2">-->
+<!--                <div class="module-icon"><i class="fas fa-database"></i></div>-->
+<!--                <h3>Browsing</h3>-->
+<!--                <p>Search and browse the full catalog of curated small molecules and their target proteins.</p>-->
+<!--            </a>-->
+<!--            <a class="module-card" href="Rank.html">-->
+<!--                <div class="module-icon"><i class="fas fa-list-ol"></i></div>-->
+<!--                <h3>Ranking</h3>-->
+<!--                <p>View compounds ranked by binding affinity for each target protein.</p>-->
+<!--            </a>-->
+<!--        </div>-->
+
+<!--        <div class="capability-divider"><span>Explore Capabilities</span></div>-->
+
+<!--        <div class="capability-row">-->
+<!--            <div class="capability-item">-->
+<!--                <i class="fas fa-search"></i>-->
+<!--                <div>-->
+<!--                    <h4>Multi-dimensional retrieval</h4>-->
+<!--                    <p>Combine name, inhibition parameter, molecular weight, and binding energy in one query.</p>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="capability-item">-->
+<!--                <i class="fas fa-cube"></i>-->
+<!--                <div>-->
+<!--                    <h4>Visual analysis</h4>-->
+<!--                    <p>3D molecular structure viewer with dynamic simulation of binding sites.</p>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="capability-item">-->
+<!--                <i class="fas fa-file-export"></i>-->
+<!--                <div>-->
+<!--                    <h4>Data export</h4>-->
+<!--                    <p>Export in CSV format with complete metadata download.</p>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+
+<!--&lt;!&ndash; ==== Group 2: run computation/prediction on new, unknown molecules ==== &ndash;&gt;-->
+<!--<div class="module-section predict">-->
+<!--    <div class="module-section-header">-->
+<!--        <h2>Predict for New Molecules</h2>-->
+<!--        <p>Submit your own compounds for docking, descriptor calculation, and activity prediction</p>-->
+<!--    </div>-->
+<!--    <div class="explore-panel">-->
+<!--        <div class="module-grid">-->
+<!--            <a class="module-card" href="cmd.html">-->
+<!--                <div class="module-icon"><i class="fas fa-flask"></i></div>-->
+<!--                <h3>Online Docking</h3>-->
+<!--                <p>Upload a ligand and run molecular docking against any of the 16 supported target structures.</p>-->
+<!--            </a>-->
+<!--            <a class="module-card" href="molcule.html">-->
+<!--                <div class="module-icon"><i class="fas fa-calculator"></i></div>-->
+<!--                <h3>Descriptors</h3>-->
+<!--                <p>Compute molecular descriptors for your compound directly in the browser.</p>-->
+<!--            </a>-->
+<!--            <a class="module-card" href="model.html">-->
+<!--                <div class="module-icon"><i class="fas fa-chart-line"></i></div>-->
+<!--                <h3>Prediction</h3>-->
+<!--                <p>Predict binding activity against the target panel using our trained models.</p>-->
+<!--            </a>-->
+<!--        </div>-->
+
+<!--        <div class="capability-divider"><span>Prediction Capabilities</span></div>-->
+
+<!--        <div class="capability-row">-->
+<!--            <div class="capability-item">-->
+<!--                <i class="fas fa-layer-group"></i>-->
+<!--                <div>-->
+<!--                    <h4>Batch Ligand Submission</h4>-->
+<!--                    <p>Upload multiple ligands and dock them against any of the 16 target structures in one run.</p>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="capability-item">-->
+<!--                <i class="fas fa-robot"></i>-->
+<!--                <div>-->
+<!--                    <h4>SMILES-Based Calculation</h4>-->
+<!--                    <p>Enter a compound's SMILES string to compute its molecular descriptors instantly.</p>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="capability-item">-->
+<!--                <i class="fas fa-brain"></i>-->
+<!--                <div>-->
+<!--                    <h4>Model-Driven Predictions</h4>-->
+<!--                    <p>Activity prediction are powered by trained computational models.</p>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+
+<!--<div class="floating-box">-->
+<!--    <span class="close-btn" onclick="this.parentElement.style.display='none'">&times;</span>-->
+<!--    <h3><i class="fas fa-bullhorn"></i> Latest update</h3>-->
+<!--    <p>-->
+<!--        New target protein datasets added!<br>-->
+<!--        New features:<br>-->
+<!--        - Molecular docking prediction module<br>-->
+<!--        - 3D detail viewer for target–ligand complexes<br>-->
+<!--        - Docking result quick links<br>-->
+<!--        - One-click model prediction-->
+<!--    </p>-->
+<!--</div>-->
+
+<!--<footer>-->
+<!--    <p>&copy; 2026 Amyloid Binding Compounds Database (ABCDDB). All rights reserved.</p>-->
+<!--    <p>Terms of Service</p>-->
+<!--</footer>-->
+
+<!--</body>-->
+<!--</html>-->
+
+<!--2.0-->
+<!--8月1号再修改，3.0版本-->
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>Amyloid Binding Compounds Database (ABCDDB)</title>-->
+<!--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">-->
+<!--    <style>-->
+<!--        :root {-->
+<!--            &#45;&#45;primary-color: #2a5298;-->
+<!--            &#45;&#45;secondary-color: #1e3c72;-->
+<!--            &#45;&#45;accent-color: #00bcd4;-->
+<!--            &#45;&#45;light-bg: #f8f9fa;-->
+<!--        }-->
+
+<!--        * {-->
+<!--            box-sizing: border-box;-->
+<!--        }-->
+
+<!--        body {-->
+<!--            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;-->
+<!--            margin: 0;-->
+<!--            padding: 0;-->
+<!--            background:-->
+<!--                    linear-gradient(rgba(30, 60, 114, 0.88), rgba(42, 82, 152, 0.88)),-->
+<!--                    url('https://upload.wikimedia.org/wikipedia/commons/3/37/Protein_Structure.png');-->
+<!--            background-size: cover;-->
+<!--            background-attachment: fixed;-->
+<!--            color: #222;-->
+<!--        }-->
+
+<!--        header {-->
+<!--            background: linear-gradient(135deg, var(&#45;&#45;secondary-color), var(&#45;&#45;primary-color));-->
+<!--            color: #fff;-->
+<!--            padding: 30px 20px;-->
+<!--            text-align: center;-->
+<!--            box-shadow: 0 2px 15px rgba(0,0,0,0.25);-->
+<!--            position: relative;-->
+<!--        }-->
+
+<!--        header h1 {-->
+<!--            margin: 0;-->
+<!--            font-size: 2.4rem;-->
+<!--            letter-spacing: 0.5px;-->
+<!--        }-->
+
+<!--        header .subtitle {-->
+<!--            margin: 8px 0 0;-->
+<!--            font-size: 1rem;-->
+<!--            opacity: 0.9;-->
+<!--        }-->
+
+<!--        .protein-select-box {-->
+<!--            position: absolute;-->
+<!--            top: 20px;-->
+<!--            right: 20px;-->
+<!--            display: flex;-->
+<!--            align-items: center;-->
+<!--            gap: 10px;-->
+<!--        }-->
+
+<!--        .protein-select-box span {-->
+<!--            color: #fff;-->
+<!--            font-size: 1rem;-->
+<!--            font-weight: 600;-->
+<!--            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);-->
+<!--        }-->
+
+<!--        .protein-select-box select {-->
+<!--            padding: 10px 14px;-->
+<!--            font-size: 0.95rem;-->
+<!--            border: 2px solid rgba(255,255,255,0.8);-->
+<!--            border-radius: 6px;-->
+<!--            background-color: rgba(255,255,255,0.12);-->
+<!--            color: #fff;-->
+<!--            cursor: pointer;-->
+<!--            outline: none;-->
+<!--        }-->
+
+<!--        .protein-select-box select option {-->
+<!--            color: #222;-->
+<!--        }-->
+
+<!--        nav {-->
+<!--            display: flex;-->
+<!--            justify-content: center;-->
+<!--            flex-wrap: wrap;-->
+<!--            gap: 5px;-->
+<!--            background-color: rgba(255,255,255,0.97);-->
+<!--            padding: 12px 15px;-->
+<!--            box-shadow: 0 2px 8px rgba(0,0,0,0.12);-->
+<!--        }-->
+
+<!--        nav a, nav button.nav-btn {-->
+<!--            color: var(&#45;&#45;primary-color);-->
+<!--            text-decoration: none;-->
+<!--            margin: 4px 8px;-->
+<!--            padding: 8px 14px;-->
+<!--            font-weight: 600;-->
+<!--            border-radius: 6px;-->
+<!--            transition: all 0.25s;-->
+<!--            display: inline-flex;-->
+<!--            align-items: center;-->
+<!--            gap: 6px;-->
+<!--            background: none;-->
+<!--            border: none;-->
+<!--            font-size: 1rem;-->
+<!--            font-family: inherit;-->
+<!--            cursor: pointer;-->
+<!--        }-->
+
+<!--        nav a:hover, nav button.nav-btn:hover {-->
+<!--            background: var(&#45;&#45;primary-color);-->
+<!--            color: #fff;-->
+<!--        }-->
+
+<!--        .intro {-->
+<!--            text-align: center;-->
+<!--            padding: 35px 40px;-->
+<!--            background: rgba(255,255,255,0.97);-->
+<!--            margin: 30px auto;-->
+<!--            width: 82%;-->
+<!--            max-width: 1000px;-->
+<!--            border-radius: 16px;-->
+<!--            box-shadow: 0 5px 20px rgba(0,0,0,0.15);-->
+<!--        }-->
+
+<!--        .intro h2 {-->
+<!--            color: var(&#45;&#45;primary-color);-->
+<!--            margin-top: 0;-->
+<!--        }-->
+
+<!--        .intro p.description {-->
+<!--            text-align: left;-->
+<!--            text-indent: 2em;-->
+<!--            line-height: 1.7;-->
+<!--            color: #444;-->
+<!--        }-->
+
+<!--        .intro p.highlights {-->
+<!--            color: var(&#45;&#45;secondary-color);-->
+<!--            font-weight: 600;-->
+<!--            margin-top: 20px;-->
+<!--        }-->
+
+<!--        /* &#45;&#45;&#45;&#45; Two grouped module sections &#45;&#45;&#45;&#45; */-->
+<!--        .module-section {-->
+<!--            width: 85%;-->
+<!--            max-width: 1100px;-->
+<!--            margin: 40px auto;-->
+<!--        }-->
+
+<!--        .module-section-header {-->
+<!--            text-align: center;-->
+<!--            margin-bottom: 25px;-->
+<!--        }-->
+
+<!--        .module-section-header h2 {-->
+<!--            color: #fff;-->
+<!--            font-size: 1.7rem;-->
+<!--            margin: 0 0 6px;-->
+<!--            text-shadow: 0 2px 6px rgba(0,0,0,0.3);-->
+<!--        }-->
+
+<!--        .module-section-header p {-->
+<!--            color: rgba(255,255,255,0.9);-->
+<!--            margin: 0;-->
+<!--            font-size: 0.95rem;-->
+<!--        }-->
+
+<!--        .module-grid {-->
+<!--            display: grid;-->
+<!--            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));-->
+<!--            gap: 22px;-->
+<!--        }-->
+
+<!--        .module-card {-->
+<!--            background: rgba(255,255,255,0.97);-->
+<!--            border-radius: 14px;-->
+<!--            padding: 28px 22px;-->
+<!--            text-align: center;-->
+<!--            box-shadow: 0 5px 18px rgba(0,0,0,0.15);-->
+<!--            border-top: 4px solid var(&#45;&#45;accent-color);-->
+<!--            transition: transform 0.25s, box-shadow 0.25s;-->
+<!--            text-decoration: none;-->
+<!--            display: block;-->
+<!--            color: inherit;-->
+<!--        }-->
+
+<!--        .module-card:hover {-->
+<!--            transform: translateY(-6px);-->
+<!--            box-shadow: 0 10px 25px rgba(0,0,0,0.2);-->
+<!--        }-->
+
+<!--        .module-card .module-icon {-->
+<!--            font-size: 2.6rem;-->
+<!--            color: var(&#45;&#45;primary-color);-->
+<!--            margin-bottom: 14px;-->
+<!--        }-->
+
+<!--        .module-card h3 {-->
+<!--            color: var(&#45;&#45;secondary-color);-->
+<!--            margin: 0 0 10px;-->
+<!--            font-size: 1.15rem;-->
+<!--        }-->
+
+<!--        .module-card p {-->
+<!--            color: #666;-->
+<!--            font-size: 0.88rem;-->
+<!--            line-height: 1.5;-->
+<!--            margin: 0;-->
+<!--        }-->
+
+<!--        /* Distinguish the two groups with a subtle badge color */-->
+<!--        .module-section.explore .module-card {-->
+<!--            border-top-color: #00bcd4;-->
+<!--        }-->
+
+<!--        .module-section.predict .module-card {-->
+<!--            border-top-color: #2a5298;-->
+<!--        }-->
+
+<!--        /* Cards nested inside the unified explore-panel don't need their own drop shadow-->
+<!--           (the panel itself already has one) — keeps it from looking like "cards inside cards" */-->
+<!--        .explore-panel .module-card {-->
+<!--            box-shadow: none;-->
+<!--            border: 1px solid #eef0f3;-->
+<!--        }-->
+
+<!--        .explore-panel .module-card:hover {-->
+<!--            box-shadow: 0 6px 16px rgba(0,0,0,0.1);-->
+<!--        }-->
+
+<!--        /* &#45;&#45;&#45;&#45; Unified "Explore the Database" panel: main cards + capability strip &#45;&#45;&#45;&#45; */-->
+<!--        .explore-panel {-->
+<!--            background: rgba(255,255,255,0.97);-->
+<!--            border-radius: 18px;-->
+<!--            padding: 32px;-->
+<!--            box-shadow: 0 8px 25px rgba(0,0,0,0.18);-->
+<!--        }-->
+
+<!--        .explore-panel .module-grid {-->
+<!--            margin-bottom: 0;-->
+<!--        }-->
+
+<!--        .capability-divider {-->
+<!--            display: flex;-->
+<!--            align-items: center;-->
+<!--            text-align: center;-->
+<!--            margin: 30px 0 22px;-->
+<!--            color: #8a97a8;-->
+<!--            font-size: 0.8rem;-->
+<!--            font-weight: 600;-->
+<!--            letter-spacing: 0.5px;-->
+<!--            text-transform: uppercase;-->
+<!--        }-->
+
+<!--        .capability-divider::before,-->
+<!--        .capability-divider::after {-->
+<!--            content: "";-->
+<!--            flex: 1;-->
+<!--            border-bottom: 1px solid #e2e6ea;-->
+<!--        }-->
+
+<!--        .capability-divider span {-->
+<!--            padding: 0 16px;-->
+<!--        }-->
+
+<!--        .capability-row {-->
+<!--            display: grid;-->
+<!--            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));-->
+<!--            gap: 16px;-->
+<!--        }-->
+
+<!--        .capability-item {-->
+<!--            display: flex;-->
+<!--            align-items: flex-start;-->
+<!--            gap: 12px;-->
+<!--            background: var(&#45;&#45;light-bg);-->
+<!--            border-radius: 10px;-->
+<!--            padding: 14px 16px;-->
+<!--        }-->
+
+<!--        .capability-item i {-->
+<!--            font-size: 1.2rem;-->
+<!--            color: var(&#45;&#45;accent-color);-->
+<!--            margin-top: 2px;-->
+<!--            flex-shrink: 0;-->
+<!--        }-->
+
+<!--        .capability-item h4 {-->
+<!--            margin: 0 0 3px;-->
+<!--            font-size: 0.92rem;-->
+<!--            color: var(&#45;&#45;secondary-color);-->
+<!--        }-->
+
+<!--        .capability-item p {-->
+<!--            margin: 0;-->
+<!--            font-size: 0.8rem;-->
+<!--            color: #777;-->
+<!--            line-height: 1.4;-->
+<!--        }-->
+
+<!--        .floating-box {-->
+<!--            position: fixed;-->
+<!--            bottom: 30px;-->
+<!--            right: 30px;-->
+<!--            background: rgba(255,255,255,0.97);-->
+<!--            padding: 20px;-->
+<!--            border-radius: 14px;-->
+<!--            box-shadow: 0 5px 20px rgba(0,0,0,0.25);-->
+<!--            width: 300px;-->
+<!--            z-index: 1000;-->
+<!--            border-left: 4px solid var(&#45;&#45;accent-color);-->
+<!--        }-->
+
+<!--        .floating-box h3 {-->
+<!--            margin-top: 0;-->
+<!--            color: var(&#45;&#45;secondary-color);-->
+<!--            font-size: 1.05rem;-->
+<!--        }-->
+
+<!--        .floating-box p {-->
+<!--            font-size: 0.88rem;-->
+<!--            color: #555;-->
+<!--            line-height: 1.5;-->
+<!--        }-->
+
+<!--        .close-btn {-->
+<!--            position: absolute;-->
+<!--            top: 10px;-->
+<!--            right: 14px;-->
+<!--            cursor: pointer;-->
+<!--            color: #999;-->
+<!--            font-size: 1.1rem;-->
+<!--        }-->
+
+<!--        footer {-->
+<!--            text-align: center;-->
+<!--            padding: 22px;-->
+<!--            background: linear-gradient(135deg, var(&#45;&#45;secondary-color), var(&#45;&#45;primary-color));-->
+<!--            color: #fff;-->
+<!--            margin-top: 50px;-->
+<!--            font-size: 0.85rem;-->
+<!--        }-->
+
+<!--        footer p {-->
+<!--            margin: 4px 0;-->
+<!--            opacity: 0.9;-->
+<!--        }-->
+
+<!--        /* &#45;&#45;&#45;&#45; Video modal &#45;&#45;&#45;&#45; */-->
+<!--        .video-modal-overlay {-->
+<!--            display: none;-->
+<!--            position: fixed;-->
+<!--            top: 0; left: 0; right: 0; bottom: 0;-->
+<!--            background: rgba(0, 0, 0, 0.75);-->
+<!--            z-index: 2000;-->
+<!--            align-items: center;-->
+<!--            justify-content: center;-->
+<!--        }-->
+
+<!--        .video-modal-overlay.open {-->
+<!--            display: flex;-->
+<!--        }-->
+
+<!--        .video-modal-box {-->
+<!--            position: relative;-->
+<!--            width: 90%;-->
+<!--            max-width: 900px;-->
+<!--            background: #000;-->
+<!--            border-radius: 10px;-->
+<!--            overflow: hidden;-->
+<!--            box-shadow: 0 10px 40px rgba(0,0,0,0.5);-->
+<!--        }-->
+
+<!--        .video-modal-box video {-->
+<!--            width: 100%;-->
+<!--            display: block;-->
+<!--            max-height: 80vh;-->
+<!--        }-->
+
+<!--        .video-modal-close {-->
+<!--            position: absolute;-->
+<!--            top: -40px;-->
+<!--            right: 0;-->
+<!--            background: rgba(255,255,255,0.15);-->
+<!--            color: #fff;-->
+<!--            border: none;-->
+<!--            border-radius: 50%;-->
+<!--            width: 34px;-->
+<!--            height: 34px;-->
+<!--            font-size: 1.2rem;-->
+<!--            cursor: pointer;-->
+<!--            display: flex;-->
+<!--            align-items: center;-->
+<!--            justify-content: center;-->
+<!--        }-->
+
+<!--        .video-modal-close:hover {-->
+<!--            background: rgba(255,255,255,0.3);-->
+<!--        }-->
+
+<!--        @media (max-width: 768px) {-->
+<!--            .protein-select-box {-->
+<!--                position: static;-->
+<!--                justify-content: center;-->
+<!--                margin-top: 15px;-->
+<!--            }-->
+<!--            nav a, nav button.nav-btn {-->
+<!--                margin: 3px 5px;-->
+<!--                font-size: 0.85rem;-->
+<!--            }-->
+<!--        }-->
+<!--    </style>-->
+<!--</head>-->
+<!--<body>-->
+
+<!--<header>-->
+<!--    <div class="protein-select-box">-->
+<!--        <span>Target:</span>-->
+<!--        <select name="proteins" id="proteins" onchange="if(this.value) location.href=this.value;">-->
+<!--            <option value="">Select a target protein</option>-->
+<!--            <option value="index?desease=Alzheimer%E2%80%99s%20disease">Aβ</option>-->
+<!--            <option value="index?desease=Parkinson%E2%80%99s%20disease">α-Synuclein</option>-->
+<!--            <option value="index?desease=Huntington%E2%80%99s%20disease">Huntingtin</option>-->
+<!--            <option value="index?desease=Tau%20protein">Tau</option>-->
+<!--        </select>-->
+<!--    </div>-->
+<!--    <h1>Amyloid Binding Compounds Database</h1>-->
+<!--    <p class="subtitle">A curated resource of small molecules that bind and inhibit amyloid aggregation (ABCDDB)</p>-->
+<!--</header>-->
+
+<!--<nav>-->
+<!--    <a href="index2"><i class="fas fa-database"></i> Browsing</a>-->
+<!--    <a href="Rank.html"><i class="fas fa-list-ol"></i> Rank</a>-->
+<!--    <a href="cmd.html"><i class="fas fa-flask"></i> Online Docking</a>-->
+<!--    <a href="molcule.html"><i class="fas fa-calculator"></i> Descriptors</a>-->
+<!--    <a href="model.html"><i class="fas fa-chart-line"></i> Prediction</a>-->
+<!--    <button type="button" class="nav-btn" onclick="openVideoModal()"><i class="fas fa-video"></i> Video</button>-->
+<!--    <a href="downloadAllData.jsp"><i class="fas fa-download"></i> Download</a>-->
+<!--</nav>-->
+
+<!--<div class="intro">-->
+<!--    <h2>Welcome to the Amyloid Binding Compounds Database</h2>-->
+<!--    <p class="description">-->
+<!--        Based on multi-target screening results, a database of small molecules that inhibit amyloid aggregation has been constructed. This database not only provides extensive information on relevant small molecules but also integrates online docking, online molecular descriptor computation, and online prediction of small molecule activity. It serves as an important reference for further analysis of the mechanisms by which small molecules inhibit amyloid aggregation and for subsequent screening efforts.-->
+<!--    </p>-->
+<!--    <p class="highlights">✔ 3D structure visualization &nbsp; ✔ Binding affinity data &nbsp; ✔ Dynamic interaction analysis &nbsp; ✔ Multi-target comparison</p>-->
+<!--</div>-->
+
+<!--&lt;!&ndash; ==== Group 1: browse/rank data already in the database ==== &ndash;&gt;-->
+<!--<div class="module-section explore">-->
+<!--    <div class="module-section-header">-->
+<!--        <h2>Explore the Database</h2>-->
+<!--        <p>Browse and rank the known compounds already curated in ABCDDB</p>-->
+<!--    </div>-->
+<!--    <div class="explore-panel">-->
+<!--        <div class="module-grid">-->
+<!--            <a class="module-card" href="index2">-->
+<!--                <div class="module-icon"><i class="fas fa-database"></i></div>-->
+<!--                <h3>Browsing</h3>-->
+<!--                <p>Search and browse the full catalog of curated small molecules and their target proteins.</p>-->
+<!--            </a>-->
+<!--            <a class="module-card" href="Rank.html">-->
+<!--                <div class="module-icon"><i class="fas fa-list-ol"></i></div>-->
+<!--                <h3>Ranking</h3>-->
+<!--                <p>View compounds ranked by binding affinity for each target protein.</p>-->
+<!--            </a>-->
+<!--        </div>-->
+
+<!--        <div class="capability-divider"><span>Explore Capabilities</span></div>-->
+
+<!--        <div class="capability-row">-->
+<!--            <div class="capability-item">-->
+<!--                <i class="fas fa-search"></i>-->
+<!--                <div>-->
+<!--                    <h4>Multi-dimensional retrieval</h4>-->
+<!--                    <p>Combine name, inhibition parameter, molecular weight, and binding energy in one query.</p>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="capability-item">-->
+<!--                <i class="fas fa-cube"></i>-->
+<!--                <div>-->
+<!--                    <h4>Visual analysis</h4>-->
+<!--                    <p>3D molecular structure viewer with dynamic simulation of binding sites.</p>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="capability-item">-->
+<!--                <i class="fas fa-file-export"></i>-->
+<!--                <div>-->
+<!--                    <h4>Data export</h4>-->
+<!--                    <p>Export in CSV format with complete metadata download.</p>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+
+<!--&lt;!&ndash; ==== Group 2: run computation/prediction on new, unknown molecules ==== &ndash;&gt;-->
+<!--<div class="module-section predict">-->
+<!--    <div class="module-section-header">-->
+<!--        <h2>Predict for New Molecules</h2>-->
+<!--        <p>Submit your own compounds for docking, descriptor calculation, and activity prediction</p>-->
+<!--    </div>-->
+<!--    <div class="explore-panel">-->
+<!--        <div class="module-grid">-->
+<!--            <a class="module-card" href="cmd.html">-->
+<!--                <div class="module-icon"><i class="fas fa-flask"></i></div>-->
+<!--                <h3>Online Docking</h3>-->
+<!--                <p>Upload a ligand and run molecular docking against any of the 16 supported target structures.</p>-->
+<!--            </a>-->
+<!--            <a class="module-card" href="molcule.html">-->
+<!--                <div class="module-icon"><i class="fas fa-calculator"></i></div>-->
+<!--                <h3>Descriptors</h3>-->
+<!--                <p>Compute molecular descriptors for your compound directly in the browser.</p>-->
+<!--            </a>-->
+<!--            <a class="module-card" href="model.html">-->
+<!--                <div class="module-icon"><i class="fas fa-chart-line"></i></div>-->
+<!--                <h3>Prediction</h3>-->
+<!--                <p>Predict binding activity against the target panel using our trained models.</p>-->
+<!--            </a>-->
+<!--        </div>-->
+
+<!--        <div class="capability-divider"><span>Prediction Capabilities</span></div>-->
+
+<!--        <div class="capability-row">-->
+<!--            <div class="capability-item">-->
+<!--                <i class="fas fa-layer-group"></i>-->
+<!--                <div>-->
+<!--                    <h4>Batch Ligand Submission</h4>-->
+<!--                    <p>Upload multiple ligands and dock them against any of the 16 target structures in one run.</p>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="capability-item">-->
+<!--                <i class="fas fa-robot"></i>-->
+<!--                <div>-->
+<!--                    <h4>SMILES-Based Calculation</h4>-->
+<!--                    <p>Enter a compound's SMILES string to compute its molecular descriptors instantly.</p>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="capability-item">-->
+<!--                <i class="fas fa-brain"></i>-->
+<!--                <div>-->
+<!--                    <h4>Model-Driven Predictions</h4>-->
+<!--                    <p>Activity prediction are powered by trained computational models.</p>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+
+<!--<div class="floating-box">-->
+<!--    <span class="close-btn" onclick="this.parentElement.style.display='none'">&times;</span>-->
+<!--    <h3><i class="fas fa-bullhorn"></i> Latest update</h3>-->
+<!--    <p>-->
+<!--        New target protein datasets added!<br>-->
+<!--        New features:<br>-->
+<!--        - Molecular docking prediction module<br>-->
+<!--        - 3D detail viewer for target–ligand complexes<br>-->
+<!--        - Docking result quick links<br>-->
+<!--        - One-click model prediction-->
+<!--    </p>-->
+<!--</div>-->
+
+<!--<footer>-->
+<!--    <p>&copy; 2026 Amyloid Binding Compounds Database (ABCDDB). All rights reserved.</p>-->
+<!--    <p>Terms of Service</p>-->
+<!--</footer>-->
+
+<!--&lt;!&ndash; Video modal: plays E:\DataBase\WebSrever\MV\1.mp4, streamed through /video (VideoServlet.java) &ndash;&gt;-->
+<!--<div class="video-modal-overlay" id="videoModalOverlay">-->
+<!--    <div class="video-modal-box">-->
+<!--        <button type="button" class="video-modal-close" onclick="closeVideoModal()">&times;</button>-->
+<!--        <video id="modalVideo" controls>-->
+<!--            <source src="video" type="video/mp4">-->
+<!--            Your browser does not support the video tag.-->
+<!--        </video>-->
+<!--    </div>-->
+<!--</div>-->
+
+<!--<script>-->
+<!--    function openVideoModal() {-->
+<!--        const overlay = document.getElementById('videoModalOverlay');-->
+<!--        const video = document.getElementById('modalVideo');-->
+<!--        overlay.classList.add('open');-->
+<!--        video.play();-->
+<!--    }-->
+
+<!--    function closeVideoModal() {-->
+<!--        const overlay = document.getElementById('videoModalOverlay');-->
+<!--        const video = document.getElementById('modalVideo');-->
+<!--        video.pause();-->
+<!--        video.currentTime = 0;-->
+<!--        overlay.classList.remove('open');-->
+<!--    }-->
+
+<!--    // Clicking the dark overlay (outside the video box) also closes the modal-->
+<!--    document.getElementById('videoModalOverlay').addEventListener('click', function(e) {-->
+<!--        if (e.target === this) {-->
+<!--            closeVideoModal();-->
+<!--        }-->
+<!--    });-->
+<!--</script>-->
+
+<!--</body>-->
+<!--</html>-->
+
+<!--8月1号再修改，3.0版本-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amyloid Binding Compounds Database (ABCDDB)</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2a5298;
+            --secondary-color: #1e3c72;
+            --accent-color: #00bcd4;
+            --light-bg: #f8f9fa;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background:
+                    linear-gradient(rgba(30, 60, 114, 0.88), rgba(42, 82, 152, 0.88)),
+                    url('https://upload.wikimedia.org/wikipedia/commons/3/37/Protein_Structure.png');
+            background-size: cover;
+            background-attachment: fixed;
+            color: #222;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+            color: #fff;
+            padding: 30px 20px;
+            text-align: center;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.25);
+            position: relative;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.4rem;
+            letter-spacing: 0.5px;
+        }
+
+        header .subtitle {
+            margin: 8px 0 0;
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .protein-select-box {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .protein-select-box span {
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 600;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+
+        .protein-select-box select {
+            padding: 10px 14px;
+            font-size: 0.95rem;
+            border: 2px solid rgba(255,255,255,0.8);
+            border-radius: 6px;
+            background-color: rgba(255,255,255,0.12);
+            color: #fff;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .protein-select-box select option {
+            color: #222;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 5px;
+            background-color: rgba(255,255,255,0.97);
+            padding: 12px 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+        }
+
+        nav a, nav button.nav-btn {
+            color: var(--primary-color);
+            text-decoration: none;
+            margin: 4px 8px;
+            padding: 8px 14px;
+            font-weight: 600;
+            border-radius: 6px;
+            transition: all 0.25s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: none;
+            border: none;
+            font-size: 1rem;
+            font-family: inherit;
+            cursor: pointer;
+        }
+
+        nav a:hover, nav button.nav-btn:hover {
+            background: var(--primary-color);
+            color: #fff;
+        }
+
+        .intro {
+            text-align: center;
+            padding: 35px 40px;
+            background: rgba(255,255,255,0.97);
+            margin: 30px auto;
+            width: 82%;
+            max-width: 1000px;
+            border-radius: 16px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+        }
+
+        .intro h2 {
+            color: var(--primary-color);
+            margin-top: 0;
+        }
+
+        .intro p.description {
+            text-align: left;
+            text-indent: 2em;
+            line-height: 1.7;
+            color: #444;
+        }
+
+        .intro p.highlights {
+            color: var(--secondary-color);
+            font-weight: 600;
+            margin-top: 20px;
+        }
+
+        /* ---- Two grouped module sections ---- */
+        .module-section {
+            width: 85%;
+            max-width: 1100px;
+            margin: 40px auto;
+        }
+
+        .module-section-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .module-section-header h2 {
+            color: #fff;
+            font-size: 1.7rem;
+            margin: 0 0 6px;
+            text-shadow: 0 2px 6px rgba(0,0,0,0.3);
+        }
+
+        .module-section-header p {
+            color: rgba(255,255,255,0.9);
+            margin: 0;
+            font-size: 0.95rem;
+        }
+
+        .module-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 22px;
+        }
+
+        .module-card {
+            background: rgba(255,255,255,0.97);
+            border-radius: 14px;
+            padding: 28px 22px;
+            text-align: center;
+            box-shadow: 0 5px 18px rgba(0,0,0,0.15);
+            border-top: 4px solid var(--accent-color);
+            transition: transform 0.25s, box-shadow 0.25s;
+            text-decoration: none;
+            display: block;
+            color: inherit;
+        }
+
+        .module-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .module-card .module-icon {
+            font-size: 2.6rem;
+            color: var(--primary-color);
+            margin-bottom: 14px;
+        }
+
+        .module-card h3 {
+            color: var(--secondary-color);
+            margin: 0 0 10px;
+            font-size: 1.15rem;
+        }
+
+        .module-card p {
+            color: #666;
+            font-size: 0.88rem;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        /* Distinguish the two groups with a subtle badge color */
+        .module-section.explore .module-card {
+            border-top-color: #00bcd4;
+        }
+
+        .module-section.predict .module-card {
+            border-top-color: #2a5298;
+        }
+
+        /* Cards nested inside the unified explore-panel don't need their own drop shadow
+           (the panel itself already has one) — keeps it from looking like "cards inside cards" */
+        .explore-panel .module-card {
+            box-shadow: none;
+            border: 1px solid #eef0f3;
+        }
+
+        .explore-panel .module-card:hover {
+            box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+        }
+
+        /* ---- Unified "Explore the Database" panel: main cards + capability strip ---- */
+        .explore-panel {
+            background: rgba(255,255,255,0.97);
+            border-radius: 18px;
+            padding: 32px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.18);
+        }
+
+        .explore-panel .module-grid {
+            margin-bottom: 0;
+        }
+
+        .capability-divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin: 30px 0 22px;
+            color: #8a97a8;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .capability-divider::before,
+        .capability-divider::after {
+            content: "";
+            flex: 1;
+            border-bottom: 1px solid #e2e6ea;
+        }
+
+        .capability-divider span {
+            padding: 0 16px;
+        }
+
+        .capability-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+        }
+
+        .capability-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            background: var(--light-bg);
+            border-radius: 10px;
+            padding: 14px 16px;
+        }
+
+        .capability-item i {
+            font-size: 1.2rem;
+            color: var(--accent-color);
+            margin-top: 2px;
+            flex-shrink: 0;
+        }
+
+        .capability-item h4 {
+            margin: 0 0 3px;
+            font-size: 0.92rem;
+            color: var(--secondary-color);
+        }
+
+        .capability-item p {
+            margin: 0;
+            font-size: 0.8rem;
+            color: #777;
+            line-height: 1.4;
+        }
+
+        .floating-box {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: rgba(255,255,255,0.97);
+            padding: 20px;
+            border-radius: 14px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.25);
+            width: 300px;
+            z-index: 1000;
+            border-left: 4px solid var(--accent-color);
+        }
+
+        .floating-box h3 {
+            margin-top: 0;
+            color: var(--secondary-color);
+            font-size: 1.05rem;
+        }
+
+        .floating-box p {
+            font-size: 0.88rem;
+            color: #555;
+            line-height: 1.5;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 14px;
+            cursor: pointer;
+            color: #999;
+            font-size: 1.1rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: 22px;
+            background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+            color: #fff;
+            margin-top: 50px;
+            font-size: 0.85rem;
+        }
+
+        footer p {
+            margin: 4px 0;
+            opacity: 0.9;
+        }
+
+        /* ---- Video modal ---- */
+        .video-modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.75);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .video-modal-overlay.open {
+            display: flex;
+        }
+
+        .video-modal-box {
+            position: relative;
+            width: 90%;
+            max-width: 900px;
+            background: #000;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+        }
+
+        .video-modal-box video {
+            width: 100%;
+            display: block;
+            max-height: 80vh;
+        }
+
+        .video-modal-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.55);
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 34px;
+            height: 34px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+        }
+
+        .video-modal-close:hover {
+            background: rgba(0, 0, 0, 0.8);
+        }
+
+        @media (max-width: 768px) {
+            .protein-select-box {
+                position: static;
+                justify-content: center;
+                margin-top: 15px;
+            }
+            nav a, nav button.nav-btn {
+                margin: 3px 5px;
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="protein-select-box">
+        <span>Target:</span>
+        <select name="proteins" id="proteins" onchange="if(this.value) location.href=this.value;">
+            <option value="">Select a target protein</option>
+            <option value="index?desease=Alzheimer%E2%80%99s%20disease">Aβ</option>
+            <option value="index?desease=Parkinson%E2%80%99s%20disease">α-Synuclein</option>
+            <option value="index?desease=Huntington%E2%80%99s%20disease">Huntingtin</option>
+            <option value="index?desease=Tau%20protein">Tau</option>
+        </select>
+    </div>
+    <h1>Amyloid Binding Compounds Database</h1>
+    <p class="subtitle">A curated resource of small molecules that bind and inhibit amyloid aggregation (ABCDDB)</p>
+</header>
+
+<nav>
+    <a href="index2"><i class="fas fa-database"></i> Browsing</a>
+    <a href="Rank.html"><i class="fas fa-list-ol"></i> Rank</a>
+    <a href="cmd.html"><i class="fas fa-flask"></i> Online Docking</a>
+    <a href="molcule.html"><i class="fas fa-calculator"></i> Descriptors</a>
+    <a href="model.html"><i class="fas fa-chart-line"></i> Prediction</a>
+    <button type="button" class="nav-btn" onclick="openVideoModal()"><i class="fas fa-video"></i> Video</button>
+    <a href="downloadAllData.jsp"><i class="fas fa-download"></i> Download</a>
+</nav>
+
+<div class="intro">
+    <h2>Welcome to the Amyloid Binding Compounds Database</h2>
+    <p class="description">
+        Based on multi-target screening results, a database of small molecules that inhibit amyloid aggregation has been constructed. This database not only provides extensive information on relevant small molecules but also integrates online docking, online molecular descriptor computation, and online prediction of small molecule activity. It serves as an important reference for further analysis of the mechanisms by which small molecules inhibit amyloid aggregation and for subsequent screening efforts.
+    </p>
+    <p class="highlights">✔ 3D structure visualization &nbsp; ✔ Binding affinity data &nbsp; ✔ Dynamic interaction analysis &nbsp; ✔ Multi-target comparison</p>
+</div>
+
+<!-- ==== Group 1: browse/rank data already in the database ==== -->
+<div class="module-section explore">
+    <div class="module-section-header">
+        <h2>Explore the Database</h2>
+        <p>Browse and rank the known compounds already curated in ABCDDB</p>
+    </div>
+    <div class="explore-panel">
+        <div class="module-grid">
+            <a class="module-card" href="index2">
+                <div class="module-icon"><i class="fas fa-database"></i></div>
+                <h3>Browsing</h3>
+                <p>Search and browse the full catalog of curated small molecules and their target proteins.</p>
+            </a>
+            <a class="module-card" href="Rank.html">
+                <div class="module-icon"><i class="fas fa-list-ol"></i></div>
+                <h3>Ranking</h3>
+                <p>View compounds ranked by binding affinity for each target protein.</p>
+            </a>
+        </div>
+
+        <div class="capability-divider"><span>Explore Capabilities</span></div>
+
+        <div class="capability-row">
+            <div class="capability-item">
+                <i class="fas fa-search"></i>
+                <div>
+                    <h4>Multi-dimensional retrieval</h4>
+                    <p>Combine name, inhibition parameter, molecular weight, and binding energy in one query.</p>
+                </div>
+            </div>
+            <div class="capability-item">
+                <i class="fas fa-cube"></i>
+                <div>
+                    <h4>Visual analysis</h4>
+                    <p>3D molecular structure viewer with dynamic simulation of binding sites.</p>
+                </div>
+            </div>
+            <div class="capability-item">
+                <i class="fas fa-file-export"></i>
+                <div>
+                    <h4>Data export</h4>
+                    <p>Export in CSV format with complete metadata download.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ==== Group 2: run computation/prediction on new, unknown molecules ==== -->
+<div class="module-section predict">
+    <div class="module-section-header">
+        <h2>Predict for New Molecules</h2>
+        <p>Submit your own compounds for docking, descriptor calculation, and activity prediction</p>
+    </div>
+    <div class="explore-panel">
+        <div class="module-grid">
+            <a class="module-card" href="cmd.html">
+                <div class="module-icon"><i class="fas fa-flask"></i></div>
+                <h3>Online Docking</h3>
+                <p>Upload a ligand and run molecular docking against any of the 16 supported target structures.</p>
+            </a>
+            <a class="module-card" href="molcule.html">
+                <div class="module-icon"><i class="fas fa-calculator"></i></div>
+                <h3>Descriptors</h3>
+                <p>Compute molecular descriptors for your compound directly in the browser.</p>
+            </a>
+            <a class="module-card" href="model.html">
+                <div class="module-icon"><i class="fas fa-chart-line"></i></div>
+                <h3>Prediction</h3>
+                <p>Predict binding activity against the target panel using our trained models.</p>
+            </a>
+        </div>
+
+        <div class="capability-divider"><span>Prediction Capabilities</span></div>
+
+        <div class="capability-row">
+            <div class="capability-item">
+                <i class="fas fa-layer-group"></i>
+                <div>
+                    <h4>Batch Ligand Submission</h4>
+                    <p>Upload multiple ligands and dock them against any of the 16 target structures in one run.</p>
+                </div>
+            </div>
+            <div class="capability-item">
+                <i class="fas fa-robot"></i>
+                <div>
+                    <h4>SMILES-Based Calculation</h4>
+                    <p>Enter a compound's SMILES string to compute its molecular descriptors instantly.</p>
+                </div>
+            </div>
+            <div class="capability-item">
+                <i class="fas fa-brain"></i>
+                <div>
+                    <h4>Model-Driven Predictions</h4>
+                    <p>Activity prediction are powered by trained computational models.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="floating-box">
+    <span class="close-btn" onclick="this.parentElement.style.display='none'">&times;</span>
+    <h3><i class="fas fa-bullhorn"></i> Latest update</h3>
+    <p>
+        New target protein datasets added!<br>
+        New features:<br>
+        - Molecular docking prediction module<br>
+        - 3D detail viewer for target–ligand complexes<br>
+        - Docking result quick links<br>
+        - One-click model prediction
+    </p>
+</div>
+
+<footer>
+    <p>&copy; 2026 Amyloid Binding Compounds Database (ABCDDB). All rights reserved.</p>
+    <p>Terms of Service</p>
+</footer>
+
+<!-- Video modal: plays E:\DataBase\WebSrever\MV\1.mp4, streamed through /video (VideoServlet.java) -->
+<div class="video-modal-overlay" id="videoModalOverlay">
+    <div class="video-modal-box">
+        <button type="button" class="video-modal-close" onclick="closeVideoModal()">&times;</button>
+        <video id="modalVideo" controls>
+            <source src="video" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+</div>
+
+<script>
+    function openVideoModal() {
+        const overlay = document.getElementById('videoModalOverlay');
+        const video = document.getElementById('modalVideo');
+        overlay.classList.add('open');
+        video.play();
+    }
+
+    function closeVideoModal() {
+        const overlay = document.getElementById('videoModalOverlay');
+        const video = document.getElementById('modalVideo');
+        video.pause();
+        video.currentTime = 0;
+        overlay.classList.remove('open');
+    }
+
+    // Clicking the dark overlay (outside the video box) also closes the modal
+    document.getElementById('videoModalOverlay').addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeVideoModal();
+        }
+    });
+</script>
+
+</body>
+</html>

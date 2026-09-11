@@ -1,0 +1,25 @@
+<head>
+    <meta charset="utf-8">
+    <title>PDB Viewer</title>
+    <link href="//unpkg.com/ngl@3.0.3/build/css/ngl.css" rel="stylesheet" type="text/css" />
+    <script src="//unpkg.com/ngl@3.0.3/build/js/ngl.js"></script>
+</head>
+<body>
+<div id="viewport" style="height: 500px;"></div>
+</body>
+<script>
+    // 获取 PDB 文件路径
+    var pdbFile = "{{ fruit.pdb }}";
+
+    // 创建 NGL 容器
+    var stage = new NGL.Stage("viewport");
+
+    // 加载 PDB 文件
+    stage.loadFile(pdbFile).then(function (component) {
+        // 添加球棍模型
+        component.addRepresentation("ball+stick");
+        // 自适应并渲染结构
+        stage.autoView();
+        stage.zoom(-0.5);
+    });
+</script>

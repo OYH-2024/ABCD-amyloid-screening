@@ -1,0 +1,9 @@
+receptor = 6shs.pdbqt
+
+center_x = 105.8
+center_y = 109.0
+center_z = 97.9
+size_x = 15.75
+size_y = 15.0
+size_z = 21.0
+num_modes = 20

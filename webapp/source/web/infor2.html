@@ -1,0 +1,89 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="css/index.css">
+<!--	infor2.js的目的是要点击下一页以后需要仍然在该体系页面-->
+	<script language="JavaScript" src="js/infor2.js"></script>
+</head>
+<body overflow-x>
+<div id="div_container">
+	<div id="div_fruit_list">
+		<p class="center f30">欢迎使用抑制分子信息系统</p>
+
+		<div style="border:0px solid red;width:60%;margin-left:20%;text-align:right;">
+
+					<!--infor2的目的是保留在此处-->
+			<form th:action="@{/infor2}" method="post" style="float:left;width:60%;margin-left:20%;">
+				<input type="hidden" name="oper" value="search"/>
+				请输入关键字：<input type="text" name="keyword" th:value="${session.keyword}"/>
+				<input type="submit" value="查询" class="btn"/>
+
+			</form>
+			<a href="index">点击返回首页</a><br/>
+
+
+		</div>
+
+
+		<div style="width:60%;margin-left:20%;border:0px solid red;padding-top:4px;" class="center">
+			<input type="button" value="首  页" style="background-color: aqua"  class="btn" th:onclick="|page(1)|" th:disabled="${session.pageNo==1}"/>
+			<input type="button" value="上一页" style="background-color: aqua"  class="btn" th:onclick="|page(${session.pageNo-1})|" th:disabled="${session.pageNo==1}"/>
+			<input type="button" value="下一页" style="background-color: aqua"  class="btn" th:onclick="|page(${session.pageNo+1})|" th:disabled="${session.pageNo==session.pageCount}"/>
+			<input type="button" value="尾  页" style="background-color: aqua"  class="btn" th:onclick="|page(${session.pageCount})|" th:disabled="${session.pageNo==session.pageCount}"/>
+		</div>
+
+
+		<!--		<table id="tbl_fruit">-->
+		<table width="100%" border="1" cellpadding="2" cellspacing="1" style="table-layout:fixed;">
+			<tr>
+<!--				<th class="w20">名称</th>-->
+<!--				<th class="w20">信息1</th>-->
+<!--				<th class="w20">信息2</th>-->
+<!--				<th class="w20">信息3</th>-->
+<!--				<th class="w20">信息4</th>-->
+<!--				<th class="w20">信息5</th>-->
+<!--				<th class="w20">信息6</th>-->
+								<th class="w20">序列</th>
+								<th class="w20">小分子名称</th>
+
+
+								<th class="w20">信息9</th>
+								<th class="w20">信息10</th>
+								<th class="w20">信息11</th>
+								<th class="w20">信息12</th>
+								<th class="w20">信息13</th>
+								<th class="w20">信息14</th>
+								<th class="w20">信息15</th>
+								<th class="w20">信息16</th>
+
+			</tr>
+			<tr th:if="${#lists.isEmpty(session.inforList)}">
+				<td colspan="4">对不起，库存为空！</td>
+			</tr>
+			<tr th:unless="${#lists.isEmpty(session.inforList)}" th:each="infor : ${session.inforList}">
+				<td th:text="${infor.oid}">2</td>
+<!--				<td th:text="${infor.information}">热水</td>-->
+<!--				<td th:text="${infor.information2}">认识</td>-->
+<!--				<td th:text="${infor.information3}">认识</td>-->
+<!--				<td th:text="${infor.information4}">认识</td>-->
+<!--				<td th:text="${infor.information5}">认识</td>-->
+<!--				<td th:text="${infor.information6}">认识</td>-->
+								<td th:text="${infor.information}">认识</td>
+								<td th:text="${infor.information7}">认识</td>
+
+								<td th:text="${infor.information8}">热水</td>
+								<td th:text="${infor.information9}">认识</td>
+								<td th:text="${infor.information10}">认识</td>
+								<td th:text="${infor.information11}">认识</td>
+								<td th:text="${infor.information12}">认识</td>
+								<td th:text="${infor.information13}">认识</td>
+								<td th:text="${infor.information14}">认识</td>
+								<td th:text="${infor.information15}">认识</td>
+
+			</tr>
+		</table>
+		<a colspan="7.5" ><br />  <br />  <br /> <br /> <br />  <br /><br /> <br />  <br />  <br /> <br />  <br />  <br />  <br /> <br />  <br /> </a>
+	</div>
+</div>
+</body>
+</html>

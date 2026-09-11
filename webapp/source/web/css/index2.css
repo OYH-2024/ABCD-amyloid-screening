@@ -1,0 +1,84 @@
+* {
+	color: threeddarkshadow;
+	font-size: 25px; /* 增大字体大小 */
+	font-weight: bold; /* 加粗字体 */
+}
+
+body {
+	margin: 0;
+	padding: 0;
+	background-color: #808080;
+	font-size: 25px; /* 增大字体大小 */
+	font-weight: bold; /* 加粗字体 */
+}
+
+div {
+	position: relative;
+	float: left;
+	font-size: 25px; /* 增大字体大小 */
+	font-weight: bold; /* 加粗字体 */
+}
+
+#div_container {
+	width: 99.99%;
+	border: 0px #c4ebd2;
+	margin-left: 0.01%;
+	float: left;
+	background-color: honeydew;
+	border-radius: 8px;
+	font-size: 25px; /* 增大字体大小 */
+	font-weight: bold; /* 加粗字体 */
+}
+
+#div_fruit_list {
+	width: 100%;
+	border: 0px solid red;
+	font-size: 25px; /* 增大字体大小 */
+	font-weight: bold; /* 加粗字体 */
+}
+
+#tbl_fruit {
+	width: 60%;
+	line-height: 28px;
+	margin-top: 16px;
+	margin-left: 20%;
+	font-size: 25px; /* 增大字体大小 */
+	font-weight: bold; /* 加粗字体 */
+}
+
+#tbl_fruit, #tbl_fruit tr, #tbl_fruit th, #tbl_fruit td {
+	border: 1px solid gray;
+	border-collapse: collapse;
+	text-align: center;
+	font-size: 25px !important; /* 增大字体大小 */
+	font-family: "黑体";
+	font-weight: bold !important; /* 加粗字体 */
+}
+
+.w20 {
+	width: 20%;
+}
+
+.delImg {
+	width: 24px;
+	height: 24px;
+}
+
+.btn {
+	border: 1px solid lightgray;
+	width: 80px; /* 增大按钮宽度 */
+	height: 30px; /* 增大按钮高度 */
+	font-size: 10px; /* 增大字体大小 */
+	font-weight: bold; /* 加粗字体 */
+}
+
+.center {
+	text-align: center;
+	font-size: 25px; /* 增大字体大小 */
+	font-weight: bold; /* 加粗字体 */
+}
+
+.f30 {
+	font-size: 25px; /* 增大字体大小 */
+	font-weight: bold; /* 加粗字体 */
+}

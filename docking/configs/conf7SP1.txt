@@ -1,0 +1,14 @@
+receptor = 7sp1.pdbqt
+
+center_x = -13.04
+center_y = 11.811
+center_z = 4.17
+size_x = 29.25
+size_y = 25.5
+size_z = 24.75
+num_modes = 100
+
+
+
+
+

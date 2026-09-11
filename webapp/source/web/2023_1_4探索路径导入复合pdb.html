@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Include 3Dmol.js library -->
+    <script src="http://3Dmol.csb.pitt.edu/build/3Dmol-min.js"></script>
+    <script src="js/3Dmol.js"></script>
+</head>
+<body>
+<script src="http://3Dmol.csb.pitt.edu/build/3Dmol-min.js"></script>
+<script src="js/3Dmol.js"></script>
+<!-- Create a canvas element to display the 3D molecules -->
+<canvas id="3d-canvas" style="width:600px;height:400px;"></canvas>
+<script>
+    // Read the protein PDB file and display as a cartoon
+    var protein = new $3Dmol.Protein("D:/new/1r6a.pdb", function() {
+        protein.addAs("cartoon");
+        viewer.render();
+    });
+
+    // Read the small molecule PDB file and display as sticks
+    var smallMol = new $3Dmol.Protein("D:/new/pichuli.pdb", function() {
+        smallMol.addAs("stick");
+        viewer.render();
+    });
+
+    // Initialize the 3Dmol.js viewer and add the protein and small molecule
+    var viewer = new $3Dmol.Viewer("3d-canvas");
+    viewer.addModel(protein);
+    viewer.addModel(smallMol);
+</script>
+</body>
+</html>

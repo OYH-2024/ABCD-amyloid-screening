@@ -1,0 +1,9 @@
+receptor = 6TI7.pdbqt
+
+center_x = 9.377
+center_y = 7.525
+center_z = 15.403
+size_x = 27.75
+size_y = 17.25
+size_z = 15.0
+num_modes = 20

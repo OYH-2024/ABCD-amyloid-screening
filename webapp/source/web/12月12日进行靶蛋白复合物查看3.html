@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>$3Dmol Example</title>
+    <script src="js/3Dmol.js"></script>
+    <script src="https://3Dmol.csb.pitt.edu/build/3Dmol-min.js"></script>
+    <style>
+        /* 添加CSS样式来改善界面布局 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        #container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        #viewer_container {
+            width: 100%; /* 缩小画布宽度 */
+            height: 700px; /* 控制画布高度 */
+            position: relative;
+            margin: 0 auto;
+        }
+
+        #gldiv {
+            width: 100%;
+            height: 100%;
+            background-color: white; /* 设置白色背景 */
+        }
+
+        #controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        input[type="button"] {
+            padding: 10px 15px;
+            font-size: 16px; /* 增大按钮文字 */
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            background-color: #f0f0f0;
+            cursor: pointer;
+        }
+
+        input[type="button"]:hover {
+            background-color: #e0e0e0;
+        }
+
+        #pdbfile {
+            display: none;
+        }
+
+        label.file-upload {
+            padding: 10px 15px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            background-color: #f0f0f0;
+            cursor: pointer;
+            display: inline-block;
+        }
+
+        #pdbid {
+            padding: 10px;
+            font-size: 16px;
+            width: 100px;
+        }
+
+        .pdb-selection {
+            margin-left: 15px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+
+        .pdb-selection label {
+            margin-right: 15px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .pdb-selection input[type="checkbox"] {
+            transform: scale(1.2);
+            margin-right: 5px;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+
+<body>
+<div id="container">
+    <div id="controls">
+        <input type="button" value="Stick" onclick="glviewer.setStyle({},{stick:{}}); glviewer.render();"></input>
+        <input type="button" value="Line" onclick="glviewer.setStyle({},{line:{}}); glviewer.render();"></input>
+        <input type="button" value="Cross" onclick="glviewer.setStyle({},{cross:{lineWidth:1.5}}); glviewer.render();"></input>
+        <input type="button" value="Sphere" onclick="glviewer.setStyle({},{sphere:{}}); glviewer.render();"></input>
+        <input type="button" value="Cartoon" onclick="glviewer.setStyle({hetflag:false},{cartoon:{}}); glviewer.render();"></input>
+        <input type="button" value="Label alpha C's" onclick="addLabels()"></input>
+        <input type="button" value="Color SS" onclick="colorSS()"></input>
+        <input type="button" value="VDW Surface" onclick="glviewer.addSurface($3Dmol.SurfaceType.VDW, {opacity:0.85,colorscheme:'whiteCarbon'},{hetflag:false}); glviewer.render();"></input>
+        <input type="button" value="MS Surface" onclick="glviewer.addSurface($3Dmol.SurfaceType.MS, {opacity:0.85, colorscheme:'whiteCarbon'},{hetflag:false}); glviewer.render();"></input>
+        <input type="button" value="Recenter" onclick="glviewer.zoomTo(); glviewer.render();"></input>
+        <input type="button" value="Clean" onclick="cleanCanvas();"></input>
+
+        <label for="pdbfile" class="file-upload">Upload PDB</label>
+        <input type="file" id="pdbfile" onchange="readText(this)"></input>
+
+        <input type="text" id="pdbid" value="1UBQ"></input>
+        <input type="button" value="Download Other Proteins" onclick="downloadPDB($('#pdbid').val());"></input>
+    </div>
+
+    <div id="viewer_container">
+        <div id="gldiv"></div>
+    </div>
+</div>
+
+<script>
+    var glviewer = null;
+    var labels = [];
+
+    var addLabels = function() {
+        var atoms = glviewer.getModel().selectedAtoms({atom:"CA"});
+        for(var a in atoms) {
+            var atom = atoms[a];
+            var l = glviewer.addLabel(atom.resn+":"+atom.resi, {position: atom, backgroundColor:'mintcream', fontColor:'black', fontSize: 14});
+            atom.label = l;
+            labels.push(atom);
+        }
+        glviewer.render();
+    };
+
+    var colorSS = function() {
+        //color by secondary structure
+        var m = glviewer.getModel();
+        m.setColorByFunction({}, function(atom) {
+            if(atom.ss == 'h') return "magenta";
+            else if(atom.ss == 's') return "orange";
+            else return "white";
+        });
+        glviewer.render();
+    };
+
+    var atomcallback = function(atom, viewer) {
+        if(atom.clickLabel === undefined || !atom.clickLabel) {
+            atom.clickLabel = viewer.addLabel(atom.elem+atom.serial, {position: atom, backgroundColor:'mintcream', fontColor:'black'});
+            atom.clicked = true;
+        }
+
+        //toggle label style
+        else {
+            if(atom.clicked) {
+                var newstyle = {backgroundColor:'black', fontColor:'mintcream'};
+                atom.clickLabel.setStyle(newstyle);
+                atom.clicked = !atom.clicked;
+            }
+            else {
+                var newstyle = {backgroundColor:'mintcream', fontColor:'black'};
+                atom.clickLabel.setStyle(newstyle);
+                atom.clicked = !atom.clicked;
+            }
+        }
+    };
+
+    var readText = function(input) {
+        if(input.files.length > 0) {
+            var file = input.files[0];
+            var reader = new FileReader();
+            reader.onload = function(evt) {
+                var content = evt.target.result;
+                // 清除旧的内容，包括模型、标签、表面等
+                cleanCanvas();
+
+                // 加载新的PDB数据
+                glviewer.addModel(content, "pdb");
+                glviewer.setStyle({}, {cartoon: {color:"spectrum"}});
+                glviewer.zoomTo();
+                glviewer.render();
+            };
+            reader.readAsText(file);
+            $(input).val('');
+        }
+    };
+
+    var downloadPDB = function(pdbid) {
+        // 清除旧的内容
+        cleanCanvas();
+
+        // 下载新的PDB
+        $3Dmol.download('pdb:'+pdbid, glviewer, {}, function() {
+            glviewer.setStyle({},{cartoon:{color:'spectrum'}});
+            glviewer.zoomTo();
+            glviewer.render();
+        });
+    };
+
+    var cleanCanvas = function() {
+        // 清除所有模型、标签和表面
+        glviewer.clear();
+
+        // 重置全局标签数组
+        labels = [];
+
+        // 重新渲染
+        glviewer.render();
+    }
+
+    $(document).ready(function() {
+        glviewer = $3Dmol.createViewer("gldiv", {
+            defaultcolors: $3Dmol.rasmolElementColors,
+            backgroundColor: "white" // 设置白色背景
+        });
+
+        $3Dmol.download("pdb:1UBQ", glviewer, {}, function() {
+            glviewer.setStyle({}, {cartoon: {color:"spectrum"}});
+            //could do other styling here
+            glviewer.zoomTo();
+            glviewer.render();
+        });
+
+        glviewer.setHoverable({}, true, atomcallback);
+    });
+</script>
+</body>
+</html>

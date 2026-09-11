@@ -1,0 +1,933 @@
+<!--<!DOCTYPE html>-->
+<!--<html>-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>Docking Results - Download Center</title>-->
+<!--    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">-->
+<!--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">-->
+<!--    <style>-->
+<!--        :root {-->
+<!--            &#45;&#45;primary-color: #2a5298;-->
+<!--            &#45;&#45;secondary-color: #1e3c72;-->
+<!--            &#45;&#45;accent-color: #00bcd4;-->
+<!--        }-->
+<!--        body {-->
+<!--            background-color: #f8f9fa;-->
+<!--            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;-->
+<!--        }-->
+<!--        .header {-->
+<!--            background: linear-gradient(135deg, var(&#45;&#45;primary-color), var(&#45;&#45;secondary-color));-->
+<!--            color: white;-->
+<!--            padding: 30px 0;-->
+<!--            margin-bottom: 30px;-->
+<!--        }-->
+<!--        .card {-->
+<!--            border: none;-->
+<!--            border-radius: 10px;-->
+<!--            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);-->
+<!--            transition: transform 0.3s ease, box-shadow 0.3s ease;-->
+<!--            margin-bottom: 20px;-->
+<!--            overflow: hidden;-->
+<!--        }-->
+<!--        .card:hover {-->
+<!--            transform: translateY(-5px);-->
+<!--            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);-->
+<!--        }-->
+<!--        .card-header {-->
+<!--            background: linear-gradient(135deg, var(&#45;&#45;primary-color), var(&#45;&#45;secondary-color));-->
+<!--            color: white;-->
+<!--            font-weight: bold;-->
+<!--            border: none;-->
+<!--        }-->
+<!--        .protein-grid {-->
+<!--            display: grid;-->
+<!--            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));-->
+<!--            gap: 20px;-->
+<!--        }-->
+<!--        .protein-card {-->
+<!--            height: 100%;-->
+<!--            display: flex;-->
+<!--            flex-direction: column;-->
+<!--        }-->
+<!--        .protein-icon-box {-->
+<!--            height: 100px;-->
+<!--            display: flex;-->
+<!--            align-items: center;-->
+<!--            justify-content: center;-->
+<!--            font-size: 2.6rem;-->
+<!--            color: var(&#45;&#45;primary-color);-->
+<!--            background-color: #eef2f7;-->
+<!--        }-->
+<!--        .download-btn {-->
+<!--            background-color: var(&#45;&#45;primary-color);-->
+<!--            color: white;-->
+<!--            border: none;-->
+<!--            border-radius: 5px;-->
+<!--            padding: 8px 15px;-->
+<!--            transition: background-color 0.3s;-->
+<!--        }-->
+<!--        .download-btn:hover {-->
+<!--            background-color: var(&#45;&#45;secondary-color);-->
+<!--            color: white;-->
+<!--        }-->
+<!--        .category-section {-->
+<!--            margin-bottom: 40px;-->
+<!--        }-->
+<!--        .protein-info {-->
+<!--            flex: 1;-->
+<!--        }-->
+<!--        .footer {-->
+<!--            background-color: #343a40;-->
+<!--            color: white;-->
+<!--            padding: 20px 0;-->
+<!--            margin-top: 40px;-->
+<!--        }-->
+<!--        .back-section {-->
+<!--            text-align: center;-->
+<!--            margin-top: 10px;-->
+<!--        }-->
+<!--        .back-button {-->
+<!--            background: rgba(255, 255, 255, 0.9);-->
+<!--            border: 2px solid var(&#45;&#45;accent-color);-->
+<!--            color: var(&#45;&#45;accent-color);-->
+<!--            padding: 10px 25px;-->
+<!--            border-radius: 6px;-->
+<!--            text-decoration: none;-->
+<!--            font-weight: 600;-->
+<!--            display: inline-flex;-->
+<!--            align-items: center;-->
+<!--            gap: 8px;-->
+<!--        }-->
+<!--        .back-button:hover {-->
+<!--            background: var(&#45;&#45;accent-color);-->
+<!--            color: white;-->
+<!--            text-decoration: none;-->
+<!--        }-->
+<!--    </style>-->
+<!--</head>-->
+<!--<body>-->
+<!--<div class="header text-center">-->
+<!--    <h1><i class="fas fa-dna"></i> Docking Results - Download Center</h1>-->
+<!--    <p class="lead">Click the download button under each PDB ID to get the docking results</p>-->
+<!--</div>-->
+
+<!--<div class="container">-->
+
+<!--    &lt;!&ndash; Category 1: Amyloid-beta (Abeta) related structures &ndash;&gt;-->
+<!--    <div class="category-section">-->
+<!--        <div class="card">-->
+<!--            <div class="card-header">-->
+<!--                <h2><i class="fas fa-dna"></i> Amyloid-beta (Aβ) Related Structures</h2>-->
+<!--            </div>-->
+<!--            <div class="card-body">-->
+<!--                <div class="protein-grid">-->
+
+<!--                    <div class="card protein-card">-->
+<!--                        <div class="protein-icon-box"><i class="fas fa-dna"></i></div>-->
+<!--                        <div class="card-body protein-info">-->
+<!--                            <h5 class="card-title">PDB ID: <strong>1AML</strong></h5>-->
+<!--                            <p class="card-text"><small>Abeta(1-40), solution NMR</small></p>-->
+<!--                        </div>-->
+<!--                        <div class="card-footer bg-white border-0 text-end">-->
+<!--                            <a href="download.jsp?pdbID=1AML" class="btn download-btn">-->
+<!--                                <i class="fas fa-download"></i> Download-->
+<!--                            </a>-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+<!--                    <div class="card protein-card">-->
+<!--                        <div class="protein-icon-box"><i class="fas fa-dna"></i></div>-->
+<!--                        <div class="card-body protein-info">-->
+<!--                            <h5 class="card-title">PDB ID: <strong>1BA4</strong></h5>-->
+<!--                            <p class="card-text"><small>Abeta(1-40), solution NMR</small></p>-->
+<!--                        </div>-->
+<!--                        <div class="card-footer bg-white border-0 text-end">-->
+<!--                            <a href="download.jsp?pdbID=1BA4" class="btn download-btn">-->
+<!--                                <i class="fas fa-download"></i> Download-->
+<!--                            </a>-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+<!--                    <div class="card protein-card">-->
+<!--                        <div class="protein-icon-box"><i class="fas fa-dna"></i></div>-->
+<!--                        <div class="card-body protein-info">-->
+<!--                            <h5 class="card-title">PDB ID: <strong>1IYT</strong></h5>-->
+<!--                            <p class="card-text"><small>Abeta(1-42), solution NMR</small></p>-->
+<!--                        </div>-->
+<!--                        <div class="card-footer bg-white border-0 text-end">-->
+<!--                            <a href="download.jsp?pdbID=1IYT" class="btn download-btn">-->
+<!--                                <i class="fas fa-download"></i> Download-->
+<!--                            </a>-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+<!--                    <div class="card protein-card">-->
+<!--                        <div class="protein-icon-box"><i class="fas fa-dna"></i></div>-->
+<!--                        <div class="card-body protein-info">-->
+<!--                            <h5 class="card-title">PDB ID: <strong>1Z0Q</strong></h5>-->
+<!--                            <p class="card-text"><small>Abeta(1-42), solution NMR</small></p>-->
+<!--                        </div>-->
+<!--                        <div class="card-footer bg-white border-0 text-end">-->
+<!--                            <a href="download.jsp?pdbID=1Z0Q" class="btn download-btn">-->
+<!--                                <i class="fas fa-download"></i> Download-->
+<!--                            </a>-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+<!--                    <div class="card protein-card">-->
+<!--                        <div class="protein-icon-box"><i class="fas fa-dna"></i></div>-->
+<!--                        <div class="card-body protein-info">-->
+<!--                            <h5 class="card-title">PDB ID: <strong>2M9R</strong></h5>-->
+<!--                            <p class="card-text"><small>Abeta(1-40) complex, solution NMR</small></p>-->
+<!--                        </div>-->
+<!--                        <div class="card-footer bg-white border-0 text-end">-->
+<!--                            <a href="download.jsp?pdbID=2M9R" class="btn download-btn">-->
+<!--                                <i class="fas fa-download"></i> Download-->
+<!--                            </a>-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+<!--                    <div class="card protein-card">-->
+<!--                        <div class="protein-icon-box"><i class="fas fa-dna"></i></div>-->
+<!--                        <div class="card-body protein-info">-->
+<!--                            <h5 class="card-title">PDB ID: <strong>6RHY</strong></h5>-->
+<!--                            <p class="card-text"><small>Abeta oligomer (tetramer), solution NMR</small></p>-->
+<!--                        </div>-->
+<!--                        <div class="card-footer bg-white border-0 text-end">-->
+<!--                            <a href="download.jsp?pdbID=6RHY" class="btn download-btn">-->
+<!--                                <i class="fas fa-download"></i> Download-->
+<!--                            </a>-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+<!--                    <div class="card protein-card">-->
+<!--                        <div class="protein-icon-box"><i class="fas fa-shapes"></i></div>-->
+<!--                        <div class="card-body protein-info">-->
+<!--                            <h5 class="card-title">PDB ID: <strong>2BEG</strong></h5>-->
+<!--                            <p class="card-text"><small>Abeta(1-42) fibril, ssNMR-based model</small></p>-->
+<!--                        </div>-->
+<!--                        <div class="card-footer bg-white border-0 text-end">-->
+<!--                            <a href="download.jsp?pdbID=2BEG" class="btn download-btn">-->
+<!--                                <i class="fas fa-download"></i> Download-->
+<!--                            </a>-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+<!--                    <div class="card protein-card">-->
+<!--                        <div class="protein-icon-box"><i class="fas fa-shapes"></i></div>-->
+<!--                        <div class="card-body protein-info">-->
+<!--                            <h5 class="card-title">PDB ID: <strong>2NAO</strong></h5>-->
+<!--                            <p class="card-text"><small>Abeta(1-42) fibril, ssNMR/EM</small></p>-->
+<!--                        </div>-->
+<!--                        <div class="card-footer bg-white border-0 text-end">-->
+<!--                            <a href="download.jsp?pdbID=2NAO" class="btn download-btn">-->
+<!--                                <i class="fas fa-download"></i> Download-->
+<!--                            </a>-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+<!--                    <div class="card protein-card">-->
+<!--                        <div class="protein-icon-box"><i class="fas fa-shapes"></i></div>-->
+<!--                        <div class="card-body protein-info">-->
+<!--                            <h5 class="card-title">PDB ID: <strong>5OQV</strong></h5>-->
+<!--                            <p class="card-text"><small>Abeta(1-42) fibril, cryo-EM</small></p>-->
+<!--                        </div>-->
+<!--                        <div class="card-footer bg-white border-0 text-end">-->
+<!--                            <a href="download.jsp?pdbID=5OQV" class="btn download-btn">-->
+<!--                                <i class="fas fa-download"></i> Download-->
+<!--                            </a>-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+<!--                    <div class="card protein-card">-->
+<!--                        <div class="protein-icon-box"><i class="fas fa-shapes"></i></div>-->
+<!--                        <div class="card-body protein-info">-->
+<!--                            <h5 class="card-title">PDB ID: <strong>6TI7</strong></h5>-->
+<!--                            <p class="card-text"><small>Mixed Abeta(1-40/1-42) fibril, ssNMR</small></p>-->
+<!--                        </div>-->
+<!--                        <div class="card-footer bg-white border-0 text-end">-->
+<!--                            <a href="download.jsp?pdbID=6TI7" class="btn download-btn">-->
+<!--                                <i class="fas fa-download"></i> Download-->
+<!--                            </a>-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+<!--                    <div class="card protein-card">-->
+<!--                        <div class="protein-icon-box"><i class="fas fa-dna"></i></div>-->
+<!--                        <div class="card-body protein-info">-->
+<!--                            <h5 class="card-title">PDB ID: <strong>6OC9</strong></h5>-->
+<!--                            <p class="card-text"><small>Phosphorylated Abeta(1-40) fibril, ssNMR</small></p>-->
+<!--                        </div>-->
+<!--                        <div class="card-footer bg-white border-0 text-end">-->
+<!--                            <a href="download.jsp?pdbID=6OC9" class="btn download-btn">-->
+<!--                                <i class="fas fa-download"></i> Download-->
+<!--                            </a>-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+<!--                    <div class="card protein-card">-->
+<!--                        <div class="protein-icon-box"><i class="fas fa-shapes"></i></div>-->
+<!--                        <div class="card-body protein-info">-->
+<!--                            <h5 class="card-title">PDB ID: <strong>6SHS</strong></h5>-->
+<!--                            <p class="card-text"><small>Brain-derived Abeta fibril, cryo-EM</small></p>-->
+<!--                        </div>-->
+<!--                        <div class="card-footer bg-white border-0 text-end">-->
+<!--                            <a href="download.jsp?pdbID=6SHS" class="btn download-btn">-->
+<!--                                <i class="fas fa-download"></i> Download-->
+<!--                            </a>-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+
+<!--    &lt;!&ndash; Category 2: Alpha-Synuclein &ndash;&gt;-->
+<!--    <div class="category-section">-->
+<!--        <div class="card">-->
+<!--            <div class="card-header">-->
+<!--                <h2><i class="fas fa-atom"></i> Alpha-Synuclein</h2>-->
+<!--            </div>-->
+<!--            <div class="card-body">-->
+<!--                <div class="protein-grid">-->
+
+<!--                    <div class="card protein-card">-->
+<!--                        <div class="protein-icon-box"><i class="fas fa-atom"></i></div>-->
+<!--                        <div class="card-body protein-info">-->
+<!--                            <h5 class="card-title">PDB ID: <strong>1XQ8</strong></h5>-->
+<!--                            <p class="card-text"><small>Micelle-bound alpha-synuclein, solution NMR</small></p>-->
+<!--                        </div>-->
+<!--                        <div class="card-footer bg-white border-0 text-end">-->
+<!--                            <a href="download.jsp?pdbID=1XQ8" class="btn download-btn">-->
+<!--                                <i class="fas fa-download"></i> Download-->
+<!--                            </a>-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+<!--                    <div class="card protein-card">-->
+<!--                        <div class="protein-icon-box"><i class="fas fa-atom"></i></div>-->
+<!--                        <div class="card-body protein-info">-->
+<!--                            <h5 class="card-title">PDB ID: <strong>6A6B</strong></h5>-->
+<!--                            <p class="card-text"><small>Alpha-synuclein fibril, cryo-EM</small></p>-->
+<!--                        </div>-->
+<!--                        <div class="card-footer bg-white border-0 text-end">-->
+<!--                            <a href="download.jsp?pdbID=6A6B" class="btn download-btn">-->
+<!--                                <i class="fas fa-download"></i> Download-->
+<!--                            </a>-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+
+<!--    &lt;!&ndash; Category 3: Huntingtin &ndash;&gt;-->
+<!--    <div class="category-section">-->
+<!--        <div class="card">-->
+<!--            <div class="card-header">-->
+<!--                <h2><i class="fas fa-project-diagram"></i> Huntingtin</h2>-->
+<!--            </div>-->
+<!--            <div class="card-body">-->
+<!--                <div class="protein-grid">-->
+
+<!--                    <div class="card protein-card">-->
+<!--                        <div class="protein-icon-box"><i class="fas fa-project-diagram"></i></div>-->
+<!--                        <div class="card-body protein-info">-->
+<!--                            <h5 class="card-title">PDB ID: <strong>6YEJ</strong></h5>-->
+<!--                            <p class="card-text"><small>Full-length disease-type Huntingtin, cryo-EM</small></p>-->
+<!--                        </div>-->
+<!--                        <div class="card-footer bg-white border-0 text-end">-->
+<!--                            <a href="download.jsp?pdbID=6YEJ" class="btn download-btn">-->
+<!--                                <i class="fas fa-download"></i> Download-->
+<!--                            </a>-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+
+<!--    &lt;!&ndash; Category 4: Tau &ndash;&gt;-->
+<!--    <div class="category-section">-->
+<!--        <div class="card">-->
+<!--            <div class="card-header">-->
+<!--                <h2><i class="fas fa-shapes"></i> Tau</h2>-->
+<!--            </div>-->
+<!--            <div class="card-body">-->
+<!--                <div class="protein-grid">-->
+
+<!--                    <div class="card protein-card">-->
+<!--                        <div class="protein-icon-box"><i class="fas fa-shapes"></i></div>-->
+<!--                        <div class="card-body protein-info">-->
+<!--                            <h5 class="card-title">PDB ID: <strong>7SP1</strong></h5>-->
+<!--                            <p class="card-text"><small>RNA-induced tau amyloid fibril, cryo-EM</small></p>-->
+<!--                        </div>-->
+<!--                        <div class="card-footer bg-white border-0 text-end">-->
+<!--                            <a href="download.jsp?pdbID=7SP1" class="btn download-btn">-->
+<!--                                <i class="fas fa-download"></i> Download-->
+<!--                            </a>-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+
+<!--    &lt;!&ndash; Back button &ndash;&gt;-->
+<!--    <div class="back-section">-->
+<!--        <a href="javascript:history.back()" class="back-button">-->
+<!--            <i class="fas fa-arrow-left"></i>-->
+<!--            Back-->
+<!--        </a>-->
+<!--    </div>-->
+<!--</div>-->
+
+<!--<footer class="footer text-center">-->
+<!--    <div class="container">-->
+<!--        <p>&copy; 2026 Molecular Docking System. All rights reserved.</p>-->
+<!--        <p><small>Data source: Protein Data Bank (PDB)</small></p>-->
+<!--    </div>-->
+<!--</footer>-->
+
+<!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>-->
+<!--<script>-->
+<!--    // Download click feedback-->
+<!--    document.querySelectorAll('.download-btn').forEach(button => {-->
+<!--        button.addEventListener('click', function() {-->
+<!--            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Downloading...';-->
+<!--            // Native click behavior continues, navigating to the JSP endpoint-->
+<!--        });-->
+<!--    });-->
+
+<!--    // Card hover effect-->
+<!--    document.querySelectorAll('.protein-card').forEach(card => {-->
+<!--        card.addEventListener('mouseenter', function() {-->
+<!--            this.style.transform = 'translateY(-8px) scale(1.02)';-->
+<!--        });-->
+
+<!--        card.addEventListener('mouseleave', function() {-->
+<!--            this.style.transform = 'translateY(0) scale(1)';-->
+<!--        });-->
+<!--    });-->
+
+<!--    // Button click feedback-->
+<!--    document.querySelectorAll('.back-button').forEach(button => {-->
+<!--        button.addEventListener('click', function(e) {-->
+<!--            this.style.transform = 'scale(0.95)';-->
+<!--            setTimeout(() => {-->
+<!--                this.style.transform = '';-->
+<!--            }, 100);-->
+<!--        });-->
+<!--    });-->
+<!--</script>-->
+<!--</body>-->
+<!--</html>-->
+
+
+
+
+<!--增加一个完成后能看见的功能-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Docking Results - Download Center</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2a5298;
+            --secondary-color: #1e3c72;
+            --accent-color: #00bcd4;
+        }
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 30px 0;
+            margin-bottom: 30px;
+        }
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+        .card-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            font-weight: bold;
+            border: none;
+        }
+        .protein-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 20px;
+        }
+        .protein-card {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        .protein-icon-box {
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.6rem;
+            color: var(--primary-color);
+            background-color: #eef2f7;
+        }
+        .download-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 8px 15px;
+            transition: background-color 0.3s;
+        }
+        .download-btn:hover {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+        .category-section {
+            margin-bottom: 40px;
+        }
+        .protein-info {
+            flex: 1;
+        }
+        .footer {
+            background-color: #343a40;
+            color: white;
+            padding: 20px 0;
+            margin-top: 40px;
+        }
+        .back-section {
+            text-align: center;
+            margin-top: 10px;
+        }
+        .back-button {
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid var(--accent-color);
+            color: var(--accent-color);
+            padding: 10px 25px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .back-button:hover {
+            background: var(--accent-color);
+            color: white;
+            text-decoration: none;
+        }
+
+        /* 对接完成状态徽标 */
+        .completion-badge {
+            display: none;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #1e7e34;
+            margin-bottom: 8px;
+        }
+        .completion-badge.visible {
+            display: flex;
+        }
+        .completion-badge i {
+            color: #28a745;
+        }
+        .card-footer {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 6px;
+        }
+    </style>
+</head>
+<body>
+<div class="header text-center">
+    <h1><i class="fas fa-dna"></i> Docking Results - Download Center</h1>
+    <p class="lead">Click the download button under each PDB ID to get the docking results</p>
+</div>
+
+<div class="container">
+
+    <!-- Category 1: Amyloid-beta (Abeta) related structures -->
+    <div class="category-section">
+        <div class="card">
+            <div class="card-header">
+                <h2><i class="fas fa-dna"></i> Amyloid-beta (Aβ) Related Structures</h2>
+            </div>
+            <div class="card-body">
+                <div class="protein-grid">
+
+                    <div class="card protein-card" data-protein="1AML">
+                        <div class="protein-icon-box"><i class="fas fa-dna"></i></div>
+                        <div class="card-body protein-info">
+                            <h5 class="card-title">PDB ID: <strong>1AML</strong></h5>
+                            <p class="card-text"><small>Abeta(1-40), solution NMR</small></p>
+                        </div>
+                        <div class="card-footer bg-white border-0">
+                            <span class="completion-badge"><i class="fas fa-check-circle"></i> Docking completed</span>
+                            <a href="download.jsp?pdbID=1AML" class="btn download-btn">
+                                <i class="fas fa-download"></i> Download
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="card protein-card" data-protein="1BA4">
+                        <div class="protein-icon-box"><i class="fas fa-dna"></i></div>
+                        <div class="card-body protein-info">
+                            <h5 class="card-title">PDB ID: <strong>1BA4</strong></h5>
+                            <p class="card-text"><small>Abeta(1-40), solution NMR</small></p>
+                        </div>
+                        <div class="card-footer bg-white border-0">
+                            <span class="completion-badge"><i class="fas fa-check-circle"></i> Docking completed</span>
+                            <a href="download.jsp?pdbID=1BA4" class="btn download-btn">
+                                <i class="fas fa-download"></i> Download
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="card protein-card" data-protein="1IYT">
+                        <div class="protein-icon-box"><i class="fas fa-dna"></i></div>
+                        <div class="card-body protein-info">
+                            <h5 class="card-title">PDB ID: <strong>1IYT</strong></h5>
+                            <p class="card-text"><small>Abeta(1-42), solution NMR</small></p>
+                        </div>
+                        <div class="card-footer bg-white border-0">
+                            <span class="completion-badge"><i class="fas fa-check-circle"></i> Docking completed</span>
+                            <a href="download.jsp?pdbID=1IYT" class="btn download-btn">
+                                <i class="fas fa-download"></i> Download
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="card protein-card" data-protein="1Z0Q">
+                        <div class="protein-icon-box"><i class="fas fa-dna"></i></div>
+                        <div class="card-body protein-info">
+                            <h5 class="card-title">PDB ID: <strong>1Z0Q</strong></h5>
+                            <p class="card-text"><small>Abeta(1-42), solution NMR</small></p>
+                        </div>
+                        <div class="card-footer bg-white border-0">
+                            <span class="completion-badge"><i class="fas fa-check-circle"></i> Docking completed</span>
+                            <a href="download.jsp?pdbID=1Z0Q" class="btn download-btn">
+                                <i class="fas fa-download"></i> Download
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="card protein-card" data-protein="2M9R">
+                        <div class="protein-icon-box"><i class="fas fa-dna"></i></div>
+                        <div class="card-body protein-info">
+                            <h5 class="card-title">PDB ID: <strong>2M9R</strong></h5>
+                            <p class="card-text"><small>Abeta(1-40) complex, solution NMR</small></p>
+                        </div>
+                        <div class="card-footer bg-white border-0">
+                            <span class="completion-badge"><i class="fas fa-check-circle"></i> Docking completed</span>
+                            <a href="download.jsp?pdbID=2M9R" class="btn download-btn">
+                                <i class="fas fa-download"></i> Download
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="card protein-card" data-protein="6RHY">
+                        <div class="protein-icon-box"><i class="fas fa-dna"></i></div>
+                        <div class="card-body protein-info">
+                            <h5 class="card-title">PDB ID: <strong>6RHY</strong></h5>
+                            <p class="card-text"><small>Abeta oligomer (tetramer), solution NMR</small></p>
+                        </div>
+                        <div class="card-footer bg-white border-0">
+                            <span class="completion-badge"><i class="fas fa-check-circle"></i> Docking completed</span>
+                            <a href="download.jsp?pdbID=6RHY" class="btn download-btn">
+                                <i class="fas fa-download"></i> Download
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="card protein-card" data-protein="2BEG">
+                        <div class="protein-icon-box"><i class="fas fa-shapes"></i></div>
+                        <div class="card-body protein-info">
+                            <h5 class="card-title">PDB ID: <strong>2BEG</strong></h5>
+                            <p class="card-text"><small>Abeta(1-42) fibril, ssNMR-based model</small></p>
+                        </div>
+                        <div class="card-footer bg-white border-0">
+                            <span class="completion-badge"><i class="fas fa-check-circle"></i> Docking completed</span>
+                            <a href="download.jsp?pdbID=2BEG" class="btn download-btn">
+                                <i class="fas fa-download"></i> Download
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="card protein-card" data-protein="2NAO">
+                        <div class="protein-icon-box"><i class="fas fa-shapes"></i></div>
+                        <div class="card-body protein-info">
+                            <h5 class="card-title">PDB ID: <strong>2NAO</strong></h5>
+                            <p class="card-text"><small>Abeta(1-42) fibril, ssNMR/EM</small></p>
+                        </div>
+                        <div class="card-footer bg-white border-0">
+                            <span class="completion-badge"><i class="fas fa-check-circle"></i> Docking completed</span>
+                            <a href="download.jsp?pdbID=2NAO" class="btn download-btn">
+                                <i class="fas fa-download"></i> Download
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="card protein-card" data-protein="5OQV">
+                        <div class="protein-icon-box"><i class="fas fa-shapes"></i></div>
+                        <div class="card-body protein-info">
+                            <h5 class="card-title">PDB ID: <strong>5OQV</strong></h5>
+                            <p class="card-text"><small>Abeta(1-42) fibril, cryo-EM</small></p>
+                        </div>
+                        <div class="card-footer bg-white border-0">
+                            <span class="completion-badge"><i class="fas fa-check-circle"></i> Docking completed</span>
+                            <a href="download.jsp?pdbID=5OQV" class="btn download-btn">
+                                <i class="fas fa-download"></i> Download
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="card protein-card" data-protein="6TI7">
+                        <div class="protein-icon-box"><i class="fas fa-shapes"></i></div>
+                        <div class="card-body protein-info">
+                            <h5 class="card-title">PDB ID: <strong>6TI7</strong></h5>
+                            <p class="card-text"><small>Mixed Abeta(1-40/1-42) fibril, ssNMR</small></p>
+                        </div>
+                        <div class="card-footer bg-white border-0">
+                            <span class="completion-badge"><i class="fas fa-check-circle"></i> Docking completed</span>
+                            <a href="download.jsp?pdbID=6TI7" class="btn download-btn">
+                                <i class="fas fa-download"></i> Download
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="card protein-card" data-protein="6OC9">
+                        <div class="protein-icon-box"><i class="fas fa-dna"></i></div>
+                        <div class="card-body protein-info">
+                            <h5 class="card-title">PDB ID: <strong>6OC9</strong></h5>
+                            <p class="card-text"><small>Phosphorylated Abeta(1-40) fibril, ssNMR</small></p>
+                        </div>
+                        <div class="card-footer bg-white border-0">
+                            <span class="completion-badge"><i class="fas fa-check-circle"></i> Docking completed</span>
+                            <a href="download.jsp?pdbID=6OC9" class="btn download-btn">
+                                <i class="fas fa-download"></i> Download
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="card protein-card" data-protein="6SHS">
+                        <div class="protein-icon-box"><i class="fas fa-shapes"></i></div>
+                        <div class="card-body protein-info">
+                            <h5 class="card-title">PDB ID: <strong>6SHS</strong></h5>
+                            <p class="card-text"><small>Brain-derived Abeta fibril, cryo-EM</small></p>
+                        </div>
+                        <div class="card-footer bg-white border-0">
+                            <span class="completion-badge"><i class="fas fa-check-circle"></i> Docking completed</span>
+                            <a href="download.jsp?pdbID=6SHS" class="btn download-btn">
+                                <i class="fas fa-download"></i> Download
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Category 2: Alpha-Synuclein -->
+    <div class="category-section">
+        <div class="card">
+            <div class="card-header">
+                <h2><i class="fas fa-atom"></i> Alpha-Synuclein</h2>
+            </div>
+            <div class="card-body">
+                <div class="protein-grid">
+
+                    <div class="card protein-card" data-protein="1XQ8">
+                        <div class="protein-icon-box"><i class="fas fa-atom"></i></div>
+                        <div class="card-body protein-info">
+                            <h5 class="card-title">PDB ID: <strong>1XQ8</strong></h5>
+                            <p class="card-text"><small>Micelle-bound alpha-synuclein, solution NMR</small></p>
+                        </div>
+                        <div class="card-footer bg-white border-0">
+                            <span class="completion-badge"><i class="fas fa-check-circle"></i> Docking completed</span>
+                            <a href="download.jsp?pdbID=1XQ8" class="btn download-btn">
+                                <i class="fas fa-download"></i> Download
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="card protein-card" data-protein="6A6B">
+                        <div class="protein-icon-box"><i class="fas fa-atom"></i></div>
+                        <div class="card-body protein-info">
+                            <h5 class="card-title">PDB ID: <strong>6A6B</strong></h5>
+                            <p class="card-text"><small>Alpha-synuclein fibril, cryo-EM</small></p>
+                        </div>
+                        <div class="card-footer bg-white border-0">
+                            <span class="completion-badge"><i class="fas fa-check-circle"></i> Docking completed</span>
+                            <a href="download.jsp?pdbID=6A6B" class="btn download-btn">
+                                <i class="fas fa-download"></i> Download
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Category 3: Huntingtin -->
+    <div class="category-section">
+        <div class="card">
+            <div class="card-header">
+                <h2><i class="fas fa-project-diagram"></i> Huntingtin</h2>
+            </div>
+            <div class="card-body">
+                <div class="protein-grid">
+
+                    <div class="card protein-card" data-protein="6YEJ">
+                        <div class="protein-icon-box"><i class="fas fa-project-diagram"></i></div>
+                        <div class="card-body protein-info">
+                            <h5 class="card-title">PDB ID: <strong>6YEJ</strong></h5>
+                            <p class="card-text"><small>Full-length disease-type Huntingtin, cryo-EM</small></p>
+                        </div>
+                        <div class="card-footer bg-white border-0">
+                            <span class="completion-badge"><i class="fas fa-check-circle"></i> Docking completed</span>
+                            <a href="download.jsp?pdbID=6YEJ" class="btn download-btn">
+                                <i class="fas fa-download"></i> Download
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Category 4: Tau -->
+    <div class="category-section">
+        <div class="card">
+            <div class="card-header">
+                <h2><i class="fas fa-shapes"></i> Tau</h2>
+            </div>
+            <div class="card-body">
+                <div class="protein-grid">
+
+                    <div class="card protein-card" data-protein="7SP1">
+                        <div class="protein-icon-box"><i class="fas fa-shapes"></i></div>
+                        <div class="card-body protein-info">
+                            <h5 class="card-title">PDB ID: <strong>7SP1</strong></h5>
+                            <p class="card-text"><small>RNA-induced tau amyloid fibril, cryo-EM</small></p>
+                        </div>
+                        <div class="card-footer bg-white border-0">
+                            <span class="completion-badge"><i class="fas fa-check-circle"></i> Docking completed</span>
+                            <a href="download.jsp?pdbID=7SP1" class="btn download-btn">
+                                <i class="fas fa-download"></i> Download
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Back button -->
+    <div class="back-section">
+        <a href="javascript:history.back()" class="back-button">
+            <i class="fas fa-arrow-left"></i>
+            Back
+        </a>
+    </div>
+</div>
+
+<footer class="footer text-center">
+    <div class="container">
+        <p>&copy; 2026 Molecular Docking System. All rights reserved.</p>
+        <p><small>Data source: Protein Data Bank (PDB)</small></p>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Download click feedback
+    document.querySelectorAll('.download-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Downloading...';
+            // Native click behavior continues, navigating to the JSP endpoint
+        });
+    });
+
+    // Card hover effect
+    document.querySelectorAll('.protein-card').forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-8px) scale(1.02)';
+        });
+
+        card.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0) scale(1)';
+        });
+    });
+
+    // Button click feedback
+    document.querySelectorAll('.back-button').forEach(button => {
+        button.addEventListener('click', function(e) {
+            this.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                this.style.transform = '';
+            }, 100);
+        });
+    });
+
+    // ---- Docking completion check ----
+    // On page load (and every 15s while the page stays open), ask the server which
+    // proteins already have a DockingResults.txt, and show a checkmark badge for those.
+    function checkDockingCompletion() {
+        const cards = document.querySelectorAll('.protein-card[data-protein]');
+        const proteins = Array.from(cards).map(card => card.dataset.protein);
+
+        if (proteins.length === 0) return;
+
+        fetch(`docking-completion?proteins=${encodeURIComponent(proteins.join(','))}`)
+            .then(res => res.json())
+            .then(statusMap => {
+                cards.forEach(card => {
+                    const protein = card.dataset.protein;
+                    const badge = card.querySelector('.completion-badge');
+                    if (badge) {
+                        badge.classList.toggle('visible', statusMap[protein] === true);
+                    }
+                });
+            })
+            .catch(err => {
+                console.error('Failed to check docking completion status:', err);
+            });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        checkDockingCompletion();
+        // 每15秒自动刷新一次，避免用户长时间停留在这个页面时看不到最新状态
+        setInterval(checkDockingCompletion, 15000);
+    });
+</script>
+</body>
+</html>

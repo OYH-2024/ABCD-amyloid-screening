@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browse Target Proteins | Amyloid Binding Compounds Database (ABCDDB)</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2a5298;
+            --secondary-color: #1e3c72;
+            --accent-color: #00bcd4;
+            --light-bg: #f8f9fa;
+            --dark-text: #333;
+            --light-text: #fff;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f7fa;
+            color: var(--dark-text);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Navigation bar */
+        .navbar-custom {
+            background: linear-gradient(135deg, var(--secondary-color) 0%, var(--primary-color) 100%);
+            box-shadow: var(--box-shadow);
+            padding: 0.8rem 1rem;
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--light-text);
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar-brand i {
+            margin-right: 10px;
+        }
+
+        .nav-link-custom {
+            color: rgba(255, 255, 255, 0.9);
+            padding: 0.8rem 1.2rem;
+            margin: 0 0.3rem;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-link-custom:hover,
+        .nav-link-custom.active {
+            background: rgba(255, 255, 255, 0.15);
+            color: var(--light-text);
+        }
+
+        /* Header section */
+        .header-section {
+            background: linear-gradient(rgba(30, 60, 114, 0.9), rgba(42, 82, 152, 0.95)),
+            url('https://via.placeholder.com/1200x300/1e3c72/ffffff?text=Target+Protein+Gallery') center/cover;
+            color: var(--light-text);
+            padding: 4rem 0 3rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .header-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+        }
+
+        .header-subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        /* Grid */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 22px;
+            padding: 40px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .grid-item {
+            background: var(--light-text);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+            overflow: hidden;
+        }
+
+        .grid-item:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.18);
+        }
+
+        .grid-item img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .grid-item div {
+            padding: 14px;
+            text-align: center;
+            font-weight: 700;
+            color: var(--primary-color);
+            letter-spacing: 0.5px;
+        }
+
+        .grid-item a {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        @media (max-width: 900px) {
+            .grid-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .grid-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navigation bar -->
+<nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="ABCDDB.html">
+            <i class="fas fa-flask"></i>
+            ABCDDB
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link-custom" href="infor">Ranking of binding energy</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link-custom" href="cmd.html">Docking Analysis</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link-custom" href="molcule.html">Molecular descriptor</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link-custom" href="model.html">Model calculation</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Header section -->
+<header class="header-section">
+    <h1 class="header-title">Browse Target Proteins</h1>
+    <p class="header-subtitle">Explore all 16 supported PDB structures in ABCDDB</p>
+</header>
+
+<!-- Protein grid -->
+<div class="grid-container">
+
+    <!-- Row 1: Amyloid-beta -->
+    <div class="grid-item">
+        <a href="infor?target=1AML">
+            <img src="https://cdn.rcsb.org/images/structures/1aml_assembly-1.jpeg" alt="1AML">
+            <div>1AML</div>
+        </a>
+    </div>
+    <div class="grid-item">
+        <a href="infor?target=1BA4">
+            <img src="https://cdn.rcsb.org/images/structures/1ba4_assembly-1.jpeg" alt="1BA4">
+            <div>1BA4</div>
+        </a>
+    </div>
+    <div class="grid-item">
+        <a href="infor?target=1IYT">
+            <img src="https://cdn.rcsb.org/images/structures/1iyt_assembly-1.jpeg" alt="1IYT">
+            <div>1IYT</div>
+        </a>
+    </div>
+    <div class="grid-item">
+        <a href="infor?target=1Z0Q">
+            <img src="https://cdn.rcsb.org/images/structures/1z0q_assembly-1.jpeg" alt="1Z0Q">
+            <div>1Z0Q</div>
+        </a>
+    </div>
+
+    <!-- Row 2: Amyloid-beta -->
+    <div class="grid-item">
+        <a href="infor?target=2BEG">
+            <img src="https://cdn.rcsb.org/images/structures/2beg_assembly-1.jpeg" alt="2BEG">
+            <div>2BEG</div>
+        </a>
+    </div>
+    <div class="grid-item">
+        <a href="infor?target=2M9R">
+            <img src="https://cdn.rcsb.org/images/structures/2m9r_assembly-1.jpeg" alt="2M9R">
+            <div>2M9R</div>
+        </a>
+    </div>
+    <div class="grid-item">
+        <a href="infor?target=2NAO">
+            <img src="https://cdn.rcsb.org/images/structures/2nao_assembly-1.jpeg" alt="2NAO">
+            <div>2NAO</div>
+        </a>
+    </div>
+    <div class="grid-item">
+        <a href="infor?target=5OQV">
+            <img src="https://cdn.rcsb.org/images/structures/5oqv_assembly-1.jpeg" alt="5OQV">
+            <div>5OQV</div>
+        </a>
+    </div>
+
+    <!-- Row 3: Amyloid-beta -->
+    <div class="grid-item">
+        <a href="infor?target=6OC9">
+            <img src="https://cdn.rcsb.org/images/structures/6oc9_assembly-1.jpeg" alt="6OC9">
+            <div>6OC9</div>
+        </a>
+    </div>
+    <div class="grid-item">
+        <a href="infor?target=6RHY">
+            <img src="https://cdn.rcsb.org/images/structures/6rhy_assembly-1.jpeg" alt="6RHY">
+            <div>6RHY</div>
+        </a>
+    </div>
+    <div class="grid-item">
+        <a href="infor?target=6SHS">
+            <img src="https://cdn.rcsb.org/images/structures/6shs_assembly-1.jpeg" alt="6SHS">
+            <div>6SHS</div>
+        </a>
+    </div>
+    <div class="grid-item">
+        <a href="infor?target=6TI7">
+            <img src="https://cdn.rcsb.org/images/structures/6ti7_assembly-1.jpeg" alt="6TI7">
+            <div>6TI7</div>
+        </a>
+    </div>
+
+    <!-- Row 4: Alpha-synuclein (1XQ8, 6A6B), Huntingtin (6YEJ), Tau (7SP1) -->
+    <div class="grid-item">
+        <a href="infor?target=1XQ8">
+            <img src="https://cdn.rcsb.org/images/structures/1xq8_assembly-1.jpeg" alt="1XQ8">
+            <div>1XQ8</div>
+        </a>
+    </div>
+    <div class="grid-item">
+        <a href="infor?target=6A6B">
+            <img src="https://cdn.rcsb.org/images/structures/6a6b_assembly-1.jpeg" alt="6A6B">
+            <div>6A6B</div>
+        </a>
+    </div>
+    <div class="grid-item">
+        <a href="infor?target=6YEJ">
+            <img src="https://cdn.rcsb.org/images/structures/6yej_assembly-1.jpeg" alt="6YEJ">
+            <div>6YEJ</div>
+        </a>
+    </div>
+    <div class="grid-item">
+        <a href="infor?target=7SP1">
+            <img src="https://cdn.rcsb.org/images/structures/7sp1_assembly-1.jpeg" alt="7SP1">
+            <div>7SP1</div>
+        </a>
+    </div>
+
+</div>
+
+</body>
+</html>

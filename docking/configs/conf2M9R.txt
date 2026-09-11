@@ -1,0 +1,13 @@
+receptor = 2M9R.pdbqt
+
+center_x =56.591
+center_y =47.358
+center_z =-18.606
+size_x = 19.5
+size_y = 27.0
+size_z = 25.5
+num_modes = 100
+
+
+
+

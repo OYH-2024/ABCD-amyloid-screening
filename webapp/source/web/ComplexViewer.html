@@ -1,0 +1,669 @@
+
+
+
+<!--&lt;!&ndash;2.0版本&ndash;&gt;-->
+
+<!--<!DOCTYPE html>-->
+<!--<html>-->
+<!--<head>-->
+<!--    <title>$3Dmol Example</title>-->
+<!--    <script src="js/3Dmol.js"></script>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <script src="https://3Dmol.csb.pitt.edu/build/3Dmol-min.js"></script>-->
+<!--    <style>-->
+<!--        .container {-->
+<!--            display: flex;-->
+<!--            flex-direction: column;-->
+<!--            align-items: center;-->
+<!--        }-->
+<!--        .controls {-->
+<!--            width: 80%;-->
+<!--            margin: 15px 0;-->
+<!--            display: flex;-->
+<!--            flex-wrap: wrap;-->
+<!--            justify-content: space-around;-->
+<!--            gap: 10px;-->
+<!--        }-->
+<!--        .control-section {-->
+<!--            background-color: #f5f5f5;-->
+<!--            padding: 10px;-->
+<!--            border-radius: 5px;-->
+<!--            margin: 5px;-->
+<!--        }-->
+<!--        .mol-container {-->
+<!--            width: 80%;-->
+<!--            height: 500px;-->
+<!--            position: relative;-->
+<!--        }-->
+<!--        .info-text {-->
+<!--            margin-top: -50px;  /* 将文字向上移动，使其更接近控制按钮 */-->
+<!--            margin-bottom: 30px; /* 增加底部间距 */-->
+<!--            font-style: italic;-->
+<!--            color: #333;  /* 更深的颜色使文字更明显 */-->
+<!--            text-align: center;-->
+<!--            width: 80%;-->
+<!--            font-size: 18px;  /* 增大字体尺寸 */-->
+<!--            font-weight: 500;  /* 稍微加粗字体 */-->
+<!--            padding: 10px;  /* 添加内边距 */-->
+<!--            background-color: #f8f8f8;  /* 添加淡背景色增加对比 */-->
+<!--            border-radius: 5px;  /* 圆角边框 */-->
+<!--            margin-left: auto;  /* 水平居中 */-->
+<!--            margin-right: auto;-->
+<!--            box-shadow: 0 2px 4px rgba(0,0,0,0.1);  /* 添加轻微阴影增加视觉效果 */-->
+<!--            border-left: 4px solid #4a90e2;  /* 左侧添加蓝色边框作为强调 */-->
+<!--        }-->
+<!--        button, input[type="button"] {-->
+<!--            padding: 8px 15px;-->
+<!--            margin: 5px;-->
+<!--            border-radius: 4px;-->
+<!--            font-size: 14px;-->
+<!--            cursor: pointer;-->
+<!--        }-->
+<!--        label {-->
+<!--            font-size: 14px;-->
+<!--            margin-right: 10px;-->
+<!--        }-->
+<!--        #molecule-name {-->
+<!--            font-size: 24px;-->
+<!--            color: darkblue;-->
+<!--            margin: 10px 0;-->
+<!--        }-->
+<!--    </style>-->
+<!--</head>-->
+<!--<body style="background-color: white;">-->
+<!--<div class="container">-->
+<!--    <div id="glviewer" class="mol-container"></div>-->
+<!--    <div id="molecule-name"></div>-->
+
+<!--    <div class="controls">-->
+<!--        <div class="control-section">-->
+<!--            <div>-->
+<!--                <label><b>选择蛋白质PDB:</b></label>-->
+<!--                <input type="checkbox" id="pdb1aml" value="1AML.pdb" onclick="loadProtein(this.value)"> 1AML.pdb-->
+<!--                <input type="checkbox" id="pdb1z0q" value="1Z0Q.pdb" onclick="loadProtein(this.value)"> 1Z0Q.pdb-->
+<!--                <input type="checkbox" id="pdb2beg" value="2BEG.pdb" onclick="loadProtein(this.value)"> 2BEG.pdb-->
+<!--            </div>-->
+<!--        </div>-->
+
+<!--        <div class="control-section">-->
+<!--            <div>-->
+<!--                <label><b>上传小分子PDB:</b></label>-->
+<!--                <input type="file" id="ligand-upload" accept=".pdb">-->
+<!--                <button onclick="loadLigandFromFile()">加载小分子</button>-->
+<!--            </div>-->
+<!--        </div>-->
+
+<!--        <div class="control-section">-->
+<!--            <div>-->
+<!--                <button onclick="showCartoon()">卡通(Cartoon)</button>-->
+<!--                <button onclick="showStick()">棍状(Stick)</button>-->
+<!--                <button onclick="showSphere()">球状(Sphere)</button>-->
+<!--                <button onclick="showLine()">线状(Line)</button>-->
+<!--                <button onclick="cleanCanvas()">清除(Clean)</button>-->
+<!--            </div>-->
+<!--        </div>-->
+
+<!--        &lt;!&ndash; 新增表面显示控制 &ndash;&gt;-->
+<!--        <div class="control-section">-->
+<!--            <div>-->
+<!--                <button onclick="showVDWSurface()">VDW表面</button>-->
+<!--                <button onclick="showMSSurface()">MS表面</button>-->
+<!--                <button onclick="showSASurface()">溶剂可及表面</button>-->
+<!--                <button onclick="removeSurfaces()">移除表面</button>-->
+<!--            </div>-->
+<!--        </div>-->
+
+<!--        &lt;!&ndash; 新增氨基酸信息显示控制 &ndash;&gt;-->
+<!--        <div class="control-section">-->
+<!--            <div>-->
+<!--                <button onclick="showAminoAcidLabels()">显示氨基酸标签</button>-->
+<!--                <button onclick="colorBySecondaryStructure()">显示二级结构颜色</button>-->
+<!--                <button onclick="showAlphaCarbons()">标记Alpha碳</button>-->
+<!--            </div>-->
+<!--        </div>-->
+
+<!--        &lt;!&ndash; 将info-text元素移到这个位置，更靠近控制按钮 &ndash;&gt;-->
+<!--        <div style="text-align: center; margin-top: 20px;">-->
+<!--            <div class="info-text">-->
+<!--                Please configure the display settings for your selected protein before submitting your small molecule.-->
+<!--            </div>-->
+<!--        </div>-->
+
+<!--        &lt;!&ndash; 控制按钮区域 &ndash;&gt;-->
+<!--    </div>-->
+<!--</div>-->
+
+<!--<script>-->
+<!--    let glviewer;-->
+<!--    let currentProtein = null;-->
+<!--    let currentLigand = null;-->
+<!--    let labels = [];-->
+
+<!--    $(document).ready(function() {-->
+<!--        // 初始化查看器-->
+<!--        glviewer = $3Dmol.createViewer("glviewer", {-->
+<!--            backgroundColor: "white"-->
+<!--        });-->
+<!--    });-->
+
+<!--    function uncheckAllProteinCheckboxes() {-->
+<!--        document.getElementById('pdb1aml').checked = false;-->
+<!--        document.getElementById('pdb1z0q').checked = false;-->
+<!--        document.getElementById('pdb2beg').checked = false;-->
+<!--    }-->
+
+<!--    function loadProtein(pdbFile) {-->
+<!--        // 取消选中其他复选框-->
+<!--        uncheckAllProteinCheckboxes();-->
+<!--        document.getElementById('pdb' + pdbFile.substring(0, 4).toLowerCase()).checked = true;-->
+
+<!--        // 清除之前的模型-->
+<!--        glviewer.clear();-->
+
+<!--        // 加载选中的蛋白质-->
+<!--        fetch(pdbFile)-->
+<!--            .then(response => response.text())-->
+<!--            .then(data => {-->
+<!--                currentProtein = data;-->
+<!--                glviewer.addModel(data, "pdb");-->
+<!--                glviewer.setStyle({}, {cartoon: {color: "spectrum"}});-->
+
+<!--                // 如果有小分子，也加载它-->
+<!--                if (currentLigand) {-->
+<!--                    glviewer.addModel(currentLigand, "pdb");-->
+<!--                    glviewer.setStyle({model: -1}, {stick: {}});-->
+<!--                }-->
+
+<!--                glviewer.zoomTo();-->
+<!--                glviewer.render();-->
+
+<!--                // 更新分子名称显示-->
+<!--                document.getElementById('molecule-name').innerText = pdbFile;-->
+<!--            })-->
+<!--            .catch(error => {-->
+<!--                console.error('Error loading protein:', error);-->
+<!--                alert('Error loading protein: ' + pdbFile);-->
+<!--            });-->
+<!--    }-->
+
+<!--    function loadLigandFromFile() {-->
+<!--        const fileInput = document.getElementById('ligand-upload');-->
+<!--        const file = fileInput.files[0];-->
+<!--        if (file) {-->
+<!--            const reader = new FileReader();-->
+<!--            reader.onload = function(e) {-->
+<!--                currentLigand = e.target.result;-->
+
+<!--                // 如果当前有蛋白质显示，添加配体-->
+<!--                if (currentProtein) {-->
+<!--                    glviewer.addModel(currentLigand, "pdb");-->
+<!--                    glviewer.setStyle({model: -1}, {stick: {}});-->
+<!--                    glviewer.zoomTo();-->
+<!--                    glviewer.render();-->
+<!--                }-->
+<!--            };-->
+<!--            reader.readAsText(file);-->
+<!--        }-->
+<!--    }-->
+
+<!--    function showCartoon() {-->
+<!--        glviewer.setStyle({}, {cartoon: {color: "spectrum"}});-->
+<!--        glviewer.render();-->
+<!--    }-->
+
+<!--    function showStick() {-->
+<!--        glviewer.setStyle({}, {stick: {}});-->
+<!--        glviewer.render();-->
+<!--    }-->
+
+<!--    function showSphere() {-->
+<!--        glviewer.setStyle({}, {sphere: {}});-->
+<!--        glviewer.render();-->
+<!--    }-->
+
+<!--    function showLine() {-->
+<!--        glviewer.setStyle({}, {line: {}});-->
+<!--        glviewer.render();-->
+<!--    }-->
+
+<!--    function cleanCanvas() {-->
+<!--        glviewer.clear();-->
+<!--        currentProtein = null;-->
+<!--        currentLigand = null;-->
+<!--        document.getElementById('molecule-name').innerText = '';-->
+<!--        document.getElementById('ligand-upload').value = '';-->
+<!--        uncheckAllProteinCheckboxes();-->
+<!--    }-->
+
+<!--    // 新增函数 - 显示VDW表面-->
+<!--    function showVDWSurface() {-->
+<!--        glviewer.addSurface($3Dmol.SurfaceType.VDW, {-->
+<!--            opacity: 0.85,-->
+<!--            colorscheme: 'whiteCarbon'-->
+<!--        }, {hetflag: false});-->
+<!--        glviewer.render();-->
+<!--    }-->
+
+<!--    // 新增函数 - 显示MS表面-->
+<!--    function showMSSurface() {-->
+<!--        glviewer.addSurface($3Dmol.SurfaceType.MS, {-->
+<!--            opacity: 0.85,-->
+<!--            colorscheme: 'whiteCarbon'-->
+<!--        }, {hetflag: false});-->
+<!--        glviewer.render();-->
+<!--    }-->
+
+<!--    // 新增函数 - 显示溶剂可及表面-->
+<!--    function showSASurface() {-->
+<!--        glviewer.addSurface($3Dmol.SurfaceType.SAS, {-->
+<!--            opacity: 0.85,-->
+<!--            colorscheme: 'whiteCarbon'-->
+<!--        }, {hetflag: false});-->
+<!--        glviewer.render();-->
+<!--    }-->
+
+<!--    // 新增函数 - 移除所有表面-->
+<!--    function removeSurfaces() {-->
+<!--        glviewer.removeAllSurfaces();-->
+<!--        glviewer.render();-->
+<!--    }-->
+
+<!--    // 新增函数 - 显示氨基酸标签-->
+<!--    function showAminoAcidLabels() {-->
+<!--        // 清除现有的标签-->
+<!--        for (let i = 0; i < labels.length; i++) {-->
+<!--            glviewer.removeLabel(labels[i].label);-->
+<!--        }-->
+<!--        labels = [];-->
+
+<!--        // 获取模型中的原子-->
+<!--        let atoms = glviewer.getModel().selectedAtoms({atom: "CA"});-->
+
+<!--        // 为每个CA原子添加标签-->
+<!--        for (let i = 0; i < atoms.length; i++) {-->
+<!--            let atom = atoms[i];-->
+<!--            let label = glviewer.addLabel(atom.resn + ":" + atom.resi, {-->
+<!--                position: atom,-->
+<!--                backgroundColor: 'mintcream',-->
+<!--                fontColor: 'black',-->
+<!--                fontSize: 14-->
+<!--            });-->
+<!--            atom.label = label;-->
+<!--            labels.push(atom);-->
+<!--        }-->
+
+<!--        glviewer.render();-->
+<!--    }-->
+
+<!--    // 新增函数 - 按二级结构着色-->
+<!--    function colorBySecondaryStructure() {-->
+<!--        let model = glviewer.getModel();-->
+<!--        model.setColorByFunction({}, function(atom) {-->
+<!--            if (atom.ss == 'h') return "magenta";-->
+<!--            else if (atom.ss == 's') return "orange";-->
+<!--            else return "white";-->
+<!--        });-->
+<!--        glviewer.render();-->
+<!--    }-->
+
+<!--    // 新增函数 - 显示Alpha碳-->
+<!--    function showAlphaCarbons() {-->
+<!--        glviewer.setStyle({atom: "CA"}, {sphere: {radius: 0.7, color: "yellow"}});-->
+<!--        glviewer.render();-->
+<!--    }-->
+<!--</script>-->
+<!--</body>-->
+<!--</html>-->
+
+<!-- -&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;-->
+<!--2.0版本-->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>$3Dmol Example</title>
+    <script src="js/3Dmol.js"></script>
+    <meta charset="UTF-8">
+    <script src="https://3Dmol.csb.pitt.edu/build/3Dmol-min.js"></script>
+    <style>
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .controls {
+            width: 80%;
+            margin: 15px 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            gap: 10px;
+        }
+        .control-section {
+            background-color: #f5f5f5;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 5px;
+        }
+        .mol-container {
+            width: 80%;
+            height: 500px;
+            position: relative;
+        }
+        .info-text {
+            margin-top: -50px;  /* Move the text up so it sits closer to the controls */
+            margin-bottom: 30px; /* Extra bottom margin */
+            font-style: italic;
+            color: #333;  /* Darker color for better contrast */
+            text-align: center;
+            width: 80%;
+            font-size: 18px;  /* Larger font size */
+            font-weight: 500;  /* Slightly bolder */
+            padding: 10px;  /* Inner padding */
+            background-color: #f8f8f8;  /* Light background for contrast */
+            border-radius: 5px;  /* Rounded corners */
+            margin-left: auto;  /* Center horizontally */
+            margin-right: auto;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);  /* Slight shadow */
+            border-left: 4px solid #4a90e2;  /* Blue accent border on the left */
+        }
+        button, input[type="button"] {
+            padding: 8px 15px;
+            margin: 5px;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        label {
+            font-size: 14px;
+            margin-right: 10px;
+        }
+        #molecule-name {
+            font-size: 24px;
+            color: darkblue;
+            margin: 10px 0;
+        }
+        .protein-checkboxes {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px 16px;
+            justify-content: center;
+        }
+        .protein-checkboxes label {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            margin-right: 0;
+        }
+    </style>
+</head>
+<body style="background-color: white;">
+<div class="container">
+    <div id="glviewer" class="mol-container"></div>
+    <div id="molecule-name"></div>
+
+    <div class="controls">
+        <div class="control-section">
+            <div>
+                <label><b>Select protein PDB:</b></label>
+            </div>
+            <div class="protein-checkboxes" id="protein-checkbox-group">
+                <!-- 16 target-protein checkboxes are generated by JavaScript below -->
+            </div>
+        </div>
+
+        <div class="control-section">
+            <div>
+                <label><b>Upload ligand PDB:</b></label>
+                <input type="file" id="ligand-upload" accept=".pdb">
+                <button onclick="loadLigandFromFile()">Load ligand</button>
+            </div>
+        </div>
+
+        <div class="control-section">
+            <div>
+                <button onclick="showCartoon()">Cartoon</button>
+                <button onclick="showStick()">Stick</button>
+                <button onclick="showSphere()">Sphere</button>
+                <button onclick="showLine()">Line</button>
+                <button onclick="cleanCanvas()">Clean</button>
+            </div>
+        </div>
+
+        <!-- Surface display controls -->
+        <div class="control-section">
+            <div>
+                <button onclick="showVDWSurface()">VDW Surface</button>
+                <button onclick="showMSSurface()">MS Surface</button>
+                <button onclick="showSASurface()">Solvent-Accessible Surface</button>
+                <button onclick="removeSurfaces()">Remove Surfaces</button>
+            </div>
+        </div>
+
+        <!-- Amino acid info display controls -->
+        <div class="control-section">
+            <div>
+                <button onclick="showAminoAcidLabels()">Show Amino Acid Labels</button>
+                <button onclick="colorBySecondaryStructure()">Color by Secondary Structure</button>
+                <button onclick="showAlphaCarbons()">Mark Alpha Carbons</button>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 20px;">
+            <div class="info-text">
+                Please configure the display settings for your selected protein before submitting your small molecule.
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let glviewer;
+    let currentProtein = null;
+    let currentLigand = null;
+    let labels = [];
+
+    // All 16 target proteins (the same set used across the docking / model prediction system)
+    const PROTEIN_IDS = [
+        "1AML", "1BA4", "1IYT", "1XQ8", "1Z0Q", "2BEG", "2M9R", "2NAO",
+        "5OQV", "6A6B", "6OC9", "6RHY", "6SHS", "6TI7", "6YEJ", "7SP1"
+    ];
+
+    $(document).ready(function() {
+        // Initialize the viewer
+        glviewer = $3Dmol.createViewer("glviewer", {
+            backgroundColor: "white"
+        });
+
+        // Build the 16 protein checkboxes
+        const group = document.getElementById('protein-checkbox-group');
+        PROTEIN_IDS.forEach(function(proteinId) {
+            const checkboxId = 'pdb' + proteinId.toLowerCase();
+            const wrapper = document.createElement('label');
+
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.id = checkboxId;
+            checkbox.value = proteinId + '.pdb';
+            checkbox.onclick = function() { loadProtein(this.value); };
+
+            wrapper.appendChild(checkbox);
+            wrapper.appendChild(document.createTextNode(proteinId + '.pdb'));
+            group.appendChild(wrapper);
+        });
+    });
+
+    function uncheckAllProteinCheckboxes() {
+        PROTEIN_IDS.forEach(function(proteinId) {
+            const checkbox = document.getElementById('pdb' + proteinId.toLowerCase());
+            if (checkbox) {
+                checkbox.checked = false;
+            }
+        });
+    }
+
+    function loadProtein(pdbFile) {
+        // Uncheck the other checkboxes
+        uncheckAllProteinCheckboxes();
+        const checkbox = document.getElementById('pdb' + pdbFile.substring(0, 4).toLowerCase());
+        if (checkbox) {
+            checkbox.checked = true;
+        }
+
+        // Clear the previous model
+        glviewer.clear();
+
+        // Load the selected protein
+        fetch(pdbFile)
+            .then(response => response.text())
+            .then(data => {
+                currentProtein = data;
+                glviewer.addModel(data, "pdb");
+                glviewer.setStyle({}, {cartoon: {color: "spectrum"}});
+
+                // If a ligand is loaded, add it too
+                if (currentLigand) {
+                    glviewer.addModel(currentLigand, "pdb");
+                    glviewer.setStyle({model: -1}, {stick: {}});
+                }
+
+                glviewer.zoomTo();
+                glviewer.render();
+
+                // Update the displayed molecule name
+                document.getElementById('molecule-name').innerText = pdbFile;
+            })
+            .catch(error => {
+                console.error('Error loading protein:', error);
+                alert('Error loading protein: ' + pdbFile);
+            });
+    }
+
+    function loadLigandFromFile() {
+        const fileInput = document.getElementById('ligand-upload');
+        const file = fileInput.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                currentLigand = e.target.result;
+
+                // If a protein is currently displayed, add the ligand to it
+                if (currentProtein) {
+                    glviewer.addModel(currentLigand, "pdb");
+                    glviewer.setStyle({model: -1}, {stick: {}});
+                    glviewer.zoomTo();
+                    glviewer.render();
+                }
+            };
+            reader.readAsText(file);
+        }
+    }
+
+    function showCartoon() {
+        glviewer.setStyle({}, {cartoon: {color: "spectrum"}});
+        glviewer.render();
+    }
+
+    function showStick() {
+        glviewer.setStyle({}, {stick: {}});
+        glviewer.render();
+    }
+
+    function showSphere() {
+        glviewer.setStyle({}, {sphere: {}});
+        glviewer.render();
+    }
+
+    function showLine() {
+        glviewer.setStyle({}, {line: {}});
+        glviewer.render();
+    }
+
+    function cleanCanvas() {
+        glviewer.clear();
+        currentProtein = null;
+        currentLigand = null;
+        document.getElementById('molecule-name').innerText = '';
+        document.getElementById('ligand-upload').value = '';
+        uncheckAllProteinCheckboxes();
+    }
+
+    // Show VDW surface
+    function showVDWSurface() {
+        glviewer.addSurface($3Dmol.SurfaceType.VDW, {
+            opacity: 0.85,
+            colorscheme: 'whiteCarbon'
+        }, {hetflag: false});
+        glviewer.render();
+    }
+
+    // Show MS surface
+    function showMSSurface() {
+        glviewer.addSurface($3Dmol.SurfaceType.MS, {
+            opacity: 0.85,
+            colorscheme: 'whiteCarbon'
+        }, {hetflag: false});
+        glviewer.render();
+    }
+
+    // Show solvent-accessible surface
+    function showSASurface() {
+        glviewer.addSurface($3Dmol.SurfaceType.SAS, {
+            opacity: 0.85,
+            colorscheme: 'whiteCarbon'
+        }, {hetflag: false});
+        glviewer.render();
+    }
+
+    // Remove all surfaces
+    function removeSurfaces() {
+        glviewer.removeAllSurfaces();
+        glviewer.render();
+    }
+
+    // Show amino acid labels
+    function showAminoAcidLabels() {
+        // Clear existing labels
+        for (let i = 0; i < labels.length; i++) {
+            glviewer.removeLabel(labels[i].label);
+        }
+        labels = [];
+
+        // Get the atoms in the model
+        let atoms = glviewer.getModel().selectedAtoms({atom: "CA"});
+
+        // Add a label for each CA atom
+        for (let i = 0; i < atoms.length; i++) {
+            let atom = atoms[i];
+            let label = glviewer.addLabel(atom.resn + ":" + atom.resi, {
+                position: atom,
+                backgroundColor: 'mintcream',
+                fontColor: 'black',
+                fontSize: 14
+            });
+            atom.label = label;
+            labels.push(atom);
+        }
+
+        glviewer.render();
+    }
+
+    // Color by secondary structure
+    function colorBySecondaryStructure() {
+        let model = glviewer.getModel();
+        model.setColorByFunction({}, function(atom) {
+            if (atom.ss == 'h') return "magenta";
+            else if (atom.ss == 's') return "orange";
+            else return "white";
+        });
+        glviewer.render();
+    }
+
+    // Show alpha carbons
+    function showAlphaCarbons() {
+        glviewer.setStyle({atom: "CA"}, {sphere: {radius: 0.7, color: "yellow"}});
+        glviewer.render();
+    }
+</script>
+</body>
+</html>

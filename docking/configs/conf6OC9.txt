@@ -1,0 +1,11 @@
+receptor = 6OC9.pdbqt
+
+
+center_x = 228.687
+center_y = 25.225
+center_z = -84.619
+size_x = 22.5
+size_y = 18.75
+size_z = 19.5
+
+num_modes = 100

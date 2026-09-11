@@ -1,0 +1,14 @@
+receptor = 1IYT.pdbqt
+
+center_x =4.75
+center_y =-0.5
+center_z =-5.0
+size_x = 11.5
+size_y = 7.0
+size_z = 13.0
+num_modes = 100
+
+
+
+
+

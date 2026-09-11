@@ -1,0 +1,837 @@
+<!--<!DOCTYPE html>-->
+<!--<html xmlns:th="http://www.thymeleaf.org">-->
+<!--<head>-->
+<!--    <meta charset="utf-8">-->
+<!--    <title>Molecular Details | Inhibitory Molecular Information System</title>-->
+<!--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">-->
+<!--    <style>-->
+<!--        * {-->
+<!--            margin: 0;-->
+<!--            padding: 0;-->
+<!--            box-sizing: border-box;-->
+<!--            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;-->
+<!--        }-->
+
+<!--        body {-->
+<!--            background: linear-gradient(to bottom, #f8f9fa, #e9ecef);-->
+<!--            min-height: 100vh;-->
+<!--            color: #343a40;-->
+<!--            padding: 20px;-->
+<!--            display: flex;-->
+<!--            justify-content: center;-->
+<!--            align-items: center;-->
+<!--        }-->
+
+<!--        .container {-->
+<!--            max-width: 1000px;-->
+<!--            width: 100%;-->
+<!--            background: white;-->
+<!--            border-radius: 16px;-->
+<!--            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);-->
+<!--            overflow: hidden;-->
+<!--        }-->
+
+<!--        .header {-->
+<!--            background: linear-gradient(135deg, #0c2461 0%, #1e3799 100%);-->
+<!--            padding: 30px 40px;-->
+<!--            color: white;-->
+<!--            text-align: center;-->
+<!--        }-->
+
+<!--        .header h1 {-->
+<!--            font-size: 2.2rem;-->
+<!--            margin-bottom: 10px;-->
+<!--            font-weight: 700;-->
+<!--        }-->
+
+<!--        .header p {-->
+<!--            font-size: 1.1rem;-->
+<!--            opacity: 0.9;-->
+<!--        }-->
+
+<!--        .molecule-icon {-->
+<!--            font-size: 3rem;-->
+<!--            margin-bottom: 20px;-->
+<!--            color: #4bcffa;-->
+<!--        }-->
+
+<!--        .content {-->
+<!--            padding: 30px 40px;-->
+<!--        }-->
+
+<!--        .info-card {-->
+<!--            background: #f8f9fa;-->
+<!--            border-radius: 12px;-->
+<!--            padding: 25px;-->
+<!--            margin-bottom: 25px;-->
+<!--            border: 1px solid #e9ecef;-->
+<!--        }-->
+
+<!--        .info-card h2 {-->
+<!--            color: #1e3799;-->
+<!--            font-size: 1.3rem;-->
+<!--            margin-bottom: 20px;-->
+<!--            padding-bottom: 10px;-->
+<!--            border-bottom: 2px solid #e9ecef;-->
+<!--            display: flex;-->
+<!--            align-items: center;-->
+<!--            gap: 10px;-->
+<!--        }-->
+
+<!--        .info-card h2 i {-->
+<!--            color: #0c2461;-->
+<!--        }-->
+
+<!--        .detail-row {-->
+<!--            display: flex;-->
+<!--            padding: 15px 0;-->
+<!--            border-bottom: 1px solid #e9ecef;-->
+<!--        }-->
+
+<!--        .detail-row:last-child {-->
+<!--            border-bottom: none;-->
+<!--        }-->
+
+<!--        .detail-label {-->
+<!--            width: 180px;-->
+<!--            font-weight: 600;-->
+<!--            color: #495057;-->
+<!--            display: flex;-->
+<!--            align-items: center;-->
+<!--            gap: 8px;-->
+<!--        }-->
+
+<!--        .detail-value {-->
+<!--            flex: 1;-->
+<!--            color: #212529;-->
+<!--            word-break: break-word;-->
+<!--            padding-left: 10px;-->
+<!--        }-->
+
+<!--        .action-buttons {-->
+<!--            display: flex;-->
+<!--            flex-wrap: wrap;-->
+<!--            gap: 15px;-->
+<!--            margin-top: 30px;-->
+<!--        }-->
+
+<!--        .action-btn {-->
+<!--            flex: 1;-->
+<!--            min-width: 200px;-->
+<!--            display: flex;-->
+<!--            align-items: center;-->
+<!--            justify-content: center;-->
+<!--            padding: 16px 25px;-->
+<!--            border-radius: 10px;-->
+<!--            background: linear-gradient(135deg, #1e3799 0%, #0c2461 100%);-->
+<!--            color: white;-->
+<!--            text-decoration: none;-->
+<!--            font-weight: 600;-->
+<!--            transition: all 0.3s ease;-->
+<!--            text-align: center;-->
+<!--            gap: 10px;-->
+<!--            box-shadow: 0 4px 15px rgba(15, 44, 150, 0.2);-->
+<!--        }-->
+
+<!--        .action-btn:hover {-->
+<!--            transform: translateY(-3px);-->
+<!--            box-shadow: 0 7px 20px rgba(15, 44, 150, 0.3);-->
+<!--        }-->
+
+<!--        .action-btn.secondary {-->
+<!--            background: linear-gradient(135deg, #4bcffa 0%, #0fbcf9 100%);-->
+<!--        }-->
+
+<!--        .action-btn.tertiary {-->
+<!--            background: linear-gradient(135deg, #05c46b 0%, #0be881 100%);-->
+<!--        }-->
+
+<!--        .action-btn i {-->
+<!--            font-size: 1.3rem;-->
+<!--        }-->
+
+<!--        .molecule-structure {-->
+<!--            background: #f8f9fa;-->
+<!--            border-radius: 12px;-->
+<!--            padding: 20px;-->
+<!--            margin-top: 30px;-->
+<!--            text-align: center;-->
+<!--        }-->
+
+<!--        .structure-placeholder {-->
+<!--            height: 200px;-->
+<!--            display: flex;-->
+<!--            align-items: center;-->
+<!--            justify-content: center;-->
+<!--            background: #e9ecef;-->
+<!--            border-radius: 8px;-->
+<!--            margin-top: 15px;-->
+<!--            color: #6c757d;-->
+<!--            font-style: italic;-->
+<!--        }-->
+
+<!--        .notification {-->
+<!--            background: rgba(255, 193, 7, 0.1);-->
+<!--            border-radius: 8px;-->
+<!--            padding: 15px;-->
+<!--            margin-top: 20px;-->
+<!--            border-left: 4px solid #ffc107;-->
+<!--            display: flex;-->
+<!--            gap: 10px;-->
+<!--        }-->
+
+<!--        .notification i {-->
+<!--            color: #ffc107;-->
+<!--            font-size: 1.4rem;-->
+<!--        }-->
+
+<!--        .notification-content {-->
+<!--            color: #495057;-->
+<!--        }-->
+
+<!--        .notification-content strong {-->
+<!--            color: #212529;-->
+<!--        }-->
+
+<!--        footer {-->
+<!--            text-align: center;-->
+<!--            padding: 20px;-->
+<!--            color: #6c757d;-->
+<!--            font-size: 0.9rem;-->
+<!--            border-top: 1px solid #e9ecef;-->
+<!--        }-->
+
+<!--        @media (max-width: 768px) {-->
+<!--            .detail-row {-->
+<!--                flex-direction: column;-->
+<!--                gap: 5px;-->
+<!--            }-->
+
+<!--            .detail-label {-->
+<!--                width: 100%;-->
+<!--            }-->
+
+<!--            .action-buttons {-->
+<!--                flex-direction: column;-->
+<!--            }-->
+
+<!--            .container {-->
+<!--                margin: 10px;-->
+<!--            }-->
+
+<!--            .header, .content {-->
+<!--                padding: 25px 20px;-->
+<!--            }-->
+<!--        }-->
+<!--    </style>-->
+<!--</head>-->
+<!--<body>-->
+<!--<div class="container">-->
+<!--    <div class="header">-->
+<!--        <i class="fas fa-atom molecule-icon"></i>-->
+<!--        <h1>Molecular Details</h1>-->
+<!--        <p>Inhibitory Molecular Information System - Molecular Structure and Characteristic Analysis</p>-->
+<!--    </div>-->
+
+<!--    <div class="content">-->
+<!--        <div class="info-card">-->
+<!--            <h2><i class="fas fa-info-circle"></i> Basic Information</h2>-->
+
+<!--            <div class="detail-row">-->
+<!--                <div class="detail-label">-->
+<!--                    <i class="fas fa-tag"></i> Molecular name：-->
+<!--                </div>-->
+<!--                <div class="detail-value" th:text="${fruit.tname}">Unknown molecule</div>-->
+<!--            </div>-->
+
+<!--            <div class="detail-row">-->
+<!--                <div class="detail-label">-->
+<!--                    <i class="fas fa-chart-line"></i> Suppression parameter：-->
+<!--                </div>-->
+<!--                <div class="detail-value" th:text="${fruit.solution}">Parameter data is being loaded...</div>-->
+<!--            </div>-->
+
+<!--            <div class="detail-row">-->
+<!--                <div class="detail-label">-->
+<!--                    <i class="fas fa-file-code"></i> PDB file：-->
+<!--                </div>-->
+<!--                <div class="detail-value">-->
+<!--                    <a th:text="${fruit.pdb}" th:href="@{/pdbfile.do(filename=${fruit.pdb})}" class="file-link">-->
+<!--                        <i class="fas fa-download"></i> Download the PDB file-->
+<!--                    </a>-->
+<!--                </div>-->
+<!--            </div>-->
+
+<!--            <div class="detail-row">-->
+<!--                <div class="detail-label">-->
+<!--                    <i class="fas fa-handshake"></i> Interaction file：-->
+<!--                </div>-->
+
+<!--&lt;!&ndash;                <div class="detail-value">&ndash;&gt;-->
+<!--&lt;!&ndash;                    <a th:text="下载相互作用文件" th:href="@{/pdbfile.do(filename=${fruit.protein})}" class="file-link">&ndash;&gt;-->
+<!--&lt;!&ndash;                        <i class="fas fa-download"></i> 下载相互作用文件&ndash;&gt;-->
+<!--&lt;!&ndash;                    </a>&ndash;&gt;-->
+<!--&lt;!&ndash;                </div>&ndash;&gt;-->
+<!--                <div class="action-buttons">-->
+<!--&lt;!&ndash;                    <a th:href="@{network_diagram.html}" class="action-btn">&ndash;&gt;-->
+<!--&lt;!&ndash;                        <a th:href="@{${fruit.plothtml}}" class="action-btn">&ndash;&gt;-->
+<!--                            <a th:href="@{'/plotHTML/' + ${fruit.plothtml}}" class="action-btn">-->
+<!--                        <i class="fas fa-eye"></i> 2D-->
+<!--                             </a>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+
+<!--        <div class="info-card">-->
+<!--            <h2><i class="fas fa-cube"></i> Three-dimensional structure visualization</h2>-->
+
+<!--            <div class="molecule-structure">-->
+<!--                <p>Examine the three-dimensional structure of the molecule and its interaction with proteins</p>-->
+<!--                <div class="action-buttons">-->
+<!--                    <a th:href="@{'compdb.html?pdb_path=' + ${fruit.pdb} + '&protein=' + ${fruit.protein}}" class="action-btn">-->
+<!--                        <i class="fas fa-eye"></i> View the three-dimensional structure-->
+<!--                    </a>-->
+<!--                    <a th:href="@{'https://pubchem.ncbi.nlm.nih.gov/substance/' + ${fruit.protein}}" class="action-btn secondary" target="_blank">-->
+<!--                        <i class="fas fa-external-link-alt"></i> Details of PubChem-->
+<!--                    </a>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+
+<!--        <div class="notification">-->
+<!--            <i class="fas fa-info-circle"></i>-->
+<!--            <div class="notification-content">-->
+<!--                <strong>Operation prompt：</strong> 3D structure viewing may take a few seconds to load, depending on the complexity of the model.-->
+<!--                You can also download the file and view it using professional molecular visualization software.-->
+<!--            </div>-->
+<!--        </div>-->
+
+<!--        <div class="action-buttons">-->
+<!--            <a href="javascript:history.back()" class="action-btn tertiary">-->
+<!--                <i class="fas fa-arrow-left"></i> You can also download the file and view it using professional molecular visualization software.-->
+<!--            </a>-->
+<!--        </div>-->
+<!--    </div>-->
+
+<!--    <footer>-->
+<!--        <p>Molecular inhibition information system &copy; 2025 | Scientific computing platform</p>-->
+<!--    </footer>-->
+<!--</div>-->
+
+<!--<script>-->
+<!--    // 添加简单的交互效果-->
+<!--    document.querySelectorAll('.action-btn').forEach(btn => {-->
+<!--        btn.addEventListener('mouseenter', function() {-->
+<!--            this.style.transform = 'translateY(-3px)';-->
+<!--        });-->
+
+<!--        btn.addEventListener('mouseleave', function() {-->
+<!--            this.style.transform = 'translateY(0)';-->
+<!--        });-->
+<!--    });-->
+
+<!--    // 添加文件下载提示-->
+<!--    document.querySelectorAll('.file-link').forEach(link => {-->
+<!--        link.addEventListener('click', function(e) {-->
+<!--            alert('The file download has begun. Please check your download folder');-->
+<!--        });-->
+<!--    });-->
+<!--</script>-->
+<!--</body>-->
+<!--</html>-->
+
+
+<!-- -&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;2.0-->
+
+<!--<html xmlns:th="http://www.thymeleaf.org">-->
+<!--<head>-->
+<!--    <meta charset="utf-8">-->
+<!--    <link rel="stylesheet" href="css/detail.css">-->
+<!--</head>-->
+<!--<body>-->
+<!--<div id="div_container">-->
+<!--    <div id="div_fruit_list">-->
+<!--        <p class="center f30">欢迎使用抑制分子信息系统:详情信息</p>-->
+<!--        <table id="tbl_fruit">-->
+<!--            <tr>-->
+<!--                <th class="w20">名称：</th>-->
+<!--&lt;!&ndash;                <td><input type="text" name="tid" th:value="*{tid}"/></td>&ndash;&gt;-->
+<!--                <td th:text="${fruit.tname}">2</td>-->
+<!--&lt;!&ndash;                <th class="w20">能量</th>&ndash;&gt;-->
+<!--            </tr>-->
+<!--            <tr>-->
+
+<!--                <th class="w20">抑制参数：</th>-->
+<!--&lt;!&ndash;                <td><input type="text" name="solution" th:value="*{solution}"/></td>&ndash;&gt;-->
+<!--                <td style="word-break: break-all;" th:text="${fruit.solution}">苹果</td>-->
+
+<!--            </tr>-->
+<!--            <tr>-->
+
+<!--                <th class="w20">pdb文件：</th>-->
+<!--                &lt;!&ndash;                <td><input type="text" name="solution" th:value="*{solution}"/></td>&ndash;&gt;-->
+<!--                <td style="word-break: break-all;" th:text="${fruit.pdb}">pdb结构</td>-->
+
+<!--            </tr>-->
+<!--        </table>-->
+<!--    </div>-->
+<!--</div>-->
+<!--</body>-->
+<!--</html>-->
+
+<!--7月23日旧的版本-->
+<!--<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">-->
+<!--<head>-->
+<!--    <meta charset="utf-8">-->
+<!--    <link rel="stylesheet" href="css/detail.css">-->
+<!--</head>-->
+<!--<body>-->
+<!--<div id="div_container">-->
+<!--    <p id="div_fruit_list">-->
+<!--        <p class="center f30">Detailed Information</p>-->
+<!--&lt;!&ndash;实现下载的前端代码&ndash;&gt;-->
+
+<!--        <th><a th:text="${fruit.pdb}" th:href="@{/pdbfile.do(filename=${fruit.pdb})}">苹果</a></th><br/><br/>-->
+<!--         <th><a th:text="Ligplot" th:href="@{/pdbfile.do(filename=${fruit.name})}">苹果</a></th><br/>-->
+
+<!--&lt;!&ndash;        以下是chatgpt提供的前端代码&ndash;&gt;-->
+
+
+<!--        <script>-->
+<!--            $(function() {-->
+<!--                $('.download-link').click(function(event) {-->
+<!--                    event.preventDefault();-->
+<!--                    var filename = $(this).data('filename');-->
+<!--                    $.ajax({-->
+<!--                        type: 'GET',-->
+<!--                        url: '/pdbfile.do',-->
+<!--                        data: { filename: filename },-->
+<!--                        xhrFields: {-->
+<!--                            responseType: 'blob'-->
+<!--                        },-->
+<!--                        success: function(data) {-->
+<!--                            var blob = new Blob([data], { type: 'application/octet-stream' });-->
+<!--                            var link = document.createElement('a');-->
+<!--                            link.href = window.URL.createObjectURL(blob);-->
+<!--                            link.download = filename;-->
+<!--                            link.click();-->
+<!--                        }-->
+<!--                    });-->
+<!--                });-->
+
+<!--            });-->
+<!--        </script>-->
+<!--&lt;!&ndash;        以上是chatgpt提供的代码&ndash;&gt;-->
+<!--<br/><br/>-->
+<!--&lt;!&ndash;        <table id="tbl_fruit">&ndash;&gt;-->
+<!--    <table width="100%" border="1" cellpadding="2" cellspacing="1" style="table-layout:fixed;">-->
+<!--            <tr>-->
+<!--                <th class="w20">Name：</th>-->
+<!--                <td th:text="${fruit.tname}">2</td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--                <th class="w20">Inhibition Parameter：</th>-->
+<!--                <td style="word-break: break-all;" th:text="${fruit.solution}">苹果</td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--                <th class="w20">PDB File：</th>-->
+<!--                <td style="word-break: break-all;" th:text="${fruit.protein}">pdb结构</td>-->
+
+
+
+<!--            </tr>-->
+
+<!--            <tr>-->
+<!--                <td colspan="2" class="center">-->
+<!--&lt;!&ndash;                    <a href="pdb_viewer.html?pdb_file_path=${fruit.pdb}">查看PDB文件</a>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <a href="<%= encodeURI(fruit.pdb) %>">查看PDB文件</a>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <a href="compdb.html?pdb_path=pichuli.pdb">查看PDB文件</a>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <a th:href="@{'compdb.html?pdb_path=' + ${fruit.pdb}}">查看PDB文件</a>&ndash;&gt;-->
+<!--                    <a th:href="@{'compdb.html?pdb_path=' + ${fruit.pdb} + '&protein=' + ${fruit.protein}}">View PDB 3D files</a>-->
+<!--&lt;!&ndash;                    <a href="<%= encodeURI(fruit.pdb) %>">查看PDB文件啊</a>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <a th:href="@{'https://proteins.plus/2cdzpdbd1c8fc97-0ae5-45ea-af2b-e459c062fc8b#poseview'}">查看PDB文件</a>&ndash;&gt;-->
+
+
+
+
+<!--                </td>-->
+<!--            </tr>-->
+
+<!--            <tr>-->
+<!--            <td colspan="2" class="center">-->
+<!--                &lt;!&ndash;                    <a href="pdb_viewer.html?pdb_file_path=${fruit.pdb}">查看PDB文件</a>&ndash;&gt;-->
+<!--                &lt;!&ndash;                    <a href="<%= encodeURI(fruit.pdb) %>">查看PDB文件</a>&ndash;&gt;-->
+<!--                &lt;!&ndash;                    <a href="compdb.html?pdb_path=pichuli.pdb">查看PDB文件</a>&ndash;&gt;-->
+<!--                &lt;!&ndash;                    <a th:href="@{'compdb.html?pdb_path=' + ${fruit.pdb}}">查看PDB文件</a>&ndash;&gt;-->
+<!--                <a th:href="@{'https://pubchem.ncbi.nlm.nih.gov/substance/' + ${fruit.sid}}">View PUBCHEM details page</a>-->
+<!--                &lt;!&ndash;                    <a href="<%= encodeURI(fruit.pdb) %>">查看PDB文件啊</a>&ndash;&gt;-->
+<!--                &lt;!&ndash;                    <a th:href="@{'https://proteins.plus/2cdzpdbd1c8fc97-0ae5-45ea-af2b-e459c062fc8b#poseview'}">查看PDB文件</a>&ndash;&gt;-->
+
+
+
+
+<!--            </td>-->
+<!--            </tr>-->
+
+<!--&lt;!&ndash;            <tr>&ndash;&gt;-->
+<!--&lt;!&ndash;                <th class="w20">pdb文件：</th>&ndash;&gt;-->
+<!--&lt;!&ndash;                <td>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <a th:href="${fruit.plothtml}" target="_blank" th:text="${fruit.pdb}">pdb结构</a><br/>&ndash;&gt;-->
+
+<!--&lt;!&ndash;&lt;!&ndash;上面这行代码可以直接访问给出的网页链接，即直接访问网址&ndash;&gt;&ndash;&gt;-->
+
+<!--&lt;!&ndash;                </td>&ndash;&gt;-->
+<!--&lt;!&ndash;            </tr>&ndash;&gt;-->
+
+
+<!--        </table>-->
+
+
+<!--    </div>-->
+<!--</div>-->
+<!--</body>-->
+<!--</html>-->
+<!--7月23日旧的版本-->
+
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Molecular Details | Inhibitory Molecular Information System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(to bottom, #f8f9fa, #e9ecef);
+            min-height: 100vh;
+            color: #343a40;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 1000px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #0c2461 0%, #1e3799 100%);
+            padding: 30px 40px;
+            color: white;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .molecule-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: #4bcffa;
+        }
+
+        .content {
+            padding: 30px 40px;
+        }
+
+        .info-card {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border: 1px solid #e9ecef;
+        }
+
+        .info-card h2 {
+            color: #1e3799;
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e9ecef;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .info-card h2 i {
+            color: #0c2461;
+        }
+
+        .detail-row {
+            display: flex;
+            padding: 15px 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            width: 180px;
+            font-weight: 600;
+            color: #495057;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .detail-value {
+            flex: 1;
+            color: #212529;
+            word-break: break-word;
+            padding-left: 10px;
+        }
+
+        .action-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .action-btn {
+            flex: 1;
+            min-width: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px 25px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #1e3799 0%, #0c2461 100%);
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-align: center;
+            gap: 10px;
+            box-shadow: 0 4px 15px rgba(15, 44, 150, 0.2);
+        }
+
+        .action-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 20px rgba(15, 44, 150, 0.3);
+        }
+
+        .action-btn.secondary {
+            background: linear-gradient(135deg, #4bcffa 0%, #0fbcf9 100%);
+        }
+
+        .action-btn.tertiary {
+            background: linear-gradient(135deg, #05c46b 0%, #0be881 100%);
+        }
+
+        .action-btn i {
+            font-size: 1.3rem;
+        }
+
+        .molecule-structure {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .structure-placeholder {
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #e9ecef;
+            border-radius: 8px;
+            margin-top: 15px;
+            color: #6c757d;
+            font-style: italic;
+        }
+
+        .notification {
+            background: rgba(255, 193, 7, 0.1);
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+            border-left: 4px solid #ffc107;
+            display: flex;
+            gap: 10px;
+        }
+
+        .notification i {
+            color: #ffc107;
+            font-size: 1.4rem;
+        }
+
+        .notification-content {
+            color: #495057;
+        }
+
+        .notification-content strong {
+            color: #212529;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #6c757d;
+            font-size: 0.9rem;
+            border-top: 1px solid #e9ecef;
+        }
+
+        @media (max-width: 768px) {
+            .detail-row {
+                flex-direction: column;
+                gap: 5px;
+            }
+
+            .detail-label {
+                width: 100%;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .container {
+                margin: 10px;
+            }
+
+            .header, .content {
+                padding: 25px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <i class="fas fa-atom molecule-icon"></i>
+        <h1>Molecular Details</h1>
+        <p>Inhibitory Molecular Information System - Molecular Structure and Characteristic Analysis</p>
+    </div>
+
+    <div class="content">
+        <div class="info-card">
+            <h2><i class="fas fa-info-circle"></i> Basic Information</h2>
+
+            <div class="detail-row">
+                <div class="detail-label">
+                    <i class="fas fa-tag"></i> Molecular name：
+                </div>
+                <div class="detail-value" th:text="${fruit.tname}">Unknown molecule</div>
+            </div>
+
+            <div class="detail-row">
+                <div class="detail-label">
+                    <i class="fas fa-chart-line"></i> Suppression parameter：
+                </div>
+                <div class="detail-value" th:text="${fruit.solution}">Parameter data is being loaded...</div>
+            </div>
+
+            <div class="detail-row">
+                <div class="detail-label">
+                    <i class="fas fa-file-code"></i> PDB file：
+                </div>
+                <div class="detail-value">
+                    <a th:text="${fruit.pdb}" th:href="@{/pdbfile.do(filename=${fruit.pdb})}" class="file-link">
+                        <i class="fas fa-download"></i> Download the PDB file
+                    </a>
+                </div>
+            </div>
+
+            <div class="detail-row">
+                <div class="detail-label">
+                    <i class="fas fa-handshake"></i> Interaction file：
+                </div>
+
+                <!--                <div class="detail-value">-->
+                <!--                    <a th:text="下载相互作用文件" th:href="@{/pdbfile.do(filename=${fruit.protein})}" class="file-link">-->
+                <!--                        <i class="fas fa-download"></i> 下载相互作用文件-->
+                <!--                    </a>-->
+                <!--                </div>-->
+                <div class="action-buttons">
+                    <!--                    <a th:href="@{network_diagram.html}" class="action-btn">-->
+                    <!--                        <a th:href="@{${fruit.plothtml}}" class="action-btn">-->
+                    <a th:href="@{'/plotHTML/' + ${fruit.plothtml}}" class="action-btn">
+                        <i class="fas fa-eye"></i> 2D
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-card">
+            <h2><i class="fas fa-cube"></i> Three-dimensional structure visualization</h2>
+
+            <div class="molecule-structure">
+                <p>Examine the three-dimensional structure of the molecule and its interaction with proteins</p>
+                <div class="action-buttons">
+                    <a th:href="@{'/plotHTML/3D/viewer.html?target=' + ${fruit.target} + '&jizhun=' + ${fruit.jizhun}}" class="action-btn" target="_blank">
+                        <i class="fas fa-eye"></i> View the three-dimensional structure
+                    </a>
+                    <a th:href="@{'https://pubchem.ncbi.nlm.nih.gov/substance/' + ${fruit.jizhun}}" class="action-btn secondary" target="_blank">
+                        <i class="fas fa-external-link-alt"></i> Details of PubChem
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="notification">
+            <i class="fas fa-info-circle"></i>
+            <div class="notification-content">
+                <strong>Operation prompt：</strong> 3D structure viewing may take a few seconds to load, depending on the complexity of the model.
+                You can also download the file and view it using professional molecular visualization software.
+            </div>
+        </div>
+
+        <div class="action-buttons">
+            <a href="javascript:history.back()" class="action-btn tertiary">
+                <i class="fas fa-arrow-left"></i> Back
+            </a>
+        </div>
+    </div>
+
+    <footer>
+        <p>Molecular inhibition information system &copy; 2025 | Scientific computing platform</p>
+    </footer>
+</div>
+
+<script>
+    // 添加简单的交互效果
+    document.querySelectorAll('.action-btn').forEach(btn => {
+        btn.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-3px)';
+        });
+
+        btn.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0)';
+        });
+    });
+
+    // 添加文件下载提示
+    document.querySelectorAll('.file-link').forEach(link => {
+        link.addEventListener('click', function(e) {
+            alert('The file download has begun. Please check your download folder');
+        });
+    });
+</script>
+</body>
+</html>

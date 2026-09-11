@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amyloid Binding Compounds Database (ABCDDB)</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2a5298;
+            --secondary-color: #1e3c72;
+            --accent-color: #00bcd4;
+            --light-bg: #f8f9fa;
+            --dark-text: #333;
+            --light-text: #fff;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f7fa;
+            color: var(--dark-text);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Navigation bar */
+        .navbar-custom {
+            background: linear-gradient(135deg, var(--secondary-color) 0%, var(--primary-color) 100%);
+            box-shadow: var(--box-shadow);
+            padding: 0.8rem 1rem;
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--light-text);
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar-brand i {
+            margin-right: 10px;
+        }
+
+        .nav-link-custom {
+            color: rgba(255, 255, 255, 0.9);
+            padding: 0.8rem 1.2rem;
+            margin: 0 0.3rem;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-link-custom:hover,
+        .nav-link-custom.active {
+            background: rgba(255, 255, 255, 0.15);
+            color: var(--light-text);
+        }
+
+        /* Header section */
+        .header-section {
+            background: linear-gradient(rgba(30, 60, 114, 0.9), rgba(42, 82, 152, 0.95)),
+            url('https://via.placeholder.com/1200x400/1e3c72/ffffff?text=Molecular+Docking') center/cover;
+            color: var(--light-text);
+            padding: 6rem 0 4rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .header-title {
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Search section */
+        .search-container {
+            max-width: 800px;
+            margin: -3rem auto 3rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .search-form {
+            background: var(--light-text);
+            border-radius: 50px;
+            box-shadow: var(--box-shadow);
+            padding: 5px;
+            transition: var(--transition);
+        }
+
+        .search-input-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .search-input-wrapper {
+            position: relative;
+            flex: 1;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 1.2rem 3rem 1.2rem 1.5rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            background: var(--light-bg);
+            transition: var(--transition);
+        }
+
+        .search-input:focus {
+            box-shadow: inset 0 0 0 2px var(--primary-color);
+            background: var(--light-text);
+        }
+
+        .search-clear-btn {
+            position: absolute;
+            right: 1.2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #999;
+            cursor: pointer;
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .search-input:not(:placeholder-shown) + .search-clear-btn {
+            opacity: 1;
+        }
+
+        .search-btn {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: var(--light-text);
+            border: none;
+            border-radius: 50px;
+            padding: 1.2rem 2rem;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .search-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(42, 82, 152, 0.3);
+        }
+
+        /* Data table section */
+        .data-section {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: var(--light-text);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 1.2rem;
+            text-align: center;
+            border-bottom: 1px solid #eee;
+        }
+
+        .data-table th {
+            background-color: var(--primary-color);
+            color: var(--light-text);
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .data-table tr:hover {
+            background-color: var(--light-bg);
+        }
+
+        .molecule-link {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .molecule-link:hover {
+            color: var(--secondary-color);
+            text-decoration: underline;
+        }
+
+        /* Pagination */
+        .pagination-section {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .page-btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: var(--border-radius);
+            background: var(--primary-color);
+            color: var(--light-text);
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .page-btn:hover:not(:disabled) {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        .page-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        /* Empty state message */
+        .no-data-message {
+            padding: 3rem;
+            text-align: center;
+            color: #666;
+        }
+
+        .no-data-message i {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            opacity: 0.7;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .header-title {
+                font-size: 2rem;
+            }
+
+            .search-container {
+                margin: -2rem auto 2rem;
+            }
+
+            .search-input-group {
+                flex-direction: column;
+            }
+
+            .search-input {
+                width: 100%;
+                padding: 1rem;
+            }
+
+            .search-btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .data-table th,
+            .data-table td {
+                padding: 1rem;
+                font-size: 0.9rem;
+            }
+
+            .nav-link-custom {
+                padding: 0.6rem;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navigation bar -->
+<nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="ABCDDB.html">
+            <i class="fas fa-flask"></i>
+            ABCDDB
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link-custom" href="cmd.html">Docking Analysis</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link-custom" href="infor">Binding Energy Ranking</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link-custom" href="molcule.html">Molecular Descriptors</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link-custom" href="model.html">Model Calculation</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Header section -->
+<header class="header-section">
+    <h1 class="header-title">Amyloid Binding Compounds Database (ABCDDB)</h1>
+</header>
+
+<!-- Search section -->
+<div class="search-container">
+    <form th:action="@{/index2}" method="post" class="search-form">
+        <input type="hidden" name="oper" value="search"/>
+        <div class="search-input-group">
+            <div class="search-input-wrapper">
+                <input type="text"
+                       name="keyword"
+                       id="searchInput"
+                       class="search-input"
+                       th:value="${session.keywordAll}"
+                       placeholder="Please enter PDB ID or molecule name..."
+                       autocomplete="off">
+                <button type="button" class="search-clear-btn" id="clearSearch">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <script>
+                document.getElementById('clearSearch').addEventListener('click', function() {
+                    document.getElementById('searchInput').value = '';
+                });
+            </script>
+
+            <script>
+                function page(pageNo) {
+                    window.location.href = 'index2?pageNo=' + pageNo;
+                }
+            </script>
+
+            <button type="submit" class="search-btn">
+                <i class="fas fa-search"></i>
+                Search
+            </button>
+            <!-- Reset button -->
+            <button type="button" class="search-btn reset-btn" onclick="window.location.href='index2?oper=reset'">
+                <i class="fas fa-redo"></i>
+                Reset
+            </button>
+        </div>
+    </form>
+</div>
+
+<!-- Main content -->
+<main class="data-section">
+    <div class="table-responsive">
+        <table class="data-table">
+            <thead>
+            <tr>
+                <th>Disease</th>
+                <th>Target Protein Status</th>
+                <th>Target Protein Name</th>
+                <th>Target PDB ID</th>
+                <th>Ligand Molecule</th>
+                <th>Binding Energy</th>
+                <th>Inhibition Parameter</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:if="${#lists.isEmpty(session.fruitListAll)}">
+                <td colspan="7" class="no-data-message">
+                    <i class="fas fa-info-circle"></i>
+                    <h3>No Matching Data Found</h3>
+                    <p>Please try a different search keyword</p>
+                </td>
+            </tr>
+            <tr th:each="fruit : ${session.fruitListAll}" th:unless="${#lists.isEmpty(session.fruitListAll)}">
+                <td th:text="${fruit.desease}"></td>
+                <td th:text="${fruit.condition}"></td>
+                <td th:text="${fruit.targetname}"></td>
+                <td th:text="${fruit.target}"></td>
+                <td>
+                    <a th:href="@{/detail.do(tid=${fruit.tid})}"
+                       class="molecule-link"
+                       th:text="${fruit.tname}">
+                        <i class="fas fa-link"></i>
+                    </a>
+                </td>
+                <td>
+                    <a th:href="@{'/compdb.html?pdb_path=' + ${fruit.pdb} + '&protein=' + ${fruit.protein}}"
+                       class="molecule-link"
+                       th:text="${fruit.energy}">
+                        <i class="fas fa-chart-bar"></i>
+                    </a>
+                </td>
+                <td style="word-break: break-all;" th:text="${fruit.solution}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Pagination controls -->
+    <div class="pagination-section">
+        <button class="page-btn"
+                th:onclick="|page(1)|"
+                th:disabled="${session.pageNoAll==1}">
+            <i class="fas fa-angle-double-left"></i> First
+        </button>
+        <button class="page-btn"
+                th:onclick="|page(${session.pageNoAll-1})|"
+                th:disabled="${session.pageNoAll==1}">
+            <i class="fas fa-angle-left"></i> Previous
+        </button>
+        <button class="page-btn"
+                th:onclick="|page(${session.pageNoAll+1})|"
+                th:disabled="${session.pageNoAll==session.pageCountAll}">
+            Next <i class="fas fa-angle-right"></i>
+        </button>
+        <button class="page-btn"
+                th:onclick="|page(${session.pageCountAll})|"
+                th:disabled="${session.pageNoAll==session.pageCountAll}">
+            Last <i class="fas fa-angle-double-right"></i>
+        </button>
+    </div>
+</main>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- Added before closing body tag, after other script tags -->
+<script src="js/index.js"></script>
+</body>
+</html>

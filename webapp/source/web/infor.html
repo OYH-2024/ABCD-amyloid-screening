@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Binding Energy Ranking - Amyloid Binding Compounds Database (ABCDDB)</title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+	<style>
+		:root {
+			--primary-color: #2a5298;
+			--secondary-color: #1e3c72;
+			--accent-color: #00bcd4;
+			--light-bg: #f8f9fa;
+			--dark-text: #333;
+			--light-text: #fff;
+			--border-radius: 8px;
+			--box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+			--transition: all 0.3s ease;
+		}
+
+		body {
+			font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+			background-color: #f5f7fa;
+			color: var(--dark-text);
+			line-height: 1.6;
+			margin: 0;
+			padding: 0;
+		}
+
+		/* Navigation bar */
+		.navbar-custom {
+			background: linear-gradient(135deg, var(--secondary-color) 0%, var(--primary-color) 100%);
+			box-shadow: var(--box-shadow);
+			padding: 0.8rem 1rem;
+		}
+
+		.navbar-brand {
+			font-weight: 700;
+			font-size: 1.5rem;
+			color: var(--light-text);
+			display: flex;
+			align-items: center;
+		}
+
+		.navbar-brand i {
+			margin-right: 10px;
+		}
+
+		.nav-link-custom {
+			color: rgba(255, 255, 255, 0.9);
+			padding: 0.8rem 1.2rem;
+			margin: 0 0.3rem;
+			border-radius: var(--border-radius);
+			transition: var(--transition);
+			display: flex;
+			align-items: center;
+		}
+
+		.nav-link-custom:hover,
+		.nav-link-custom.active {
+			background: rgba(255, 255, 255, 0.15);
+			color: var(--light-text);
+		}
+
+		/* Header section */
+		.header-section {
+			background: linear-gradient(rgba(30, 60, 114, 0.9), rgba(42, 82, 152, 0.95)),
+			url('https://via.placeholder.com/1200x400/1e3c72/ffffff?text=Binding+Energy+Ranking') center/cover;
+			color: var(--light-text);
+			padding: 6rem 0 4rem;
+			text-align: center;
+			position: relative;
+		}
+
+		.header-title {
+			font-size: 2.8rem;
+			font-weight: 700;
+			margin-bottom: 1rem;
+			text-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+		}
+
+		/* Search section */
+		.search-container {
+			max-width: 800px;
+			margin: -3rem auto 3rem;
+			position: relative;
+			z-index: 10;
+		}
+
+		.search-form {
+			background: var(--light-text);
+			border-radius: 50px;
+			box-shadow: var(--box-shadow);
+			padding: 5px;
+			transition: var(--transition);
+		}
+
+		.search-input-group {
+			display: flex;
+			align-items: center;
+			gap: 10px;
+		}
+
+		.search-input-wrapper {
+			position: relative;
+			flex: 1;
+		}
+
+		.search-input {
+			width: 100%;
+			padding: 1.2rem 3rem 1.2rem 1.5rem;
+			border: none;
+			border-radius: 50px;
+			font-size: 1.1rem;
+			background: var(--light-bg);
+			transition: var(--transition);
+			box-sizing: border-box;
+		}
+
+		.search-input:focus {
+			box-shadow: inset 0 0 0 2px var(--primary-color);
+			background: var(--light-text);
+			outline: none;
+		}
+
+		.search-clear-btn {
+			position: absolute;
+			right: 15px;
+			top: 50%;
+			transform: translateY(-50%);
+			background: none;
+			border: none;
+			color: #999;
+			cursor: pointer;
+			padding: 5px;
+			border-radius: 50%;
+			width: 30px;
+			height: 30px;
+			display: none;
+			align-items: center;
+			justify-content: center;
+			transition: var(--transition);
+			font-size: 14px;
+		}
+
+		.search-clear-btn:hover {
+			background: #f0f0f0;
+			color: #666;
+		}
+
+		.search-clear-btn.show {
+			display: flex;
+		}
+
+		.search-btn {
+			background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+			color: var(--light-text);
+			border: none;
+			border-radius: 50px;
+			padding: 1.2rem 2rem;
+			font-size: 1.1rem;
+			cursor: pointer;
+			transition: var(--transition);
+			display: flex;
+			align-items: center;
+			gap: 0.8rem;
+		}
+
+		.search-btn:hover {
+			transform: translateY(-2px);
+			box-shadow: 0 5px 15px rgba(42, 82, 152, 0.3);
+		}
+
+		/* Data table section */
+		.data-section {
+			max-width: 1200px;
+			margin: 2rem auto;
+			padding: 2rem;
+			background: var(--light-text);
+			border-radius: var(--border-radius);
+			box-shadow: var(--box-shadow);
+		}
+
+		.table-title {
+			font-size: 1.5rem;
+			font-weight: 600;
+			color: var(--primary-color);
+			margin-bottom: 1.5rem;
+			display: flex;
+			align-items: center;
+			gap: 0.5rem;
+		}
+
+		.data-table {
+			width: 100%;
+			border-collapse: collapse;
+			margin: 1rem 0;
+			table-layout: fixed;
+		}
+
+		.data-table th,
+		.data-table td {
+			padding: 1.2rem;
+			text-align: center;
+			border-bottom: 1px solid #eee;
+			word-break: break-word;
+		}
+
+		.data-table th {
+			background-color: var(--primary-color);
+			color: var(--light-text);
+			font-weight: 600;
+			font-size: 1.1rem;
+			white-space: nowrap;
+		}
+
+		.data-table tr:hover {
+			background-color: var(--light-bg);
+		}
+
+		.data-table tr:nth-child(even) {
+			background-color: #fafafa;
+		}
+
+		.data-table tr:nth-child(even):hover {
+			background-color: var(--light-bg);
+		}
+
+		/* Pagination */
+		.pagination-section {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			gap: 1rem;
+			margin: 2rem 0;
+		}
+
+		.page-btn {
+			padding: 0.8rem 1.5rem;
+			border: none;
+			border-radius: var(--border-radius);
+			background: var(--primary-color);
+			color: var(--light-text);
+			cursor: pointer;
+			transition: var(--transition);
+			display: flex;
+			align-items: center;
+			gap: 0.5rem;
+		}
+
+		.page-btn:hover:not(:disabled) {
+			background: var(--secondary-color);
+			transform: translateY(-2px);
+		}
+
+		.page-btn:disabled {
+			background: #ccc;
+			cursor: not-allowed;
+		}
+
+		.page-info {
+			color: #666;
+			font-size: 0.9rem;
+		}
+
+		/* No data message */
+		.no-data-message {
+			text-align: center;
+			padding: 3rem;
+			color: #666;
+		}
+
+		.no-data-message i {
+			font-size: 3rem;
+			color: #ccc;
+			margin-bottom: 1rem;
+		}
+
+		.no-data-message h4 {
+			color: #999;
+			margin-bottom: 0.5rem;
+		}
+
+		/* Responsive design */
+		@media (max-width: 768px) {
+			.header-title {
+				font-size: 2rem;
+			}
+
+			.search-container {
+				margin: -2rem 1rem 2rem;
+			}
+
+			.data-section {
+				margin: 2rem 1rem;
+				padding: 1rem;
+			}
+
+			.data-table {
+				font-size: 0.9rem;
+			}
+
+			.data-table th,
+			.data-table td {
+				padding: 0.8rem;
+			}
+		}
+	</style>
+</head>
+<body>
+
+<!-- Navigation bar -->
+<nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
+	<div class="container-fluid">
+		<a class="navbar-brand" href="ABCDDB.html">
+			<i class="fas fa-flask"></i>
+			ABCDDB
+		</a>
+		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarNav">
+			<ul class="navbar-nav ms-auto">
+				<li class="nav-item">
+					<a class="nav-link-custom active" href="infor">Ranking of binding energy</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link-custom" href="cmd.html">Docking Analysis</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link-custom" href="molcule.html">Molecular descriptor</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link-custom" href="model.html">Model calculation</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</nav>
+
+<!-- Header section: shows "<target> - Ranking of molecular binding energy" when a ?target= param is present -->
+<header class="header-section">
+	<h1 class="header-title"
+		th:text="${param.target != null and !#strings.isEmpty(param.target[0])} ? (${param.target[0]} + ' - Ranking of molecular binding energy') : 'Binding Energy Ranking'">
+		Binding Energy Ranking
+	</h1>
+</header>
+
+<!-- Search section -->
+<div class="search-container">
+	<form th:action="@{/infor}" method="post" class="search-form">
+		<input type="hidden" name="oper" value="search"/>
+		<div class="search-input-group">
+			<div class="search-input-wrapper">
+				<input type="text"
+					   name="keyword"
+					   id="searchInput"
+					   class="search-input"
+					   th:value="${session.keyword}"
+					   placeholder="Please enter a keyword to search..."
+					   autocomplete="off">
+
+				<button type="button" class="search-clear-btn" id="clearSearch">
+					<i class="fas fa-times"></i>
+				</button>
+
+			</div>
+
+			<script>
+				document.getElementById('clearSearch').addEventListener('click', function() {
+					document.getElementById('searchInput').value = ''; // Clear the search box
+				});
+			</script>
+
+			<script>
+				function page(pageNo) {
+					window.location.href = 'infor?pageNo=' + pageNo;
+				}
+			</script>
+
+			<button type="submit" class="search-btn">
+				<i class="fas fa-search"></i>
+				Query
+			</button>
+
+		</div>
+	</form>
+</div>
+
+<!-- Main content -->
+<main class="data-section">
+	<h3 class="table-title">
+		<i class="fas fa-table"></i>
+		Molecular information data sheet
+	</h3>
+	<div class="table-responsive">
+		<table class="data-table">
+			<colgroup>
+				<col style="width: 8%;">
+				<col style="width: 12%;">
+				<col style="width: 18%;">
+				<col style="width: 50%;">
+				<col style="width: 12%;">
+			</colgroup>
+			<thead>
+			<tr>
+				<th>Rank</th>
+				<th>BindingEnergy</th>
+				<th>MolecularName</th>
+				<th>Smiles</th>
+				<th>cLogp</th>
+			</tr>
+			</thead>
+			<tbody>
+			<tr th:if="${#lists.isEmpty(session.inforList)}">
+				<td colspan="5" class="no-data-message">
+					<i class="fas fa-info-circle"></i>
+					<h3>No Matching Data Found</h3>
+					<p>Please try a different search keyword</p>
+				</td>
+			</tr>
+			<!--
+				Field mapping confirmed against the real database columns:
+				information  -> Rank
+				information5 -> BindingEnergy
+				information2 -> MolecularName
+				information3 -> Smiles
+				information4 -> cLogp
+				(oid and target_name exist in the data but are not shown as table columns;
+				 target_name is used above to build the dynamic page title instead)
+			-->
+			<tr th:unless="${#lists.isEmpty(session.inforList)}" th:each="infor : ${session.inforList}">
+				<td th:text="${infor.information}"></td>
+				<td th:text="${infor.information5}"></td>
+				<td th:text="${infor.information2}"></td>
+				<td th:text="${infor.information3}"></td>
+				<td th:text="${infor.information4}"></td>
+			</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<!-- Pagination controls (bottom) -->
+	<div class="pagination-section">
+		<button class="page-btn"
+				th:onclick="|page(1)|"
+				th:disabled="${session.pageNo==1}">
+			<i class="fas fa-angle-double-left"></i> Home
+		</button>
+		<button class="page-btn"
+				th:onclick="|page(${session.pageNo-1})|"
+				th:disabled="${session.pageNo==1}">
+			<i class="fas fa-angle-left"></i> Previous Page
+		</button>
+		<button class="page-btn"
+				th:onclick="|page(${session.pageNo+1})|"
+				th:disabled="${session.pageNo==session.pageCount}">
+			Next Page <i class="fas fa-angle-right"></i>
+		</button>
+		<button class="page-btn"
+				th:onclick="|page(${session.pageCount})|"
+				th:disabled="${session.pageNo==session.pageCount}">
+			End Page <i class="fas fa-angle-double-right"></i>
+		</button>
+	</div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+	// Pagination
+	function page(pageNo) {
+		window.location.href = 'infor?pageNo=' + pageNo;
+	}
+
+	// Clear button behavior
+	document.addEventListener('DOMContentLoaded', function() {
+		const searchInput = document.getElementById('searchInput');
+		const clearBtn = document.getElementById('clearSearch');
+
+		// Show/hide the clear button based on input content
+		function toggleClearButton() {
+			if (searchInput.value.trim().length > 0) {
+				clearBtn.classList.add('show');
+			} else {
+				clearBtn.classList.remove('show');
+			}
+		}
+
+		// Check on page load whether the input already has content
+		toggleClearButton();
+
+		searchInput.addEventListener('input', toggleClearButton);
+		searchInput.addEventListener('keyup', toggleClearButton);
+
+		clearBtn.addEventListener('click', function() {
+			searchInput.value = '';
+			clearBtn.classList.remove('show');
+			searchInput.focus(); // Refocus the input after clearing
+		});
+
+		searchInput.addEventListener('focus', toggleClearButton);
+	});
+</script>
+
+</body>
+</html>
