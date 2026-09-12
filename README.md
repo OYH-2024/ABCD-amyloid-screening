@@ -31,6 +31,10 @@ under review" while the submission is pending]"* submitted to
   - Each script trains a 5-fold cross-validated neural network on first
     run (selecting the best fold by validation AUC) and reuses the saved
     checkpoint on subsequent runs.
+  - `training_data/` — Training CSVs used to train each disease-specific
+    model (each script re-runs training automatically if no checkpoint
+    is present). Note: the Tau training CSV
+    (`7sp1全部分子描述符9743训练集.csv`) is GBK-encoded rather than UTF-8.
 - `database/dump/` — MySQL database dump.
   - `dbinfor.sql` — Docking ranking information for screened molecules.
   - `dbtest.sql` — Binding-energy and related data for screened
