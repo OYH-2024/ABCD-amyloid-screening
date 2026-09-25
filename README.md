@@ -9,7 +9,7 @@ under review" while the submission is pending]"* submitted to
 
 - `docking/` — Molecular docking pipeline (AutoDock Vina).
   - `dock.bat` — Main docking execution script.
-  - `configs/` — 12 docking box parameter files (`conf.txt`), one per
+  - `configs/` — 16 docking box parameter files (`conf.txt`), one per
     target structure.
   - `receptors/` — Receptor protein structures (`.pdbqt`) used as docking
     targets.
