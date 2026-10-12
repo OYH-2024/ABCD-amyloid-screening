@@ -1,14 +1,14 @@
 # ABCD: Amyloid Binding Compounds Database — Source Code
 
 This repository contains the source code, database dump, and prediction
-models supporting the manuscript *"[paper title here — leave as "manuscript
-under review" while the submission is pending]"* submitted to
-*Journal of Cheminformatics*.
+models supporting the manuscript "A Computational Framework for
+Broad-Spectrum Amyloid-Binding Molecules: Docking, Prediction, and an
+Integrative Platform" (manuscript under review).
 
 ## Repository structure
 
 - `docking/` — Molecular docking pipeline (AutoDock Vina).
-  - `dock.bat` — Main docking execution script.
+  - `dock.bat` —  Docking execution script (Windows).
   - `configs/` — 16 docking box parameter files (`conf.txt`), one per
     target structure.
   - `receptors/` — Receptor protein structures (`.pdbqt`) used as docking
